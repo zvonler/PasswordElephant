@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/krzyzanowskim/CryptoSwift.git
+	branch = master
+	commit = 3688310705fed8af7248585adaafdc4b98b5f67e
+	parent = 92e59d131f3c281ec6f9496d8fa56778a2f4f0ba
+	cmdver = 0.3.1
