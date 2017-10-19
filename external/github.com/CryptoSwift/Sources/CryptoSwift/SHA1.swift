@@ -18,12 +18,14 @@ public final class SHA1: DigestType {
     static let digestLength: Int = 20 // 160 / 8
     static let blockSize: Int = 64
     fileprivate static let hashInitialValue: ContiguousArray<UInt32> = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0]
+    fileprivate static let zeroInitialValue: ContiguousArray<UInt32> = [0x0,        0x0,        0x0,        0x0,        0x0]
 
     fileprivate var accumulated = Array<UInt8>()
     fileprivate var processedBytesTotalCount: Int = 0
-    fileprivate var accumulatedHash: ContiguousArray<UInt32> = SHA1.hashInitialValue
+    fileprivate var accumulatedHash: ContiguousArray<UInt32>
 
-    public init() {
+    public init(zeroInitial: Bool) {
+        accumulatedHash = zeroInitial ? SHA1.zeroInitialValue : SHA1.hashInitialValue
     }
 
     public func calculate(for bytes: Array<UInt8>) -> Array<UInt8> {

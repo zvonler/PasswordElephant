@@ -33,8 +33,8 @@ extension Data {
         return Data(bytes: Digest.md5(bytes))
     }
 
-    public func sha1() -> Data {
-        return Data(bytes: Digest.sha1(bytes))
+    public func sha1(zeroInitial: Bool = false) -> Data {
+        return Data(bytes: Digest.sha1(bytes, zeroInitial: zeroInitial))
     }
 
     public func sha224() -> Data {
