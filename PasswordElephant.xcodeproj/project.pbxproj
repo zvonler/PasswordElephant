@@ -1,0 +1,743 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F904BA291F8FDE7600092077 /* DefaultSettings.json in Resources */ = {isa = PBXBuildFile; fileRef = F904BA281F8FDE7600092077 /* DefaultSettings.json */; };
+		F917A14A1F917440008C4C57 /* UserDefaults-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F917A1491F917440008C4C57 /* UserDefaults-extension.swift */; };
+		F92FD6691F8D07F500B64C5F /* PasswordSafeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4B1F8D020C0094E967 /* PasswordSafeField.swift */; };
+		F92FD66A1F8D07F500B64C5F /* PasswordSafeDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */; };
+		F92FD66B1F8D07F500B64C5F /* PasswordSafeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */; };
+		F92FD66C1F8D081B00B64C5F /* PasswordElephant.proto in Resources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
+		F92FD66D1F8D083600B64C5F /* PasswordElephant.proto in Sources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
+		F94F1FFA1F9037BD00AF5FF8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FF91F9037BD00AF5FF8 /* Database.swift */; };
+		F94F1FFC1F90381000AF5FF8 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFB1F90381000AF5FF8 /* Entry.swift */; };
+		F94F1FFE1F90387800AF5FF8 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFD1F90387800AF5FF8 /* Feature.swift */; };
+		F94F20021F9046A900AF5FF8 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4C1F8D020C0094E967 /* Archive.swift */; };
+		F94F20031F9046A900AF5FF8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FF91F9037BD00AF5FF8 /* Database.swift */; };
+		F94F20041F9046A900AF5FF8 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFB1F90381000AF5FF8 /* Entry.swift */; };
+		F94F20051F9046A900AF5FF8 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFD1F90387800AF5FF8 /* Feature.swift */; };
+		F968AE1C1F8D00B20094E967 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE1B1F8D00B20094E967 /* AppDelegate.swift */; };
+		F968AE201F8D00B20094E967 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F968AE1F1F8D00B20094E967 /* Assets.xcassets */; };
+		F968AE231F8D00B20094E967 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F968AE211F8D00B20094E967 /* Main.storyboard */; };
+		F968AE2F1F8D00B20094E967 /* PasswordElephantTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE2E1F8D00B20094E967 /* PasswordElephantTests.swift */; };
+		F968AE501F8D020C0094E967 /* EntryDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE471F8D020C0094E967 /* EntryDetailsViewController.swift */; };
+		F968AE511F8D020C0094E967 /* PasswordElephant.proto in Resources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
+		F968AE521F8D020C0094E967 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE491F8D020C0094E967 /* SearchViewController.swift */; };
+		F968AE531F8D020C0094E967 /* PasswordSafeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4B1F8D020C0094E967 /* PasswordSafeField.swift */; };
+		F968AE541F8D020C0094E967 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4C1F8D020C0094E967 /* Archive.swift */; };
+		F968AE551F8D020C0094E967 /* PasswordSafeDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */; };
+		F968AE561F8D020C0094E967 /* PasswordSafeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */; };
+		F968AE6B1F8D02E00094E967 /* ProtocolBuffers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */; };
+		F968AE6C1F8D02E00094E967 /* ProtocolBuffers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F968AE6F1F8D02E00094E967 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE5E1F8D02C70094E967 /* CryptoSwift.framework */; };
+		F968AE701F8D02E00094E967 /* CryptoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE5E1F8D02C70094E967 /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F968AE741F8D02F10094E967 /* PasswordElephant.proto in Sources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
+		F9EF14481F8DB69D0053FE2A /* Data-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14471F8DB69D0053FE2A /* Data-extension.swift */; };
+		F9EF144A1F8DBA480053FE2A /* ImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14491F8DBA480053FE2A /* ImportTests.swift */; };
+		F9EF144C1F8DBC2B0053FE2A /* String-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */; };
+		F9EF14531F8DBE960053FE2A /* password_safe_2.dat in Resources */ = {isa = PBXBuildFile; fileRef = F9EF14511F8DBE960053FE2A /* password_safe_2.dat */; };
+		F9EF14541F8DC0030053FE2A /* String-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */; };
+		F9EF14551F8DC0060053FE2A /* Data-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14471F8DB69D0053FE2A /* Data-extension.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		F92FD66E1F8D084400B64C5F /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.proto";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).$(INPUT_FILE_BASE).proto.swift",
+			);
+			script = "set -e -x\nprotoc --swift_out=\"$DERIVED_FILE_DIR\" -I\"$INPUT_FILE_DIR\" \"$INPUT_FILE_PATH\"";
+		};
+		F968AE751F8D02F50094E967 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.proto";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).$(INPUT_FILE_BASE).proto.swift",
+			);
+			script = "set -e -x\nprotoc --swift_out=\"$DERIVED_FILE_DIR\" -I\"$INPUT_FILE_DIR\" \"$INPUT_FILE_PATH\"";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		F968AE2B1F8D00B20094E967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F968AE101F8D00B20094E967 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F968AE171F8D00B20094E967;
+			remoteInfo = PasswordElephant;
+		};
+		F968AE5D1F8D02C70094E967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 754BE45519693E190098E6F3;
+			remoteInfo = CryptoSwift;
+		};
+		F968AE5F1F8D02C70094E967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 754BE46019693E190098E6F3;
+			remoteInfo = Tests;
+		};
+		F968AE671F8D02D20094E967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "ProtocolBuffers::ProtocolBuffers::Product";
+			remoteInfo = ProtocolBuffers;
+		};
+		F968AE691F8D02D20094E967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F9996DC1F879A470016C76C;
+			remoteInfo = Tests;
+		};
+		F968AE6D1F8D02E00094E967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = "ProtocolBuffers::ProtocolBuffers";
+			remoteInfo = ProtocolBuffers;
+		};
+		F968AE711F8D02E00094E967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 754BE45419693E190098E6F3;
+			remoteInfo = CryptoSwift;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F968AE731F8D02E00094E967 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F968AE6C1F8D02E00094E967 /* ProtocolBuffers.framework in Embed Frameworks */,
+				F968AE701F8D02E00094E967 /* CryptoSwift.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F904BA281F8FDE7600092077 /* DefaultSettings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultSettings.json; sourceTree = "<group>"; };
+		F917A1491F917440008C4C57 /* UserDefaults-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults-extension.swift"; sourceTree = "<group>"; };
+		F94F1FF91F9037BD00AF5FF8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		F94F1FFB1F90381000AF5FF8 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		F94F1FFD1F90387800AF5FF8 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
+		F968AE181F8D00B20094E967 /* PasswordElephant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordElephant.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F968AE1B1F8D00B20094E967 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F968AE1F1F8D00B20094E967 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F968AE221F8D00B20094E967 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F968AE241F8D00B20094E967 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F968AE251F8D00B20094E967 /* PasswordElephant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PasswordElephant.entitlements; sourceTree = "<group>"; };
+		F968AE2A1F8D00B20094E967 /* PasswordElephantTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PasswordElephantTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F968AE2E1F8D00B20094E967 /* PasswordElephantTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordElephantTests.swift; sourceTree = "<group>"; };
+		F968AE301F8D00B20094E967 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F968AE471F8D020C0094E967 /* EntryDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryDetailsViewController.swift; sourceTree = "<group>"; };
+		F968AE481F8D020C0094E967 /* PasswordElephant.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PasswordElephant.proto; sourceTree = "<group>"; };
+		F968AE491F8D020C0094E967 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		F968AE4B1F8D020C0094E967 /* PasswordSafeField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordSafeField.swift; sourceTree = "<group>"; };
+		F968AE4C1F8D020C0094E967 /* Archive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Archive.swift; sourceTree = "<group>"; };
+		F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordSafeDB.swift; sourceTree = "<group>"; };
+		F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordSafeRecord.swift; sourceTree = "<group>"; };
+		F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CryptoSwift.xcodeproj; path = external/github.com/CryptoSwift/CryptoSwift.xcodeproj; sourceTree = "<group>"; };
+		F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = "external/github.com/protobuf-swift/ProtocolBuffers.xcodeproj"; sourceTree = "<group>"; };
+		F9EF14471F8DB69D0053FE2A /* Data-extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data-extension.swift"; sourceTree = "<group>"; };
+		F9EF14491F8DBA480053FE2A /* ImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportTests.swift; sourceTree = "<group>"; };
+		F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String-extension.swift"; sourceTree = "<group>"; };
+		F9EF14511F8DBE960053FE2A /* password_safe_2.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = password_safe_2.dat; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F968AE151F8D00B20094E967 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F968AE6B1F8D02E00094E967 /* ProtocolBuffers.framework in Frameworks */,
+				F968AE6F1F8D02E00094E967 /* CryptoSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F968AE271F8D00B20094E967 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F904BA271F8FDE7600092077 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE1F1F8D00B20094E967 /* Assets.xcassets */,
+				F904BA281F8FDE7600092077 /* DefaultSettings.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F94560E01F91BC7100FC84D4 /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE471F8D020C0094E967 /* EntryDetailsViewController.swift */,
+				F968AE491F8D020C0094E967 /* SearchViewController.swift */,
+			);
+			path = SearchView;
+			sourceTree = "<group>";
+		};
+		F94F1FF81F90327100AF5FF8 /* PasswordSafe */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE4B1F8D020C0094E967 /* PasswordSafeField.swift */,
+				F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */,
+				F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */,
+			);
+			path = PasswordSafe;
+			sourceTree = "<group>";
+		};
+		F968AE0F1F8D00B20094E967 = {
+			isa = PBXGroup;
+			children = (
+				F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */,
+				F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */,
+				F968AE1A1F8D00B20094E967 /* PasswordElephant */,
+				F968AE2D1F8D00B20094E967 /* PasswordElephantTests */,
+				F968AE191F8D00B20094E967 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F968AE191F8D00B20094E967 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE181F8D00B20094E967 /* PasswordElephant.app */,
+				F968AE2A1F8D00B20094E967 /* PasswordElephantTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F968AE1A1F8D00B20094E967 /* PasswordElephant */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE241F8D00B20094E967 /* Info.plist */,
+				F968AE211F8D00B20094E967 /* Main.storyboard */,
+				F94560E01F91BC7100FC84D4 /* SearchView */,
+				F968AE4A1F8D020C0094E967 /* Model */,
+				F9EF14461F8DB69D0053FE2A /* Support */,
+				F904BA271F8FDE7600092077 /* Resources */,
+				F968AE1B1F8D00B20094E967 /* AppDelegate.swift */,
+				F968AE251F8D00B20094E967 /* PasswordElephant.entitlements */,
+			);
+			path = PasswordElephant;
+			sourceTree = "<group>";
+		};
+		F968AE2D1F8D00B20094E967 /* PasswordElephantTests */ = {
+			isa = PBXGroup;
+			children = (
+				F9EF144F1F8DBE960053FE2A /* TestData */,
+				F968AE2E1F8D00B20094E967 /* PasswordElephantTests.swift */,
+				F968AE301F8D00B20094E967 /* Info.plist */,
+				F9EF14491F8DBA480053FE2A /* ImportTests.swift */,
+			);
+			path = PasswordElephantTests;
+			sourceTree = "<group>";
+		};
+		F968AE4A1F8D020C0094E967 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE4C1F8D020C0094E967 /* Archive.swift */,
+				F94F1FF91F9037BD00AF5FF8 /* Database.swift */,
+				F94F1FFB1F90381000AF5FF8 /* Entry.swift */,
+				F94F1FFD1F90387800AF5FF8 /* Feature.swift */,
+				F968AE481F8D020C0094E967 /* PasswordElephant.proto */,
+				F94F1FF81F90327100AF5FF8 /* PasswordSafe */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F968AE591F8D02C60094E967 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE5E1F8D02C70094E967 /* CryptoSwift.framework */,
+				F968AE601F8D02C70094E967 /* Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F968AE621F8D02D10094E967 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */,
+				F968AE6A1F8D02D20094E967 /* Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F9EF14461F8DB69D0053FE2A /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				F9EF14471F8DB69D0053FE2A /* Data-extension.swift */,
+				F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */,
+				F917A1491F917440008C4C57 /* UserDefaults-extension.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		F9EF144F1F8DBE960053FE2A /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				F9EF14511F8DBE960053FE2A /* password_safe_2.dat */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F968AE171F8D00B20094E967 /* PasswordElephant */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F968AE3E1F8D00B20094E967 /* Build configuration list for PBXNativeTarget "PasswordElephant" */;
+			buildPhases = (
+				F968AE141F8D00B20094E967 /* Sources */,
+				F968AE151F8D00B20094E967 /* Frameworks */,
+				F968AE161F8D00B20094E967 /* Resources */,
+				F968AE731F8D02E00094E967 /* Embed Frameworks */,
+			);
+			buildRules = (
+				F968AE751F8D02F50094E967 /* PBXBuildRule */,
+			);
+			dependencies = (
+				F968AE6E1F8D02E00094E967 /* PBXTargetDependency */,
+				F968AE721F8D02E00094E967 /* PBXTargetDependency */,
+			);
+			name = PasswordElephant;
+			productName = PasswordElephant;
+			productReference = F968AE181F8D00B20094E967 /* PasswordElephant.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F968AE291F8D00B20094E967 /* PasswordElephantTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F968AE411F8D00B20094E967 /* Build configuration list for PBXNativeTarget "PasswordElephantTests" */;
+			buildPhases = (
+				F968AE261F8D00B20094E967 /* Sources */,
+				F968AE271F8D00B20094E967 /* Frameworks */,
+				F968AE281F8D00B20094E967 /* Resources */,
+			);
+			buildRules = (
+				F92FD66E1F8D084400B64C5F /* PBXBuildRule */,
+			);
+			dependencies = (
+				F968AE2C1F8D00B20094E967 /* PBXTargetDependency */,
+			);
+			name = PasswordElephantTests;
+			productName = PasswordElephantTests;
+			productReference = F968AE2A1F8D00B20094E967 /* PasswordElephantTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F968AE101F8D00B20094E967 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0900;
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = "Relnova Software";
+				TargetAttributes = {
+					F968AE171F8D00B20094E967 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+					F968AE291F8D00B20094E967 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+						TestTargetID = F968AE171F8D00B20094E967;
+					};
+				};
+			};
+			buildConfigurationList = F968AE131F8D00B20094E967 /* Build configuration list for PBXProject "PasswordElephant" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F968AE0F1F8D00B20094E967;
+			productRefGroup = F968AE191F8D00B20094E967 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F968AE591F8D02C60094E967 /* Products */;
+					ProjectRef = F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */;
+				},
+				{
+					ProductGroup = F968AE621F8D02D10094E967 /* Products */;
+					ProjectRef = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				F968AE171F8D00B20094E967 /* PasswordElephant */,
+				F968AE291F8D00B20094E967 /* PasswordElephantTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F968AE5E1F8D02C70094E967 /* CryptoSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CryptoSwift.framework;
+			remoteRef = F968AE5D1F8D02C70094E967 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F968AE601F8D02C70094E967 /* Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.xctest;
+			remoteRef = F968AE5F1F8D02C70094E967 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ProtocolBuffers.framework;
+			remoteRef = F968AE671F8D02D20094E967 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F968AE6A1F8D02D20094E967 /* Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.xctest;
+			remoteRef = F968AE691F8D02D20094E967 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F968AE161F8D00B20094E967 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F968AE201F8D00B20094E967 /* Assets.xcassets in Resources */,
+				F968AE231F8D00B20094E967 /* Main.storyboard in Resources */,
+				F904BA291F8FDE7600092077 /* DefaultSettings.json in Resources */,
+				F968AE511F8D020C0094E967 /* PasswordElephant.proto in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F968AE281F8D00B20094E967 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F92FD66C1F8D081B00B64C5F /* PasswordElephant.proto in Resources */,
+				F9EF14531F8DBE960053FE2A /* password_safe_2.dat in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F968AE141F8D00B20094E967 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9EF144C1F8DBC2B0053FE2A /* String-extension.swift in Sources */,
+				F968AE741F8D02F10094E967 /* PasswordElephant.proto in Sources */,
+				F94F1FFC1F90381000AF5FF8 /* Entry.swift in Sources */,
+				F968AE521F8D020C0094E967 /* SearchViewController.swift in Sources */,
+				F968AE501F8D020C0094E967 /* EntryDetailsViewController.swift in Sources */,
+				F9EF14481F8DB69D0053FE2A /* Data-extension.swift in Sources */,
+				F94F1FFA1F9037BD00AF5FF8 /* Database.swift in Sources */,
+				F94F1FFE1F90387800AF5FF8 /* Feature.swift in Sources */,
+				F968AE541F8D020C0094E967 /* Archive.swift in Sources */,
+				F968AE531F8D020C0094E967 /* PasswordSafeField.swift in Sources */,
+				F917A14A1F917440008C4C57 /* UserDefaults-extension.swift in Sources */,
+				F968AE561F8D020C0094E967 /* PasswordSafeRecord.swift in Sources */,
+				F968AE1C1F8D00B20094E967 /* AppDelegate.swift in Sources */,
+				F968AE551F8D020C0094E967 /* PasswordSafeDB.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F968AE261F8D00B20094E967 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F94F20051F9046A900AF5FF8 /* Feature.swift in Sources */,
+				F92FD66D1F8D083600B64C5F /* PasswordElephant.proto in Sources */,
+				F94F20021F9046A900AF5FF8 /* Archive.swift in Sources */,
+				F968AE2F1F8D00B20094E967 /* PasswordElephantTests.swift in Sources */,
+				F9EF14541F8DC0030053FE2A /* String-extension.swift in Sources */,
+				F92FD66B1F8D07F500B64C5F /* PasswordSafeRecord.swift in Sources */,
+				F9EF144A1F8DBA480053FE2A /* ImportTests.swift in Sources */,
+				F94F20041F9046A900AF5FF8 /* Entry.swift in Sources */,
+				F92FD6691F8D07F500B64C5F /* PasswordSafeField.swift in Sources */,
+				F92FD66A1F8D07F500B64C5F /* PasswordSafeDB.swift in Sources */,
+				F94F20031F9046A900AF5FF8 /* Database.swift in Sources */,
+				F9EF14551F8DC0060053FE2A /* Data-extension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F968AE2C1F8D00B20094E967 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F968AE171F8D00B20094E967 /* PasswordElephant */;
+			targetProxy = F968AE2B1F8D00B20094E967 /* PBXContainerItemProxy */;
+		};
+		F968AE6E1F8D02E00094E967 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ProtocolBuffers;
+			targetProxy = F968AE6D1F8D02E00094E967 /* PBXContainerItemProxy */;
+		};
+		F968AE721F8D02E00094E967 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CryptoSwift;
+			targetProxy = F968AE711F8D02E00094E967 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F968AE211F8D00B20094E967 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F968AE221F8D00B20094E967 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F968AE3C1F8D00B20094E967 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F968AE3D1F8D00B20094E967 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+			};
+			name = Release;
+		};
+		F968AE3F1F8D00B20094E967 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JFYM87G8N9;
+				INFOPLIST_FILE = PasswordElephant/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephant;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		F968AE401F8D00B20094E967 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JFYM87G8N9;
+				INFOPLIST_FILE = PasswordElephant/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephant;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		F968AE421F8D00B20094E967 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JFYM87G8N9;
+				INFOPLIST_FILE = PasswordElephantTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephantTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PasswordElephant.app/Contents/MacOS/PasswordElephant";
+			};
+			name = Debug;
+		};
+		F968AE431F8D00B20094E967 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = JFYM87G8N9;
+				INFOPLIST_FILE = PasswordElephantTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephantTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PasswordElephant.app/Contents/MacOS/PasswordElephant";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F968AE131F8D00B20094E967 /* Build configuration list for PBXProject "PasswordElephant" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F968AE3C1F8D00B20094E967 /* Debug */,
+				F968AE3D1F8D00B20094E967 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F968AE3E1F8D00B20094E967 /* Build configuration list for PBXNativeTarget "PasswordElephant" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F968AE3F1F8D00B20094E967 /* Debug */,
+				F968AE401F8D00B20094E967 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F968AE411F8D00B20094E967 /* Build configuration list for PBXNativeTarget "PasswordElephantTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F968AE421F8D00B20094E967 /* Debug */,
+				F968AE431F8D00B20094E967 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F968AE101F8D00B20094E967 /* Project object */;
+}
