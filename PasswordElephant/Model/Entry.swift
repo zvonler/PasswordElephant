@@ -30,20 +30,25 @@ class Entry {
         updateFromFieldsIn(other)
     }
     
-    var group   : String? { return findFirst(category: .Group) }
-    var title   : String? { return findFirst(category: .Title) }
-    var username: String? { return findFirst(category: .Username) }
-    var password: String? { return findFirst(category: .Password) }
-    var notes   : String? { return findFirst(category: .Notes) }
-    var url     : String? { return findFirst(category: .URL) }
-
-    func setGroup   (_ newGroup   : String) { replaceFeature(category: .Group,    content: Data(newGroup.utf8)) }
-    func setTitle   (_ newTitle   : String) { replaceFeature(category: .Title,    content: Data(newTitle.utf8)) }
-    func setUsername(_ newUsername: String) { replaceFeature(category: .Username, content: Data(newUsername.utf8)) }
-    func setPassword(_ newPassword: String) { replaceFeature(category: .Password, content: Data(newPassword.utf8)) }
-    func setNotes   (_ newNotes   : String) { replaceFeature(category: .Notes,    content: Data(newNotes.utf8)) }
-    func setURL     (_ newURL     : String) { replaceFeature(category: .URL,      content: Data(newURL.utf8)) }
-
+    var group    : String? { return findFirst(category: .Group)?.strContent }
+    var title    : String? { return findFirst(category: .Title)?.strContent }
+    var username : String? { return findFirst(category: .Username)?.strContent }
+    var password : String? { return findFirst(category: .Password)?.strContent }
+    var notes    : String? { return findFirst(category: .Notes)?.strContent }
+    var url      : String? { return findFirst(category: .URL)?.strContent }
+    var created  : Date?   { return findFirst(category: .CreationTime)?.dateContent }
+    var modified : Date?   { return findFirst(category: .ModificationTime)?.dateContent }
+    var pwChanged: Date?   { return findFirst(category: .PasswordChangedTime)?.dateContent }
+    
+    func setGroup   (_ newGroup   : String) { replaceFeature(category: .Group,        content: Data(newGroup.utf8)) }
+    func setTitle   (_ newTitle   : String) { replaceFeature(category: .Title,        content: Data(newTitle.utf8)) }
+    func setUsername(_ newUsername: String) { replaceFeature(category: .Username,     content: Data(newUsername.utf8)) }
+    func setPassword(_ newPassword: String) { replaceFeature(category: .Password,     content: Data(newPassword.utf8)) }
+    func setNotes   (_ newNotes   : String) { replaceFeature(category: .Notes,        content: Data(newNotes.utf8)) }
+    func setURL     (_ newURL     : String) { replaceFeature(category: .URL,          content: Data(newURL.utf8)) }
+//    func setCreated (_ newCreated : Date)   { replaceFeature(category: .CreationTime, content: Data()) }
+//    func setPwChanged(_ newChanged: Date)   { replaceFeature(category: .PasswordChangedTime, content: Data()) }
+    
     static let FieldsUpdatedNotification = "FieldsUpdatedNotification"
     
     func updateFromFieldsIn(_ other: Entry) {
@@ -57,9 +62,9 @@ class Entry {
         features.append(feature)
     }
     
-    fileprivate func findFirst(category: Feature.Category) -> String? {
+    fileprivate func findFirst(category: Feature.Category) -> Feature? {
         for f in features {
-            if f.category == category { return f.strContent }
+            if f.category == category { return f }
         }
         return nil
     }

@@ -120,13 +120,26 @@ class PasswordSafeField: CustomDebugStringConvertible {
         case .UUID: return formatUUID()
             
         case .CreationTime:             fallthrough
-        case .PasswordModificationTime: fallthrough
         case .LastAccessTime:           fallthrough
+        case .LastModificationTime:     fallthrough
         case .PasswordLifetime:         fallthrough
-        case .LastModificationTime:
+        case .PasswordModificationTime:
             return formatTime()
             
         default: return content.map({ String(format: "%c", $0) }).joined()
+        }
+    }
+    
+    var dateContent: Date? {
+        switch type {
+        case .CreationTime:             fallthrough
+        case .LastAccessTime:           fallthrough
+        case .LastModificationTime:     fallthrough
+        case .PasswordLifetime:         fallthrough
+        case .PasswordModificationTime:
+            return Date(timeIntervalSince1970: timeIntervalContent())
+        
+        default: return Date()
         }
     }
     
@@ -147,17 +160,17 @@ class PasswordSafeField: CustomDebugStringConvertible {
         return [ p0, p1, p2, p3, p4].joined(separator: "-")
     }
     
-    fileprivate func formatTime() -> String {
-        
+    fileprivate func timeIntervalContent() -> TimeInterval {
         var epochSeconds = (Int(content[3]) << 24)
         epochSeconds += (Int(content[2]) << 16)
         epochSeconds += (Int(content[1]) << 8)
         epochSeconds += Int(content[0])
         
-        // Magic number from PasswordGorilla source
-        let adjustedSeconds = epochSeconds + 2082844800
-        
-        return Date(timeIntervalSince1970: Double(adjustedSeconds)).description
+        return TimeInterval(epochSeconds)
+    }
+    
+    fileprivate func formatTime() -> String {
+        return Date(timeIntervalSince1970: timeIntervalContent()).description
     }
 }
 

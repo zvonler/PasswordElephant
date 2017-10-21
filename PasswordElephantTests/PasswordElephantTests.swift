@@ -84,14 +84,20 @@ class PasswordElephantTests: XCTestCase {
     func testSingleEntry() throws {
         var originalFeatures = [PasswordElephant.Feature]()
 
-        func addFeature(category: PasswordElephant.Feature.Category, strContent: String) {
-            
+        func addFeature(category: PasswordElephant.Feature.Category, content: Data) {
             let featureBuilder = PasswordElephant.Feature.Builder()
             featureBuilder.category = category
-            featureBuilder.content = Data(strContent.utf8)
+            featureBuilder.content = content
             originalFeatures.append(try! featureBuilder.build())
         }
+
+        func addFeature(category: PasswordElephant.Feature.Category, strContent: String) {
+            addFeature(category: category, content: Data(strContent.utf8))
+        }
         
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss x"
+
         let emojiStr = "▶️🆗⚜️〽️📪💾🚀"
 
         addFeature(category: .raw, strContent: emojiStr)
@@ -103,10 +109,13 @@ class PasswordElephantTests: XCTestCase {
                                              "can be used to store the answers to secret questions and other types of freeform information " +
                                              "that do not otherwise fit into the usual feature types.")
         addFeature(category: .url, strContent: "https://www.google.com/search?q=crash+override+hackers&tbm=isch")
-
+        let modifiedDate = df.date(from: "2017-01-23 11:22:33 -0600")!
+        addFeature(category: .modified, content: Feature.encodeDate(modifiedDate))
+        let passwordModifiedDate = df.date(from: "2017-04-19 04:13:45 -0600")!
+        addFeature(category: .passwordModified, content: Feature.encodeDate(passwordModifiedDate))
+        
         let entryBuilder = PasswordElephant.Entry.Builder()
         entryBuilder.features = originalFeatures
-        let entry = try! entryBuilder.build()
 
         let tempURL = temporaryFileURL()
         let password = "testSingleEntry"
@@ -114,7 +123,7 @@ class PasswordElephantTests: XCTestCase {
         let archive = Archive()
         archive.filename = tempURL.path
         archive.password = password
-        archive.database.entries = [ Entry(fromProtoBuf: entry) ]
+        archive.database.entries = [ Entry(fromProtoBuf: try! entryBuilder.build()) ]
         try archive.write()
 
         let pedb = try! Archive(filename: tempURL.path, password: password)
@@ -131,6 +140,10 @@ class PasswordElephantTests: XCTestCase {
         let rawFeature = returnedFeatures[0]
         let returnedStr = String(data: rawFeature.content, encoding: .utf8)!
         XCTAssertEqual(returnedStr, emojiStr)
+        
+        let entry = Entry(features: returnedFeatures)
+        XCTAssertEqual(entry.modified!, modifiedDate)
+        XCTAssertEqual(entry.pwChanged!, passwordModifiedDate)
     }
     
     // Writes a Database with two distinct but overlapping entries and makes sure they stay separate.

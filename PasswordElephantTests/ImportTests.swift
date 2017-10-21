@@ -18,10 +18,17 @@ class ImportTests: XCTestCase {
         let db = try! PasswordSafeDB(filename: path, password: "masterpass")
         let record = db.records.first!
         
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss x"
+        
         XCTAssertEqual(record.title, "PasswordGorilla")
         XCTAssertEqual(record.url, "https://somewhere.secure/")
         XCTAssertEqual(record.username, "ImportUser")
         XCTAssertEqual(record.password, "Secret!")
         XCTAssertEqual(record.notes, "A few notes.")
+        // Password Gorilla shows these two times as "2087-11-16 03:20:44"
+        XCTAssertEqual(record.modificationTime, df.date(from: "2087-11-16 03:20:44 -0600"))
+        XCTAssertEqual(record.passwordModificationTime, df.date(from: "2087-11-16 03:20:44 -0600"))
+        XCTAssertEqual(record.creationTime, nil)
     }
 }

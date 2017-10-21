@@ -48,4 +48,7 @@ class PasswordSafeRecord: CustomDebugStringConvertible {
     var notes: String? { return fieldByType[PasswordSafeField.FieldType.Notes]?.strContent }
     var password: String? { return fieldByType[PasswordSafeField.FieldType.Password]?.strContent }
     var url: String? { return fieldByType[PasswordSafeField.FieldType.URL]?.strContent }
+    var creationTime: Date? { return fieldByType[PasswordSafeField.FieldType.CreationTime]?.dateContent }
+    var modificationTime: Date? { return fieldByType[PasswordSafeField.FieldType.LastModificationTime]?.dateContent }
+    var passwordModificationTime: Date? { return fieldByType[PasswordSafeField.FieldType.PasswordModificationTime]?.dateContent }
 }

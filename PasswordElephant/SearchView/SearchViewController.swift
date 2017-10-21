@@ -162,11 +162,21 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     fileprivate let usernameColumnTitle = "Username"
     fileprivate let groupColumnTitle = "Group"
     fileprivate let urlColumnTitle = "URL"
+    fileprivate let modifiedColumnTitle = "Modified"
+    fileprivate let passwordChangeTimeColumnTitle = "Password Changed"
     
     fileprivate let titleCellID = "TitleCellID"
     fileprivate let usernameCellID = "UsernameCellID"
     fileprivate let groupCellID = "GroupCellID"
     fileprivate let urlCellID = "URLCellID"
+    fileprivate let modifiedCellID = "ModifiedCellID"
+    fileprivate let passwordChangeTimeCellID = "PasswordChangedCellID"
+    
+    fileprivate let dateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        return f
+    }()
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let entry = tableEntries[row]
@@ -184,6 +194,13 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         case groupColumnTitle:
             cellIdentifier = groupCellID
             text = entry.group ?? ""
+        case modifiedColumnTitle:
+            cellIdentifier = modifiedCellID
+            text = entry.modified != nil ? dateFormatter.string(from: entry.modified!) : ""
+        case passwordChangeTimeColumnTitle:
+            cellIdentifier = passwordChangeTimeCellID
+            text = entry.pwChanged != nil ? dateFormatter.string(from: entry.pwChanged!) :
+                (entry.password == nil ? "No password set" : "Unknown")
         case urlColumnTitle:
             cellIdentifier = urlCellID
             text = entry.url ?? ""
