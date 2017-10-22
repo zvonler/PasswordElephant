@@ -30,5 +30,8 @@ class ImportTests: XCTestCase {
         XCTAssertEqual(record.modificationTime, df.date(from: "2087-11-16 03:20:44 -0600"))
         XCTAssertEqual(record.passwordModificationTime, df.date(from: "2087-11-16 03:20:44 -0600"))
         XCTAssertEqual(record.creationTime, nil)
+        XCTAssertEqual(record.uuid, "05845c08-8ed8-4f83-64c9-268aa0473519")
+        
+        XCTAssertEqual(record.fields.count, 9)
     }
 }
