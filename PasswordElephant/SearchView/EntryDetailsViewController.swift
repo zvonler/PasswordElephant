@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class EntryDetailsViewController: NSViewController, NSTextViewDelegate {
+class EntryDetailsViewController: NSViewController, NSTextViewDelegate, PasswordGeneratorDelegate {
 
     var database: Database?
     
@@ -20,12 +20,25 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate {
         super.viewDidLoad()
         // Do view setup here.
 
-        locked = entry != nil
+        locked = entry != nil        
         updateForLockedState()
         updateFromEntry()
         updateButtons()
     }
 
+    fileprivate let generatePasswordSegue = "GeneratePasswordSegue"
+    
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        switch segue.identifier?.rawValue ?? "" {
+        case generatePasswordSegue:
+            if let vc = segue.destinationController as? PasswordGeneratorViewController {
+                vc.entry = entry ?? pendingEntry
+                vc.delegate = self
+            }
+        default: break
+        }
+    }
+    
     override func controlTextDidChange(_ notification: Notification) {
         guard let textField = notification.object as? NSTextField else {
             return
@@ -55,6 +68,22 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate {
         beginPendingEdit()
         guard let pending = pendingEntry, let notes = notesTextView.textStorage?.string else { return }
         pending.setNotes(notes)
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: - PasswordGeneratorDelegate
+    
+    func entryTitle() -> String {
+        let workingTitleEntry = pendingEntry ?? entry
+        return workingTitleEntry?.title ?? workingTitleEntry?.username ?? workingTitleEntry?.url ?? "entry"
+    }
+    
+    func userChosePassword(newPassword: String) {
+        if pendingEntry == nil {
+            pendingEntry = Entry()
+        }
+        pendingEntry?.setPassword(newPassword)
+        updateButtons()
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -99,12 +128,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate {
     @IBAction func copyPasswordToClipboard(_ sender: Any) {
         guard let entry = entry else { return }
 
-        scheduleClipboardClear()
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
-        let password = entry.password ?? ""
-        pasteboard.setString(password, forType: NSPasteboard.PasteboardType.string)
+        clipboardClient.copyToClipboard(entry.password ?? "")
         
         self.presenting?.dismissViewController(self)
     }
@@ -194,7 +218,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate {
     
     fileprivate func updatePasswordTextField() {
         if showPassword {
-            passwordTextField.stringValue = entry?.password ?? ""
+            passwordTextField.stringValue = entry?.password ?? pendingEntry?.password ?? ""
             showPasswordButton.title = "Hide Password"
         } else {
             passwordTextField.stringValue = "****************"
@@ -221,18 +245,8 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate {
         }
     }
 
-    fileprivate var clearTimer: Timer?
+    fileprivate var clipboardClient = ClipboardClient()
     
-    fileprivate func scheduleClipboardClear() {
-        // In case it was already scheduled
-        clearTimer?.invalidate()
-        
-        let period = UserDefaults.clearClipboardSeconds.value
-        clearTimer = Timer.scheduledTimer(withTimeInterval: period, repeats: false) { (timer) in
-            NSPasteboard.general.clearContents()
-        }
-    }
-
     fileprivate var showPassword = false
     
     fileprivate func updateFromEntry() {
