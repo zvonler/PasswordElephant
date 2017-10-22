@@ -19,15 +19,43 @@ protocol ArchiveHandler {
     func saveArchiveAs(filename: String)
 }
 
+extension Sequence where Iterator.Element : AnyObject {
+    /// Return an `Array` containing the sorted elements of `source`
+    /// using criteria stored in a NSSortDescriptors array.
+    public func sort(sortDescriptors theSortDescs: [NSSortDescriptor]) -> [Self.Iterator.Element] {
+        return sorted {
+            for sortDesc in theSortDescs {
+                switch sortDesc.compare($0, to: $1) {
+                case .orderedAscending: return true
+                case .orderedDescending: return false
+                case .orderedSame: continue
+                }
+            }
+            return false
+        }
+    }
+}
+
 class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, ArchiveHandler {
 
+    override func viewDidLoad() {
+        groupColumn.sortDescriptorPrototype = NSSortDescriptor(key: "group", ascending: true)
+        titleColumn.sortDescriptorPrototype = NSSortDescriptor(key: "title", ascending: true)
+        usernameColumn.sortDescriptorPrototype = NSSortDescriptor(key: "username", ascending: true)
+        createdColumn.sortDescriptorPrototype = NSSortDescriptor(key: "created", ascending: true)
+        modifiedColumn.sortDescriptorPrototype = NSSortDescriptor(key: "modified", ascending: true)
+        passwordChangeColumn.sortDescriptorPrototype = NSSortDescriptor(key: "pwChanged", ascending: true)
+        uuidColumn.sortDescriptorPrototype = NSSortDescriptor(key: "uuid", ascending: true)
+        urlColumn.sortDescriptorPrototype = NSSortDescriptor(key: "url", ascending: true)
+    }
+    
     override func viewWillAppear() {
         archive = Archive()
         view.window?.initialFirstResponder = searchField
         updateStatusLabel()
     }
 
-    var selectedEntry: Entry? = nil
+    fileprivate var selectedEntry: Entry? = nil
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         guard let id = segue.identifier else { return }
@@ -98,13 +126,19 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var statusLabel: NSTextField!
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var tableView: NSTableView!
+    @IBOutlet weak var groupColumn: NSTableColumn!
+    @IBOutlet weak var titleColumn: NSTableColumn!
+    @IBOutlet weak var usernameColumn: NSTableColumn!
+    @IBOutlet weak var createdColumn: NSTableColumn!
+    @IBOutlet weak var modifiedColumn: NSTableColumn!
+    @IBOutlet weak var passwordChangeColumn: NSTableColumn!
+    @IBOutlet weak var uuidColumn: NSTableColumn!
+    @IBOutlet weak var urlColumn: NSTableColumn!
     
     @IBAction func newEntry(_ sender: Any) {
         selectedEntry = nil
         performSegue(withIdentifier: newEntrySegueID, sender: self)
     }
-    
-    fileprivate var tableEntries = [Entry]()
     
     @IBAction func userConfirmedChoice(_ sender: Any) {
         tableEntries = filteredEntries()
@@ -158,15 +192,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSTableViewDelegate
 
-    fileprivate let titleColumnTitle = "Title"
-    fileprivate let usernameColumnTitle = "Username"
-    fileprivate let groupColumnTitle = "Group"
-    fileprivate let urlColumnTitle = "URL"
-    fileprivate let modifiedColumnTitle = "Modified"
-    fileprivate let passwordAgeColumnTitle = "Password Changed"
-    fileprivate let createdColumnTitle = "Created"
-    fileprivate let uuidColumnTitle = "UUID"
-    
     fileprivate let titleCellID = "TitleCellID"
     fileprivate let usernameCellID = "UsernameCellID"
     fileprivate let groupCellID = "GroupCellID"
@@ -195,40 +220,42 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        guard let tableColumn = tableColumn else { return nil }
+        
         let entry = tableEntries[row]
         
         var cellIdentifier: String = ""
         var text: String = ""
         
-        switch tableColumn?.title ?? "" {
-        case titleColumnTitle:
+        switch tableColumn {
+        case titleColumn:
             cellIdentifier = titleCellID
             text = entry.title ?? ""
-        case usernameColumnTitle:
+        case usernameColumn:
             cellIdentifier = usernameCellID
             text = entry.username ?? ""
-        case groupColumnTitle:
+        case groupColumn:
             cellIdentifier = groupCellID
             text = entry.group ?? ""
-        case modifiedColumnTitle:
+        case modifiedColumn:
             cellIdentifier = modifiedCellID
             text = entry.modified != nil ? dateFormatter.string(from: entry.modified!) : ""
-        case passwordAgeColumnTitle:
+        case passwordChangeColumn:
             cellIdentifier = passwordAgeCellID
             text = entry.pwChanged != nil ? dateFormatter.string(from: entry.pwChanged!) :
                 (entry.password == nil ? "No password set" : "Unknown")
-        case urlColumnTitle:
+        case urlColumn:
             cellIdentifier = urlCellID
             text = entry.url ?? ""
-        case uuidColumnTitle:
+        case uuidColumn:
             cellIdentifier = uuidCellID
             text = entry.uuid ?? ""
-        case createdColumnTitle:
+        case createdColumn:
             cellIdentifier = createdCellID
             text = entry.created != nil ? dateFormatter.string(from: entry.created!) : ""
         default: return nil
         }
-        
+
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
             cell.textField?.stringValue = text
             return cell
@@ -253,9 +280,19 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         return tableEntries.count
     }
 
+    func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
+        guard let sortDescriptor = tableView.sortDescriptors.first else {
+            return
+        }
+        tableEntries = tableEntries.sort(sortDescriptors: [sortDescriptor])
+        tableView.reloadData()
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     // MARK: - Implementation details
 
+    fileprivate var tableEntries = [Entry]()
+    
     fileprivate var archive: Archive? {
         didSet {
             updateStatusLabel()

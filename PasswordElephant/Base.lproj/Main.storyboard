@@ -550,7 +550,7 @@
                                                                 </tableCellView>
                                                             </prototypeCellViews>
                                                         </tableColumn>
-                                                        <tableColumn width="116" minWidth="40" maxWidth="1000" id="KTt-MH-ObU">
+                                                        <tableColumn identifier="" width="116" minWidth="40" maxWidth="1000" id="KTt-MH-ObU">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Title">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -583,7 +583,7 @@
                                                                 </tableCellView>
                                                             </prototypeCellViews>
                                                         </tableColumn>
-                                                        <tableColumn width="125" minWidth="40" maxWidth="1000" id="Kx0-TQ-cR8">
+                                                        <tableColumn identifier="" width="125" minWidth="40" maxWidth="1000" id="Kx0-TQ-cR8">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Username">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -748,7 +748,7 @@
                                                                 </tableCellView>
                                                             </prototypeCellViews>
                                                         </tableColumn>
-                                                        <tableColumn identifier="URLCelllID" width="85" minWidth="10" maxWidth="3.4028234663852886e+38" id="Kvv-q0-hYS">
+                                                        <tableColumn identifier="" width="85" minWidth="10" maxWidth="3.4028234663852886e+38" id="Kvv-q0-hYS">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="URL">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -835,9 +835,17 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="createdColumn" destination="Js4-W9-Fif" id="BZy-sn-OLo"/>
+                        <outlet property="groupColumn" destination="fc8-AU-HJc" id="dHt-kW-3er"/>
+                        <outlet property="modifiedColumn" destination="euQ-fk-sku" id="aal-Zl-geV"/>
+                        <outlet property="passwordChangeColumn" destination="jFZ-Lm-bpE" id="kIK-dq-r21"/>
                         <outlet property="searchField" destination="8Yg-eW-9z9" id="7mu-ZT-GvS"/>
                         <outlet property="statusLabel" destination="dZ7-1v-FRZ" id="Da4-lV-7Kr"/>
                         <outlet property="tableView" destination="sbr-GQ-B2B" id="rS6-NT-LlR"/>
+                        <outlet property="titleColumn" destination="KTt-MH-ObU" id="9gr-mf-tYa"/>
+                        <outlet property="urlColumn" destination="Kvv-q0-hYS" id="Q66-SP-VCv"/>
+                        <outlet property="usernameColumn" destination="Kx0-TQ-cR8" id="UXF-Ou-14q"/>
+                        <outlet property="uuidColumn" destination="AGH-hh-8hJ" id="6g6-ed-E1b"/>
                         <segue destination="lVv-qh-JGJ" kind="sheet" identifier="ShowEntryDetails" id="ZnY-j5-CzZ"/>
                         <segue destination="lVv-qh-JGJ" kind="sheet" identifier="NewEntry" id="2Zd-7k-xAI"/>
                     </connections>
@@ -1019,14 +1027,14 @@
                                                     <scrollView horizontalHuggingPriority="251" verticalHuggingPriority="249" horizontalCompressionResistancePriority="251" verticalCompressionResistancePriority="251" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5I-Vv-Vop">
                                                         <rect key="frame" x="70" y="0.0" width="220" height="153"/>
                                                         <clipView key="contentView" id="yMg-28-Bvl">
-                                                            <rect key="frame" x="1" y="1" width="218" height="151"/>
+                                                            <rect key="frame" x="1" y="1" width="203" height="151"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="Nge-kX-fgb">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="218" height="151"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="203" height="151"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <size key="minSize" width="218" height="151"/>
+                                                                    <size key="minSize" width="203" height="151"/>
                                                                     <size key="maxSize" width="978" height="10000000"/>
                                                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <connections>
@@ -1042,7 +1050,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </scroller>
                                                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Ve7-Dg-S3p">
-                                                            <rect key="frame" x="203" y="1" width="16" height="151"/>
+                                                            <rect key="frame" x="204" y="1" width="15" height="151"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </scroller>
                                                     </scrollView>

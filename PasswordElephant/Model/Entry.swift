@@ -9,15 +9,18 @@
 import Foundation
 
 // An Entry contains one or more Feature objects that represent the Entry's content.
-class Entry {
-    init() {
+@objcMembers
+class Entry: NSObject {
+    override init() {
         features = [Feature]()
+        super.init()
         replaceFeature(category: .CreationTime, content: Feature.encodeDate(Date()))
     }
     
     // Used to deserialize Entry objects from the protobuf representation.
     init(fromProtoBuf protoBuf: PasswordElephant.Entry) {
         features = [Feature]()
+        super.init()
         for feature in protoBuf.features {
             features.append(Feature(fromProtoBuf: feature))
         }
