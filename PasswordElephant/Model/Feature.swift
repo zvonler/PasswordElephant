@@ -22,6 +22,7 @@ class Feature {
         case ModificationTime
         case PasswordChangedTime
         case URL
+        case UUID
         case Unknown
     }
     
@@ -30,7 +31,10 @@ class Feature {
     var content: Data
     
     var strContent: String? {
-        return String(data: content, encoding: String.Encoding.utf8)
+        switch category {
+        case .UUID: return PasswordSafeField.formatUUID(content: content)
+        default: return String(data: content, encoding: String.Encoding.utf8)
+        }
     }
     
     var dateContent: Date? {
@@ -117,6 +121,7 @@ class Feature {
         case .CreationTime            : return .CreationTime
         case .PasswordModificationTime: return .PasswordChangedTime
         case .LastModificationTime    : return .ModificationTime
+        case .UUID                    : return .UUID
         default                       : return .Unknown
         }
     }
@@ -140,6 +145,7 @@ class Feature {
         case .created : return .CreationTime
         case .passwordModified: return .PasswordChangedTime
         case .modified: return .ModificationTime
+        case .uuid    : return .UUID
         default       : return .Unknown
         }
     }
@@ -156,6 +162,7 @@ class Feature {
         case .CreationTime: return .created
         case .PasswordChangedTime: return .passwordModified
         case .ModificationTime: return .modified
+        case .UUID    : return .uuid
         default       : return .unknown
         }
     }

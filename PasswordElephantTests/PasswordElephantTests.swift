@@ -141,9 +141,8 @@ class PasswordElephantTests: XCTestCase {
         let returnedStr = String(data: rawFeature.content, encoding: .utf8)!
         XCTAssertEqual(returnedStr, emojiStr)
         
-        let entry = Entry(features: returnedFeatures)
-        XCTAssertEqual(entry.modified!, modifiedDate)
-        XCTAssertEqual(entry.pwChanged!, passwordModifiedDate)
+        XCTAssertEqual(returned.modified!, modifiedDate)
+        XCTAssertEqual(returned.pwChanged!, passwordModifiedDate)
     }
     
     // Writes a Database with two distinct but overlapping entries and makes sure they stay separate.
@@ -151,16 +150,16 @@ class PasswordElephantTests: XCTestCase {
         
         func standardEntry() -> Entry {
             let entry = Entry()
-            entry.addFeature(Feature(category: .Group, strContent: "Financial"))
-            entry.addFeature(Feature(category: .Title, strContent: "Bank ABC"))
-            entry.addFeature(Feature(category: .Username, strContent: "bank_login"))
+            entry.setGroup("Financial")
+            entry.setTitle("Bank ABC")
+            entry.setUsername("bank_login")
             return entry
         }
         
         let entry_a = standardEntry()
-        entry_a.addFeature(Feature(category: .Notes, strContent: "This is Entry A"))
+        entry_a.setNotes("This is Entry A")
         let entry_b = standardEntry()
-        entry_b.addFeature(Feature(category: .Notes, strContent: "Entry B Reporting"))
+        entry_b.setNotes("Entry B Reporting")
 
         let tempURL = temporaryFileURL()
         let password = "testDistinctEntries"
@@ -185,7 +184,7 @@ class PasswordElephantTests: XCTestCase {
             XCTAssertEqual(returned_b.features[i].content, entry_b.features[i].content)
         }
 
-        // Confirm the last feature of each entry are not the same
-        XCTAssertNotEqual(returned_a.features.last!.content, returned_b.features.last!.content)
+        // Confirm the notes feature of each entry are not the same
+        XCTAssertNotEqual(returned_a.notes, returned_b.notes)
     }
 }

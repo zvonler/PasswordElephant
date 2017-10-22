@@ -26,7 +26,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         view.window?.initialFirstResponder = searchField
         updateStatusLabel()
     }
-    
+
     var selectedEntry: Entry? = nil
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
@@ -163,20 +163,36 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     fileprivate let groupColumnTitle = "Group"
     fileprivate let urlColumnTitle = "URL"
     fileprivate let modifiedColumnTitle = "Modified"
-    fileprivate let passwordChangeTimeColumnTitle = "Password Changed"
+    fileprivate let passwordAgeColumnTitle = "Password Changed"
+    fileprivate let createdColumnTitle = "Created"
+    fileprivate let uuidColumnTitle = "UUID"
     
     fileprivate let titleCellID = "TitleCellID"
     fileprivate let usernameCellID = "UsernameCellID"
     fileprivate let groupCellID = "GroupCellID"
     fileprivate let urlCellID = "URLCellID"
     fileprivate let modifiedCellID = "ModifiedCellID"
-    fileprivate let passwordChangeTimeCellID = "PasswordChangedCellID"
+    fileprivate let passwordAgeCellID = "PasswordAgeCellID"
+    fileprivate let createdCellID = "CreatedCellID"
+    fileprivate let uuidCellID = "UUIDCellID"
     
     fileprivate let dateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
         return f
     }()
+    
+    func formatTimeInterval(_ interval: TimeInterval) -> String {
+        let sign = interval > 0 ? "-" : ""
+        let absInterval = abs(interval)
+        let ti = Int(absInterval)
+        
+        let minutes = (ti / 60) % 60
+        let hours = (ti / 3600) % 3600
+        let days = (ti / 86400)
+
+        return String(format: "%@%0.2dd %0.2dh:%0.2dm", sign, days, hours, minutes)
+    }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let entry = tableEntries[row]
@@ -197,13 +213,19 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         case modifiedColumnTitle:
             cellIdentifier = modifiedCellID
             text = entry.modified != nil ? dateFormatter.string(from: entry.modified!) : ""
-        case passwordChangeTimeColumnTitle:
-            cellIdentifier = passwordChangeTimeCellID
+        case passwordAgeColumnTitle:
+            cellIdentifier = passwordAgeCellID
             text = entry.pwChanged != nil ? dateFormatter.string(from: entry.pwChanged!) :
                 (entry.password == nil ? "No password set" : "Unknown")
         case urlColumnTitle:
             cellIdentifier = urlCellID
             text = entry.url ?? ""
+        case uuidColumnTitle:
+            cellIdentifier = uuidCellID
+            text = entry.uuid ?? ""
+        case createdColumnTitle:
+            cellIdentifier = createdCellID
+            text = entry.created != nil ? dateFormatter.string(from: entry.created!) : ""
         default: return nil
         }
         

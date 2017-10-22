@@ -91,12 +91,7 @@ public class Archive {
         self.init()
         
         for record in pwsafeDB.records {
-            let entry = Entry()
-            for field in record.fields {
-                let feature = Feature(field: field)
-                entry.addFeature(feature)
-            }
-            database.addEntry(entry)
+            database.addEntry(Entry(from: record))
         }
     }
     
@@ -107,15 +102,10 @@ public class Archive {
         let database = Database()
         
         for protoEntry in protoDB.entries {
-            let entry = Entry()
-            
-            for protoFeature in protoEntry.features {
-                hmacData.append(protoFeature.content)
-                
-                let feature = Feature(fromProtoBuf: protoFeature)
-                entry.addFeature(feature)
+            let entry = Entry(fromProtoBuf: protoEntry)
+            for feature in entry.features {
+                hmacData.append(feature.content)
             }
-            
             database.addEntry(entry)
         }
         

@@ -151,13 +151,17 @@ class PasswordSafeField: CustomDebugStringConvertible {
         }
     }
     
-    fileprivate func formatUUID() -> String {
+    static func formatUUID(content: Data) -> String {
         let p0 = content[0..<4].map({ String(format: "%02hhx", $0) }).joined()
         let p1 = content[4..<6].map({ String(format: "%02hhx", $0) }).joined()
         let p2 = content[6..<8].map({ String(format: "%02hhx", $0) }).joined()
         let p3 = content[8..<10].map({ String(format: "%02hhx", $0) }).joined()
         let p4 = content[10..<16].map({ String(format: "%02hhx", $0) }).joined()
         return [ p0, p1, p2, p3, p4].joined(separator: "-")
+    }
+    
+    fileprivate func formatUUID() -> String {
+        return PasswordSafeField.formatUUID(content: Data(content))
     }
     
     fileprivate func timeIntervalContent() -> TimeInterval {
