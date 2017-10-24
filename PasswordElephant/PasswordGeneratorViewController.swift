@@ -10,7 +10,7 @@ import Cocoa
 
 protocol PasswordGeneratorDelegate {
     func entryTitle() -> String
-    func userChosePassword(newPassword: String)
+    func userChosePassword(newPassword: String, expiresAfter: TimeInterval)
 }
 
 class PasswordGeneratorViewController: NSViewController {
@@ -37,15 +37,10 @@ class PasswordGeneratorViewController: NSViewController {
     @IBOutlet weak var changeReminderAfterCombox: NSComboBox!
     @IBOutlet weak var changeReminderUnitsCombox: NSComboBox!
     
-    @IBOutlet weak var lowercaseLettersCheckbox: NSButton!
     @IBOutlet weak var lowercaseLettersAtLeastCombox: NSComboBox!
-    @IBOutlet weak var uppercaseLettersCheckbox: NSButton!
     @IBOutlet weak var uppercaseLettersAtLeastCombox: NSComboBox!
-    @IBOutlet weak var numbersCheckbox: NSButton!
     @IBOutlet weak var numbersAtLeastCombox: NSComboBox!
-    @IBOutlet weak var punctuationCheckbox: NSButton!
     @IBOutlet weak var punctuationAtLeastCombox: NSComboBox!
-    @IBOutlet weak var specialCharactersCheckbox: NSButton!
     @IBOutlet weak var specialCharactersAtLeastCombox: NSComboBox!
     @IBOutlet weak var specialCharactersTextField: NSTextField!
     @IBOutlet weak var generatedPasswordField: NSTextField!
@@ -75,7 +70,14 @@ class PasswordGeneratorViewController: NSViewController {
     }
     
     @IBAction func savePassword(_ sender: Any) {
-        delegate?.userChosePassword(newPassword: generatedPasswordField.stringValue)
+        var expiration = Double(changeReminderAfterCombox.stringValue) ?? 0.0
+        switch changeReminderUnitsCombox.stringValue {
+        case "months": expiration *= 4    ; fallthrough
+        case "weeks" : expiration *= 7    ; fallthrough
+        case "days"  : expiration *= 86400; fallthrough
+        default: break
+        }
+        delegate?.userChosePassword(newPassword: generatedPasswordField.stringValue, expiresAfter: expiration)
         self.presenting?.dismissViewController(self)
     }
     
@@ -106,53 +108,3 @@ extension String {
         return String(Array(characters).shuffled)
     }
 }
-
-class PasswordGenerator {
-    var length: Int = 16
-    var minLowercaseLetters: Int = 6
-    var minUppercaseLetters: Int = 6
-    var minNumbers: Int = 4
-    var minPunctuaton: Int = 0
-    var minSpecialCharacters: Int = 0
-    
-    func generate() throws -> String {
-        var randomChars: String = ""
-        if minLowercaseLetters > 0 {
-            randomChars.append(randomAlphaNumericString(allowedChars: lowercaseLetters, length: minLowercaseLetters))
-        }
-        if minUppercaseLetters > 0 {
-            randomChars.append(randomAlphaNumericString(allowedChars: uppercaseLetters, length: minUppercaseLetters))
-        }
-        if minNumbers > 0 {
-            randomChars.append(randomAlphaNumericString(allowedChars: numbers, length: minNumbers))
-        }
-        if minPunctuaton > 0 {
-            randomChars.append(randomAlphaNumericString(allowedChars: punctuation, length: minPunctuaton))
-        }
-        if minSpecialCharacters > 0 {
-            randomChars.append(randomAlphaNumericString(allowedChars: specialCharacters, length: minSpecialCharacters))
-        }
-        return randomChars.jumble
-    }
-    
-    fileprivate func randomAlphaNumericString(allowedChars: String, length: Int) -> String {
-        let allowedCharsCount = UInt32(allowedChars.characters.count)
-        var randomString = ""
-        
-        for _ in 0..<length {
-            let randomNum = Int(arc4random_uniform(allowedCharsCount))
-            let randomIndex = allowedChars.index(allowedChars.startIndex, offsetBy: randomNum)
-            let newCharacter = allowedChars[randomIndex]
-            randomString += String(newCharacter)
-        }
-        
-        return randomString
-    }
-    
-    fileprivate let lowercaseLetters = "abcdefghijklmnopqrstuvwxyz"
-    fileprivate let uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    fileprivate let numbers = "0123456789"
-    fileprivate let punctuation = ".,!?;:"
-    fileprivate let specialCharacters = "`~@#$%^&*+=[]{}'\"/\\|<>()"
-}
-

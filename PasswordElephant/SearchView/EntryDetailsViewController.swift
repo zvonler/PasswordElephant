@@ -78,11 +78,12 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
         return workingTitleEntry?.title ?? workingTitleEntry?.username ?? workingTitleEntry?.url ?? "entry"
     }
     
-    func userChosePassword(newPassword: String) {
+    func userChosePassword(newPassword: String, expiresAfter lifetime: TimeInterval) {
         if pendingEntry == nil {
             pendingEntry = Entry()
         }
         pendingEntry?.setPassword(newPassword)
+        pendingEntry?.setPasswordLifetime(lifetime)
         updateButtons()
     }
 

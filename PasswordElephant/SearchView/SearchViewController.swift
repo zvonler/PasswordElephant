@@ -132,6 +132,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var createdColumn: NSTableColumn!
     @IBOutlet weak var modifiedColumn: NSTableColumn!
     @IBOutlet weak var passwordChangeColumn: NSTableColumn!
+    @IBOutlet weak var passwordExpirationColumn: NSTableColumn!
+    @IBOutlet weak var passwordPolicyColumn: NSTableColumn!
     @IBOutlet weak var uuidColumn: NSTableColumn!
     @IBOutlet weak var urlColumn: NSTableColumn!
     
@@ -198,6 +200,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     fileprivate let urlCellID = "URLCellID"
     fileprivate let modifiedCellID = "ModifiedCellID"
     fileprivate let passwordAgeCellID = "PasswordAgeCellID"
+    fileprivate let passwordExpirationCellID = "PasswordExpirationCellID"
+    fileprivate let passwordPolicyCellID = "PasswordPolicyCellID"
     fileprivate let createdCellID = "CreatedCellID"
     fileprivate let uuidCellID = "UUIDCellID"
     
@@ -243,7 +247,17 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         case passwordChangeColumn:
             cellIdentifier = passwordAgeCellID
             text = entry.pwChanged != nil ? dateFormatter.string(from: entry.pwChanged!) :
-                (entry.password == nil ? "No password set" : "Unknown")
+                (entry.password == nil ? "" : "Unknown")
+        case passwordExpirationColumn:
+            cellIdentifier = passwordExpirationCellID
+            if let changed = entry.pwChanged, let lifetime = entry.pwLifetime {
+                text = dateFormatter.string(from: changed + lifetime)
+            } else {
+                text = ""
+            }
+        case passwordPolicyColumn:
+            cellIdentifier = passwordPolicyCellID
+            text = entry.pwPolicy ?? ""
         case urlColumn:
             cellIdentifier = urlCellID
             text = entry.url ?? ""
@@ -332,6 +346,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     fileprivate func databaseUpdated() {
         updateStatusLabel()
+        tableEntries = filteredEntries()
         tableView.reloadData()
     }
     

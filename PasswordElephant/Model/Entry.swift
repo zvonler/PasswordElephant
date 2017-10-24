@@ -35,8 +35,14 @@ class Entry: NSObject {
     convenience init(from record: PasswordSafeRecord) {
         self.init()
         for field in record.fields {
-            let feature = Feature(field: field)
-            replaceFeature(category: feature.category, content: feature.content)
+            if field.type == PasswordSafeField.FieldType.EndOfRecord {
+                // Could break on this
+            } else if field.type == PasswordSafeField.FieldType.LastAccessTime {
+                // Ignore these fields as Password Elephant doesn't keep this data
+            } else {
+                let feature = Feature(from: field)
+                replaceFeature(category: feature.category, content: feature.content)
+            }
         }
     }
     
@@ -58,7 +64,9 @@ class Entry: NSObject {
     var modified : Date?   { return findFirst(category: .ModificationTime)?.dateContent }
     var pwChanged: Date?   { return findFirst(category: .PasswordChangedTime)?.dateContent }
     var uuid     : String? { return findFirst(category: .UUID)?.strContent }
-
+    var pwLifetime: TimeInterval? { return findFirst(category: .PasswordLifetime)?.doubleContent }
+    var pwPolicy: String? { return findFirst(category: .PasswordPolicy)?.strContent }
+    
     func setGroup   (_ newGroup   : String) { replaceFeature(category: .Group,        content: Data(newGroup.utf8)) }
     func setTitle   (_ newTitle   : String) { replaceFeature(category: .Title,        content: Data(newTitle.utf8)) }
     func setUsername(_ newUsername: String) { replaceFeature(category: .Username,     content: Data(newUsername.utf8)) }
@@ -68,7 +76,10 @@ class Entry: NSObject {
         replaceFeature(category: .Password, content: Data(newPassword.utf8))
         replaceFeature(category: .PasswordChangedTime, content: Feature.encodeDate(Date()))
     }
-
+    func setPasswordLifetime(_ expiration: TimeInterval) {
+        replaceFeature(category: .PasswordLifetime, content: Data(from: expiration))
+    }
+    
     static let FieldsUpdatedNotification = "FieldsUpdatedNotification"
     
     func updateFromFieldsIn(_ other: Entry) {

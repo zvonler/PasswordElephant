@@ -113,6 +113,10 @@ class PasswordElephantTests: XCTestCase {
         addFeature(category: .modified, content: Feature.encodeDate(modifiedDate))
         let passwordModifiedDate = df.date(from: "2017-04-19 04:13:45 -0600")!
         addFeature(category: .passwordModified, content: Feature.encodeDate(passwordModifiedDate))
+        let passwordLifetime = 86400.0 * 30 // One month
+        addFeature(category: .passwordLifetime, content: Data(from:passwordLifetime))
+        let passwordPolicy = Data(from: 0xdeadbeef)
+        addFeature(category: .passwordPolicy, content: passwordPolicy)
         
         let entryBuilder = PasswordElephant.Entry.Builder()
         entryBuilder.features = originalFeatures
@@ -143,6 +147,8 @@ class PasswordElephantTests: XCTestCase {
         
         XCTAssertEqual(returned.modified!, modifiedDate)
         XCTAssertEqual(returned.pwChanged!, passwordModifiedDate)
+        XCTAssertEqual(returned.pwLifetime!, passwordLifetime)
+        XCTAssertEqual(returned.pwPolicy!, passwordPolicy.toHexString())
     }
     
     // Writes a Database with two distinct but overlapping entries and makes sure they stay separate.

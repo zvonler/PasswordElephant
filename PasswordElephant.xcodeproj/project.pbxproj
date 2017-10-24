@@ -39,6 +39,7 @@
 		F968AE741F8D02F10094E967 /* PasswordElephant.proto in Sources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
 		F9867F881F9D2916001BE9E6 /* PasswordGeneratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9867F871F9D2916001BE9E6 /* PasswordGeneratorViewController.swift */; };
 		F9867F8D1F9D4328001BE9E6 /* ClipboardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9867F8C1F9D4328001BE9E6 /* ClipboardClient.swift */; };
+		F9867F8F1F9F03F4001BE9E6 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9867F8E1F9F03F4001BE9E6 /* PasswordGenerator.swift */; };
 		F9EF14481F8DB69D0053FE2A /* Data-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14471F8DB69D0053FE2A /* Data-extension.swift */; };
 		F9EF144A1F8DBA480053FE2A /* ImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14491F8DBA480053FE2A /* ImportTests.swift */; };
 		F9EF144C1F8DBC2B0053FE2A /* String-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */; };
@@ -165,6 +166,7 @@
 		F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = "external/github.com/protobuf-swift/ProtocolBuffers.xcodeproj"; sourceTree = "<group>"; };
 		F9867F871F9D2916001BE9E6 /* PasswordGeneratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorViewController.swift; sourceTree = "<group>"; };
 		F9867F8C1F9D4328001BE9E6 /* ClipboardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardClient.swift; sourceTree = "<group>"; };
+		F9867F8E1F9F03F4001BE9E6 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		F9EF14471F8DB69D0053FE2A /* Data-extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data-extension.swift"; sourceTree = "<group>"; };
 		F9EF14491F8DBA480053FE2A /* ImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportTests.swift; sourceTree = "<group>"; };
 		F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String-extension.swift"; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				F94F1FFD1F90387800AF5FF8 /* Feature.swift */,
 				F968AE481F8D020C0094E967 /* PasswordElephant.proto */,
 				F94F1FF81F90327100AF5FF8 /* PasswordSafe */,
+				F9867F8E1F9F03F4001BE9E6 /* PasswordGenerator.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9EF144C1F8DBC2B0053FE2A /* String-extension.swift in Sources */,
+				F9867F8F1F9F03F4001BE9E6 /* PasswordGenerator.swift in Sources */,
 				F968AE741F8D02F10094E967 /* PasswordElephant.proto in Sources */,
 				F94F1FFC1F90381000AF5FF8 /* Entry.swift in Sources */,
 				F968AE521F8D020C0094E967 /* SearchViewController.swift in Sources */,

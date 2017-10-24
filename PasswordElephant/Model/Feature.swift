@@ -8,6 +8,17 @@
 
 import Foundation
 
+extension Data {
+    init<T>(from value: T) {
+        var value = value
+        self.init(buffer: UnsafeBufferPointer(start: &value, count: 1))
+    }
+    
+    func to<T>(type: T.Type) -> T {
+        return self.withUnsafeBytes { $0.pointee }
+    }
+}
+
 // A Feature is the smallest unit of data in a Password Elephant database.
 class Feature {
     
@@ -23,6 +34,8 @@ class Feature {
         case PasswordChangedTime
         case URL
         case UUID
+        case PasswordLifetime
+        case PasswordPolicy
         case Unknown
     }
     
@@ -33,12 +46,17 @@ class Feature {
     var strContent: String? {
         switch category {
         case .UUID: return PasswordSafeField.formatUUID(content: content)
+        case .PasswordPolicy: return content.toHexString()
         default: return String(data: content, encoding: String.Encoding.utf8)
         }
     }
     
     var dateContent: Date? {
         return Feature.decodeDate(content)
+    }
+    
+    var doubleContent: Double? {
+        return content.to(type: Double.self)
     }
     
     init(category: Category, content: Data) {
@@ -59,7 +77,7 @@ class Feature {
     // are re-encoded into a new format, other fields are represented as their
     // original bytes.
     
-    init(field: PasswordSafeField) {
+    init(from field: PasswordSafeField) {
         category = Feature.categoryForPasswordSafe(fieldType: field.type)
         switch field.type {
         case .CreationTime:             fallthrough
@@ -122,6 +140,8 @@ class Feature {
         case .PasswordModificationTime: return .PasswordChangedTime
         case .LastModificationTime    : return .ModificationTime
         case .UUID                    : return .UUID
+        case .PasswordLifetime        : return .PasswordLifetime
+        case .PasswordPolicy          : return .PasswordPolicy
         default                       : return .Unknown
         }
     }
@@ -144,6 +164,8 @@ class Feature {
         case .url     : return .URL
         case .created : return .CreationTime
         case .passwordModified: return .PasswordChangedTime
+        case .passwordLifetime: return .PasswordLifetime
+        case .passwordPolicy: return .PasswordPolicy
         case .modified: return .ModificationTime
         case .uuid    : return .UUID
         default       : return .Unknown
@@ -161,6 +183,8 @@ class Feature {
         case .URL     : return .url
         case .CreationTime: return .created
         case .PasswordChangedTime: return .passwordModified
+        case .PasswordLifetime: return .passwordLifetime
+        case .PasswordPolicy: return .passwordPolicy
         case .ModificationTime: return .modified
         case .UUID    : return .uuid
         default       : return .unknown
