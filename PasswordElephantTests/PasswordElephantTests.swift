@@ -179,6 +179,8 @@ class PasswordElephantTests: XCTestCase {
 
         let pedb = try! Archive(filename: tempURL.path, password: password)
 
+        XCTAssertEqual(pedb.database.count, 2)
+
         let returned_a = pedb.database.entries[0]
         for i in 0 ..< returned_a.features.count {
             XCTAssertEqual(returned_a.features[i].category, entry_a.features[i].category)
@@ -192,5 +194,10 @@ class PasswordElephantTests: XCTestCase {
 
         // Confirm the notes feature of each entry are not the same
         XCTAssertNotEqual(returned_a.notes, returned_b.notes)
+        
+        pedb.database.deleteEntry(returned_a)
+        XCTAssertEqual(pedb.database.count, 1)
+        pedb.database.deleteEntry(returned_b)
+        XCTAssertEqual(pedb.database.count, 0)
     }
 }

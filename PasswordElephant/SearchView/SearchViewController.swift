@@ -54,14 +54,16 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         view.window?.initialFirstResponder = searchField
         updateStatusLabel()
     }
-
-    fileprivate var selectedEntry: Entry? = nil
+    
+    fileprivate let newEntrySegueID = NSStoryboardSegue.Identifier(rawValue: "NewEntry")
+    fileprivate let showEntryDetailsSegueID = NSStoryboardSegue.Identifier(rawValue: "ShowEntryDetails")
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         guard let id = segue.identifier else { return }
         switch id {
         case showEntryDetailsSegueID:
             guard let selected = selectedEntry, let vc = segue.destinationController as? EntryDetailsViewController else { return }
+            vc.database = archive?.database
             vc.entry = selected
         case newEntrySegueID:
             guard let vc = segue.destinationController as? EntryDetailsViewController else { return }
@@ -305,6 +307,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     ////////////////////////////////////////////////////////////////////////
     // MARK: - Implementation details
 
+    fileprivate var selectedEntry: Entry? = nil
+
     fileprivate var tableEntries = [Entry]()
     
     fileprivate var archive: Archive? {
@@ -332,6 +336,10 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
                     guard let me = self else { return }
                     me.databaseUpdated()
                 },
+                center.addObserver(forName: NSNotification.Name(rawValue: Database.EntryDeletedNotification), object: archive.database, queue: .main) { [weak self] (note) in
+                    guard let me = self else { return }
+                    me.databaseUpdated()
+                },
             ]
         }
     }
@@ -349,9 +357,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         tableEntries = filteredEntries()
         tableView.reloadData()
     }
-    
-    fileprivate let newEntrySegueID = NSStoryboardSegue.Identifier(rawValue: "NewEntry")
-    fileprivate let showEntryDetailsSegueID = NSStoryboardSegue.Identifier(rawValue: "ShowEntryDetails")
     
     fileprivate func withPassword(forFilename filename: String, body: @escaping (String) -> ()) {
         let passwordPanel = NSAlert()

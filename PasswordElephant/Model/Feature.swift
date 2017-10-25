@@ -191,3 +191,10 @@ class Feature {
         }
     }
 }
+
+extension Feature: Equatable {
+    static func ==(lhs: Feature, rhs: Feature) -> Bool {
+        return lhs.category == rhs.category && lhs.content == rhs.content
+    }
+}
+

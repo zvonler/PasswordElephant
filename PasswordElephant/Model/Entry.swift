@@ -17,6 +17,11 @@ class Entry: NSObject {
         replaceFeature(category: .CreationTime, content: Feature.encodeDate(Date()))
     }
     
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let rhs = object as? Entry else { return false }
+        return features == rhs.features
+    }
+    
     // Used to deserialize Entry objects from the protobuf representation.
     init(fromProtoBuf protoBuf: PasswordElephant.Entry) {
         features = [Feature]()
@@ -103,3 +108,4 @@ class Entry: NSObject {
     }
     
 }
+

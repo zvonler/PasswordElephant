@@ -156,6 +156,20 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
     }
     
     @IBAction func delete(_ sender: Any) {
+        guard let database = database,
+            let entry = entry,
+            let window = view.window
+            else { return }
+        
+        let prompt = dialogOKCancel(question: "Delete entry?")
+        prompt.beginSheetModal(for: window) { (response) in
+            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                database.deleteEntry(entry)
+                self.pendingEntry = nil
+                self.entry = nil
+                self.presenting?.dismissViewController(self)
+            }
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////
