@@ -135,7 +135,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var modifiedColumn: NSTableColumn!
     @IBOutlet weak var passwordChangeColumn: NSTableColumn!
     @IBOutlet weak var passwordExpirationColumn: NSTableColumn!
-    @IBOutlet weak var passwordPolicyColumn: NSTableColumn!
     @IBOutlet weak var uuidColumn: NSTableColumn!
     @IBOutlet weak var urlColumn: NSTableColumn!
     
@@ -203,7 +202,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     fileprivate let modifiedCellID = "ModifiedCellID"
     fileprivate let passwordAgeCellID = "PasswordAgeCellID"
     fileprivate let passwordExpirationCellID = "PasswordExpirationCellID"
-    fileprivate let passwordPolicyCellID = "PasswordPolicyCellID"
     fileprivate let createdCellID = "CreatedCellID"
     fileprivate let uuidCellID = "UUIDCellID"
     
@@ -252,14 +250,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
                 (entry.password == nil ? "" : "Unknown")
         case passwordExpirationColumn:
             cellIdentifier = passwordExpirationCellID
-            if let changed = entry.pwChanged, let lifetime = entry.pwLifetime {
-                text = dateFormatter.string(from: changed + lifetime)
-            } else {
-                text = ""
-            }
-        case passwordPolicyColumn:
-            cellIdentifier = passwordPolicyCellID
-            text = entry.pwPolicy ?? ""
+            // !@# Compute this in entry
+            text = "Not yet implemented"
         case urlColumn:
             cellIdentifier = urlCellID
             text = entry.url ?? ""
@@ -398,6 +390,9 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         guard let archive = archive, !archive.database.isEmpty else { return [] }
         
         let pattern = searchField.stringValue
+        
+        if pattern.isEmpty { return archive.database.entries }
+        
         var matches = [Entry]()
         for entry in archive.database.entries {
             if let title = entry.title, title.uppercased().starts(with: pattern.uppercased()) {

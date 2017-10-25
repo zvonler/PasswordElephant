@@ -82,73 +82,52 @@ class PasswordElephantTests: XCTestCase {
     // Writes a Database containing a single Entry with a value for each available field. The test confirms
     // that the entry's field contents match after encryption/decryption.
     func testSingleEntry() throws {
-        var originalFeatures = [PasswordElephant.Feature]()
+        let startOfTest = Date()
 
-        func addFeature(category: PasswordElephant.Feature.Category, content: Data) {
-            let featureBuilder = PasswordElephant.Feature.Builder()
-            featureBuilder.category = category
-            featureBuilder.content = content
-            originalFeatures.append(try! featureBuilder.build())
-        }
-
-        func addFeature(category: PasswordElephant.Feature.Category, strContent: String) {
-            addFeature(category: category, content: Data(strContent.utf8))
-        }
-        
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd HH:mm:ss x"
 
-        let emojiStr = "▶️🆗⚜️〽️📪💾🚀"
-
-        addFeature(category: .raw, strContent: emojiStr)
-        addFeature(category: .group, strContent: "Group Stuff")
-        addFeature(category: .title, strContent: "Title of the single Entry")
-        addFeature(category: .username, strContent: "zaphod")
-        addFeature(category: .password, strContent: "beeblebrox")
-        addFeature(category: .notes, strContent: "The content of a notes field is likely to be a very long string in some cases because it " +
-                                             "can be used to store the answers to secret questions and other types of freeform information " +
-                                             "that do not otherwise fit into the usual feature types.")
-        addFeature(category: .url, strContent: "https://www.google.com/search?q=crash+override+hackers&tbm=isch")
-        let modifiedDate = df.date(from: "2017-01-23 11:22:33 -0600")!
-        addFeature(category: .modified, content: Feature.encodeDate(modifiedDate))
-        let passwordModifiedDate = df.date(from: "2017-04-19 04:13:45 -0600")!
-        addFeature(category: .passwordModified, content: Feature.encodeDate(passwordModifiedDate))
-        let passwordLifetime = 86400.0 * 30 // One month
-        addFeature(category: .passwordLifetime, content: Data(from:passwordLifetime))
-        let passwordPolicy = Data(from: 0xdeadbeef)
-        addFeature(category: .passwordPolicy, content: passwordPolicy)
+        let groupName = "▶️🆗⚜️〽️📪💾🚀"
+        let title = "Title of the single Entry"
+        let username = "zaphod"
+        let password = "beeblebrox"
+        let notes = "The content of a notes field is likely to be a very long string in some cases because it " +
+            "can be used to store the answers to secret questions and other types of freeform information " +
+        "that do not otherwise fit into the usual feature types."
+        let url = "https://www.google.com/search?q=crash+override+hackers&tbm=isch"
         
-        let entryBuilder = PasswordElephant.Entry.Builder()
-        entryBuilder.features = originalFeatures
-
+        let entry = Entry()
+        entry.setGroup(groupName)
+        entry.setTitle(title)
+        entry.setUsername(username)
+        entry.setPassword(password)
+        entry.setNotes(notes)
+        entry.setURL(url)
+        
         let tempURL = temporaryFileURL()
-        let password = "testSingleEntry"
+        let tempPassword = "testSingleEntry"
 
         let archive = Archive()
         archive.filename = tempURL.path
-        archive.password = password
-        archive.database.entries = [ Entry(fromProtoBuf: try! entryBuilder.build()) ]
+        archive.password = tempPassword
+        archive.database.entries = [ entry ]
         try archive.write()
 
-        let pedb = try! Archive(filename: tempURL.path, password: password)
+        let pedb = try! Archive(filename: tempURL.path, password: tempPassword)
         let returned = pedb.database.entries.first!
 
-        let returnedFeatures = returned.features
-        XCTAssertEqual(returnedFeatures.count, originalFeatures.count)
-        for i in 0 ..< originalFeatures.count {
-            XCTAssertEqual(returnedFeatures[i].category, Feature.categoryForProto(category: originalFeatures[i].category))
-            XCTAssertEqual(returnedFeatures[i].content, originalFeatures[i].content)
-        }
+        XCTAssertEqual(entry.group, returned.group)
+        XCTAssertEqual(entry.title, returned.title)
+        XCTAssertEqual(entry.username, returned.username)
+        XCTAssertEqual(entry.password, returned.password)
+        XCTAssertEqual(entry.notes, returned.notes)
+        XCTAssertEqual(entry.url, returned.url)
+
+        XCTAssertEqual(entry.created, returned.created)
+        XCTAssertEqual(entry.modified, returned.modified)
+        XCTAssertEqual(entry.pwChanged, returned.pwChanged)
         
-        // Make sure we can roundtrip the important stuff
-        let rawFeature = returnedFeatures[0]
-        let returnedStr = String(data: rawFeature.content, encoding: .utf8)!
-        XCTAssertEqual(returnedStr, emojiStr)
-        
-        XCTAssertEqual(returned.modified!, modifiedDate)
-        XCTAssertEqual(returned.pwChanged!, passwordModifiedDate)
-        XCTAssertEqual(returned.pwLifetime!, passwordLifetime)
-        XCTAssertEqual(returned.pwPolicy!, passwordPolicy.toHexString())
+        XCTAssert(startOfTest.timeIntervalSince(entry.created!) < 1.0)
     }
     
     // Writes a Database with two distinct but overlapping entries and makes sure they stay separate.

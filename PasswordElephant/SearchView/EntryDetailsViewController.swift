@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class EntryDetailsViewController: NSViewController, NSTextViewDelegate, PasswordGeneratorDelegate {
+class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboBoxDelegate, PasswordGeneratorDelegate {
 
     var database: Database?
     
@@ -40,9 +40,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
     }
     
     override func controlTextDidChange(_ notification: Notification) {
-        guard let textField = notification.object as? NSTextField else {
-            return
-        }
+        guard let textField = notification.object as? NSTextField else { return }
         
         beginPendingEdit()
         guard let pending = pendingEntry else { return }
@@ -71,6 +69,31 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
     }
 
     ////////////////////////////////////////////////////////////////////////
+    // MARK: - NSComboBoxDelegate
+    
+    func comboBoxSelectionDidChange(_ notification: Notification) {
+        guard let combox = notification.object as? NSComboBox else { return }
+        beginPendingEdit()
+        switch combox {
+        case expirationCountCombox: fallthrough
+        case expirationUnitsCombox:
+            updatePasswordLifetime()
+        default: break
+        }
+    }
+
+    fileprivate func updatePasswordLifetime() {
+        let count = Int(expirationCountCombox.stringValue) ?? 0
+        var units = PasswordElephant.Entry.PasswordLifetimeUnit.days
+        switch expirationUnitsCombox.stringValue {
+        case "weeks": units = .weeks
+        case "months": units = .months
+        default: break
+        }
+        pendingEntry?.setPasswordLifetime(count: count, units: units)
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
     // MARK: - PasswordGeneratorDelegate
     
     func entryTitle() -> String {
@@ -78,12 +101,9 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
         return workingTitleEntry?.title ?? workingTitleEntry?.username ?? workingTitleEntry?.url ?? "entry"
     }
     
-    func userChosePassword(newPassword: String, expiresAfter lifetime: TimeInterval) {
-        if pendingEntry == nil {
-            pendingEntry = Entry()
-        }
+    func userChosePassword(newPassword: String) {
+        beginPendingEdit()
         pendingEntry?.setPassword(newPassword)
-        pendingEntry?.setPasswordLifetime(lifetime)
         updateButtons()
     }
 
@@ -101,6 +121,8 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
     @IBOutlet weak var copyPasswordButton: NSButton!
     @IBOutlet weak var revertButton: NSButton!
     @IBOutlet weak var deleteButton: NSButton!
+    @IBOutlet weak var expirationCountCombox: NSComboBox!
+    @IBOutlet weak var expirationUnitsCombox: NSComboBox!
     
     @IBAction func toggleShowPassword(_ sender: Any) {
         showPassword = !showPassword
@@ -236,7 +258,11 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
             passwordTextField.stringValue = entry?.password ?? pendingEntry?.password ?? ""
             showPasswordButton.title = "Hide Password"
         } else {
-            passwordTextField.stringValue = "****************"
+            if entry == nil || pendingEntry?.password == nil {
+                passwordTextField.stringValue = ""
+            } else {
+                passwordTextField.stringValue = "****************"
+            }
             showPasswordButton.title = "Show Password"
         }
     }
@@ -272,11 +298,19 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, Password
             urlTextField.stringValue = entry.url ?? ""
             usernameTextField.stringValue = entry.username ?? ""
             notesTextView.textStorage?.setAttributedString(NSAttributedString(string: entry.notes ?? ""))
+            switch entry.passwordLifetimeUnits {
+            case .days: expirationUnitsCombox.stringValue = "days"
+            case .weeks: expirationUnitsCombox.stringValue = "weeks"
+            case .months: expirationUnitsCombox.stringValue = "months"
+            }
+            expirationCountCombox.stringValue = String(entry.passwordLifetimeCount)
         } else {
             titleTextField.stringValue = ""
             urlTextField.stringValue = ""
             usernameTextField.stringValue = ""
             notesTextView.textStorage?.setAttributedString(NSAttributedString())
+            expirationUnitsCombox.stringValue = "days"
+            expirationCountCombox.stringValue = "0"
         }
     }    
 }

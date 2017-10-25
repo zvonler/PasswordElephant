@@ -10,10 +10,10 @@ import Cocoa
 
 protocol PasswordGeneratorDelegate {
     func entryTitle() -> String
-    func userChosePassword(newPassword: String, expiresAfter: TimeInterval)
+    func userChosePassword(newPassword: String)
 }
 
-class PasswordGeneratorViewController: NSViewController {
+class PasswordGeneratorViewController: NSViewController, NSComboBoxDelegate {
 
     var delegate: PasswordGeneratorDelegate?
     var entry: Entry?
@@ -22,6 +22,7 @@ class PasswordGeneratorViewController: NSViewController {
         super.viewDidLoad()
         // Do view setup here.
         updateTitle()
+        updatePasswordLength()
     }
     
     fileprivate func updateTitle() {
@@ -33,10 +34,7 @@ class PasswordGeneratorViewController: NSViewController {
     // MARK: - Storyboard hookups
     
     @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var passwordLengthCombox: NSComboBox!
-    @IBOutlet weak var changeReminderAfterCombox: NSComboBox!
-    @IBOutlet weak var changeReminderUnitsCombox: NSComboBox!
-    
+    @IBOutlet weak var passwordLengthLabel: NSTextField!
     @IBOutlet weak var lowercaseLettersAtLeastCombox: NSComboBox!
     @IBOutlet weak var uppercaseLettersAtLeastCombox: NSComboBox!
     @IBOutlet weak var numbersAtLeastCombox: NSComboBox!
@@ -44,7 +42,6 @@ class PasswordGeneratorViewController: NSViewController {
     @IBOutlet weak var specialCharactersAtLeastCombox: NSComboBox!
     @IBOutlet weak var specialCharactersTextField: NSTextField!
     @IBOutlet weak var generatedPasswordField: NSTextField!
-    
     @IBOutlet weak var generateButton: NSButton!
     @IBOutlet weak var copyToClipboardButton: NSButton!
     @IBOutlet weak var savePasswordButton: NSButton!
@@ -70,22 +67,34 @@ class PasswordGeneratorViewController: NSViewController {
     }
     
     @IBAction func savePassword(_ sender: Any) {
-        var expiration = Double(changeReminderAfterCombox.stringValue) ?? 0.0
-        switch changeReminderUnitsCombox.stringValue {
-        case "months": expiration *= 4    ; fallthrough
-        case "weeks" : expiration *= 7    ; fallthrough
-        case "days"  : expiration *= 86400; fallthrough
-        default: break
-        }
-        delegate?.userChosePassword(newPassword: generatedPasswordField.stringValue, expiresAfter: expiration)
+        delegate?.userChosePassword(newPassword: generatedPasswordField.stringValue)
         self.presenting?.dismissViewController(self)
     }
     
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: - NSComboBoxDelegate
+    
+    func comboBoxSelectionDidChange(_ notification: Notification) {
+        updatePasswordLength()
+        generatedPasswordField.stringValue = ""
+    }
+
     ////////////////////////////////////////////////////////////////////////
     // MARK: - Implementation details
     
     fileprivate let clipboardClient = ClipboardClient()
     fileprivate let passwordGenerator = PasswordGenerator()
+    
+    fileprivate func updatePasswordLength() {
+        var length = Int(lowercaseLettersAtLeastCombox.stringValue) ?? 0
+        length += Int(uppercaseLettersAtLeastCombox.stringValue) ?? 0
+        length += Int(numbersAtLeastCombox.stringValue) ?? 0
+        length += Int(punctuationAtLeastCombox.stringValue) ?? 0
+        length += Int(specialCharactersAtLeastCombox.stringValue) ?? 0
+        passwordLengthLabel.stringValue = "Password Length: \(length)"
+    }
+    
+
 }
 
 extension Array {

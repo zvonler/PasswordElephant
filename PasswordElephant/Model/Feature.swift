@@ -34,8 +34,8 @@ class Feature {
         case PasswordChangedTime
         case URL
         case UUID
-        case PasswordLifetime
-        case PasswordPolicy
+        case PasswordLifetimeCount
+        case PasswordLifetimeUnits
         case Unknown
     }
     
@@ -46,7 +46,6 @@ class Feature {
     var strContent: String? {
         switch category {
         case .UUID: return PasswordSafeField.formatUUID(content: content)
-        case .PasswordPolicy: return content.toHexString()
         default: return String(data: content, encoding: String.Encoding.utf8)
         }
     }
@@ -59,9 +58,25 @@ class Feature {
         return content.to(type: Double.self)
     }
     
+    var intContent: Int? {
+        return content.to(type: Int.self)
+    }
+    
     init(category: Category, content: Data) {
         self.category = category
         self.content = content
+    }
+    
+    convenience init(category: Category, intContent: Int) {
+        self.init(category: category, content: Data(from: intContent))
+    }
+    
+    convenience init(category: Category, doubleContent: Double) {
+        self.init(category: category, content: Data(from: doubleContent))
+    }
+    
+    convenience init(category: Category, dateContent: Date) {
+        self.init(category: category, content: Feature.encodeDate(dateContent))
     }
     
     convenience init(category: Category, strContent: String) {
@@ -96,7 +111,7 @@ class Feature {
         return encodeDate(date)
     }
     
-    static func encodeDate(_ date: Date) -> Data {
+    fileprivate static func encodeDate(_ date: Date) -> Data {
         let cal = Calendar(identifier: .gregorian)
         let comp = cal.dateComponents([.day,.month,.year,.hour,.minute,.second], from: date)
         let year = comp.year!
@@ -140,8 +155,6 @@ class Feature {
         case .PasswordModificationTime: return .PasswordChangedTime
         case .LastModificationTime    : return .ModificationTime
         case .UUID                    : return .UUID
-        case .PasswordLifetime        : return .PasswordLifetime
-        case .PasswordPolicy          : return .PasswordPolicy
         default                       : return .Unknown
         }
     }
@@ -164,8 +177,6 @@ class Feature {
         case .url     : return .URL
         case .created : return .CreationTime
         case .passwordModified: return .PasswordChangedTime
-        case .passwordLifetime: return .PasswordLifetime
-        case .passwordPolicy: return .PasswordPolicy
         case .modified: return .ModificationTime
         case .uuid    : return .UUID
         default       : return .Unknown
@@ -183,8 +194,6 @@ class Feature {
         case .URL     : return .url
         case .CreationTime: return .created
         case .PasswordChangedTime: return .passwordModified
-        case .PasswordLifetime: return .passwordLifetime
-        case .PasswordPolicy: return .passwordPolicy
         case .ModificationTime: return .modified
         case .UUID    : return .uuid
         default       : return .unknown

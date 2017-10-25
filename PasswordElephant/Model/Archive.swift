@@ -43,6 +43,7 @@ public class Archive {
  
     init() { }
     
+    // Opens an archive on disk using the provided password.
     init(filename: String, password: String) throws {
         self.filename = filename
         self.password = password
@@ -87,6 +88,7 @@ public class Archive {
         }
     }
     
+    // Imports the records of a Password Safe database
     convenience init(pwsafeDB: PasswordSafeDB) throws {
         self.init()
         

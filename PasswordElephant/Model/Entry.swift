@@ -14,12 +14,7 @@ class Entry: NSObject {
     override init() {
         features = [Feature]()
         super.init()
-        replaceFeature(category: .CreationTime, content: Feature.encodeDate(Date()))
-    }
-    
-    override func isEqual(_ object: Any?) -> Bool {
-        guard let rhs = object as? Entry else { return false }
-        return features == rhs.features
+        replaceFeature(Feature(category: .CreationTime, dateContent: Date()))
     }
     
     // Used to deserialize Entry objects from the protobuf representation.
@@ -29,6 +24,8 @@ class Entry: NSObject {
         for feature in protoBuf.features {
             features.append(Feature(fromProtoBuf: feature))
         }
+        passwordLifetimeUnits = protoBuf.passwordLifetimeUnits
+        passwordLifetimeCount = Int(protoBuf.passwordLifetimeCount)
     }
 
     convenience init(from other: Entry) {
@@ -42,23 +39,32 @@ class Entry: NSObject {
         for field in record.fields {
             if field.type == PasswordSafeField.FieldType.EndOfRecord {
                 // Could break on this
-            } else if field.type == PasswordSafeField.FieldType.LastAccessTime {
+            } else if field.type == PasswordSafeField.FieldType.LastAccessTime ||
+                field.type == PasswordSafeField.FieldType.PasswordPolicy {
                 // Ignore these fields as Password Elephant doesn't keep this data
             } else {
-                let feature = Feature(from: field)
-                replaceFeature(category: feature.category, content: feature.content)
+                replaceFeature(Feature(from: field))
             }
         }
+    }
+
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let rhs = object as? Entry else { return false }
+        return features == rhs.features
     }
     
     func toProto() throws -> PasswordElephant.Entry {
         let entryBuilder = PasswordElephant.Entry.Builder()
         entryBuilder.features = try features.map({ try $0.toProto() })
+        entryBuilder.passwordLifetimeUnits = passwordLifetimeUnits
+        entryBuilder.passwordLifetimeCount = Int32(passwordLifetimeCount)
         return try entryBuilder.build()
     }
     
     var features: [Feature]
-
+    var passwordLifetimeUnits: PasswordElephant.Entry.PasswordLifetimeUnit = .days
+    var passwordLifetimeCount: Int = 0
+    
     var group    : String? { return findFirst(category: .Group)?.strContent }
     var title    : String? { return findFirst(category: .Title)?.strContent }
     var username : String? { return findFirst(category: .Username)?.strContent }
@@ -69,27 +75,27 @@ class Entry: NSObject {
     var modified : Date?   { return findFirst(category: .ModificationTime)?.dateContent }
     var pwChanged: Date?   { return findFirst(category: .PasswordChangedTime)?.dateContent }
     var uuid     : String? { return findFirst(category: .UUID)?.strContent }
-    var pwLifetime: TimeInterval? { return findFirst(category: .PasswordLifetime)?.doubleContent }
-    var pwPolicy: String? { return findFirst(category: .PasswordPolicy)?.strContent }
-    
-    func setGroup   (_ newGroup   : String) { replaceFeature(category: .Group,        content: Data(newGroup.utf8)) }
-    func setTitle   (_ newTitle   : String) { replaceFeature(category: .Title,        content: Data(newTitle.utf8)) }
-    func setUsername(_ newUsername: String) { replaceFeature(category: .Username,     content: Data(newUsername.utf8)) }
-    func setNotes   (_ newNotes   : String) { replaceFeature(category: .Notes,        content: Data(newNotes.utf8)) }
-    func setURL     (_ newURL     : String) { replaceFeature(category: .URL,          content: Data(newURL.utf8)) }
+    var pwLifetimeCount: Int? { return findFirst(category: .PasswordLifetimeCount)?.intContent }
+    var pwLifetimeUnits: String? { return findFirst(category: .PasswordLifetimeUnits)?.strContent }
+
+    func setGroup   (_ newGroup   : String) { replaceFeature(Feature(category: .Group,        strContent: newGroup)) }
+    func setTitle   (_ newTitle   : String) { replaceFeature(Feature(category: .Title,        strContent: newTitle)) }
+    func setUsername(_ newUsername: String) { replaceFeature(Feature(category: .Username,     strContent: newUsername)) }
+    func setNotes   (_ newNotes   : String) { replaceFeature(Feature(category: .Notes,        strContent: newNotes)) }
+    func setURL     (_ newURL     : String) { replaceFeature(Feature(category: .URL,          strContent: newURL)) }
     func setPassword(_ newPassword: String) {
-        replaceFeature(category: .Password, content: Data(newPassword.utf8))
-        replaceFeature(category: .PasswordChangedTime, content: Feature.encodeDate(Date()))
+        replaceFeature(Feature(category: .Password, strContent: newPassword))
+        replaceFeature(Feature(category: .PasswordChangedTime, dateContent: Date()))
     }
-    func setPasswordLifetime(_ expiration: TimeInterval) {
-        replaceFeature(category: .PasswordLifetime, content: Data(from: expiration))
+    func setPasswordLifetime(count: Int, units: PasswordElephant.Entry.PasswordLifetimeUnit) {
+        passwordLifetimeCount = count
+        passwordLifetimeUnits = units
     }
-    
     static let FieldsUpdatedNotification = "FieldsUpdatedNotification"
     
     func updateFromFieldsIn(_ other: Entry) {
         for feature in other.features {
-            replaceFeature(category: feature.category, content: feature.content)
+            replaceFeature(Feature(category: feature.category, content: feature.content))
         }
         NotificationCenter.default.post(name: Notification.Name(rawValue: Entry.FieldsUpdatedNotification), object: self)
     }
@@ -101,10 +107,11 @@ class Entry: NSObject {
         return nil
     }
 
-    fileprivate func replaceFeature(category: Feature.Category, content: Data) {
-        let otherFeatures = features.flatMap({ $0.category == category || $0.category == .ModificationTime ? nil : $0 })
-        features = otherFeatures + [ Feature(category: category, content: content),
-                                     Feature(category: .ModificationTime, content: Feature.encodeDate(Date())) ]
+    fileprivate func replaceFeature(_ feature: Feature) {
+        let otherFeatures = features.flatMap({
+            $0.category == feature.category || $0.category == .ModificationTime ? nil : $0
+        })
+        features = otherFeatures + [ feature, Feature(category: .ModificationTime, dateContent: Date()) ]
     }
     
 }
