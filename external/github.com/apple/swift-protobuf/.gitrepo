@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:apple/swift-protobuf.git
+	branch = master
+	commit = 1100fba275ee7078b0b6a1a1474a25b612543faa
+	parent = a871364aa4f5a5b14cc4e9c753ad27b9998e5b19
+	cmdver = 0.3.1
