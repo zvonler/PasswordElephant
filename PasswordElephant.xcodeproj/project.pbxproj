@@ -32,8 +32,6 @@
 		F968AE541F8D020C0094E967 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4C1F8D020C0094E967 /* Archive.swift */; };
 		F968AE551F8D020C0094E967 /* PasswordSafeDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */; };
 		F968AE561F8D020C0094E967 /* PasswordSafeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */; };
-		F968AE6B1F8D02E00094E967 /* ProtocolBuffers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */; };
-		F968AE6C1F8D02E00094E967 /* ProtocolBuffers.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F968AE6F1F8D02E00094E967 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE5E1F8D02C70094E967 /* CryptoSwift.framework */; };
 		F968AE701F8D02E00094E967 /* CryptoSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F968AE5E1F8D02C70094E967 /* CryptoSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F968AE741F8D02F10094E967 /* PasswordElephant.proto in Sources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
@@ -95,27 +93,6 @@
 			remoteGlobalIDString = 754BE46019693E190098E6F3;
 			remoteInfo = Tests;
 		};
-		F968AE671F8D02D20094E967 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = "ProtocolBuffers::ProtocolBuffers::Product";
-			remoteInfo = ProtocolBuffers;
-		};
-		F968AE691F8D02D20094E967 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3F9996DC1F879A470016C76C;
-			remoteInfo = Tests;
-		};
-		F968AE6D1F8D02E00094E967 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = "ProtocolBuffers::ProtocolBuffers";
-			remoteInfo = ProtocolBuffers;
-		};
 		F968AE711F8D02E00094E967 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */;
@@ -132,7 +109,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F968AE6C1F8D02E00094E967 /* ProtocolBuffers.framework in Embed Frameworks */,
 				F968AE701F8D02E00094E967 /* CryptoSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -163,7 +139,6 @@
 		F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordSafeDB.swift; sourceTree = "<group>"; };
 		F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordSafeRecord.swift; sourceTree = "<group>"; };
 		F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CryptoSwift.xcodeproj; path = external/github.com/CryptoSwift/CryptoSwift.xcodeproj; sourceTree = "<group>"; };
-		F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers.xcodeproj; path = "external/github.com/protobuf-swift/ProtocolBuffers.xcodeproj"; sourceTree = "<group>"; };
 		F9867F871F9D2916001BE9E6 /* PasswordGeneratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorViewController.swift; sourceTree = "<group>"; };
 		F9867F8C1F9D4328001BE9E6 /* ClipboardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardClient.swift; sourceTree = "<group>"; };
 		F9867F8E1F9F03F4001BE9E6 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
@@ -178,7 +153,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F968AE6B1F8D02E00094E967 /* ProtocolBuffers.framework in Frameworks */,
 				F968AE6F1F8D02E00094E967 /* CryptoSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,7 +198,6 @@
 		F968AE0F1F8D00B20094E967 = {
 			isa = PBXGroup;
 			children = (
-				F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */,
 				F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */,
 				F968AE1A1F8D00B20094E967 /* PasswordElephant */,
 				F968AE2D1F8D00B20094E967 /* PasswordElephantTests */,
@@ -291,15 +264,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F968AE621F8D02D10094E967 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */,
-				F968AE6A1F8D02D20094E967 /* Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		F9EF14461F8DB69D0053FE2A /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,7 +299,6 @@
 				F968AE751F8D02F50094E967 /* PBXBuildRule */,
 			);
 			dependencies = (
-				F968AE6E1F8D02E00094E967 /* PBXTargetDependency */,
 				F968AE721F8D02E00094E967 /* PBXTargetDependency */,
 			);
 			name = PasswordElephant;
@@ -404,10 +367,6 @@
 					ProductGroup = F968AE591F8D02C60094E967 /* Products */;
 					ProjectRef = F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */;
 				},
-				{
-					ProductGroup = F968AE621F8D02D10094E967 /* Products */;
-					ProjectRef = F968AE611F8D02D10094E967 /* ProtocolBuffers.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -430,20 +389,6 @@
 			fileType = wrapper.cfbundle;
 			path = Tests.xctest;
 			remoteRef = F968AE5F1F8D02C70094E967 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F968AE681F8D02D20094E967 /* ProtocolBuffers.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ProtocolBuffers.framework;
-			remoteRef = F968AE671F8D02D20094E967 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F968AE6A1F8D02D20094E967 /* Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Tests.xctest;
-			remoteRef = F968AE691F8D02D20094E967 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -522,11 +467,6 @@
 			isa = PBXTargetDependency;
 			target = F968AE171F8D00B20094E967 /* PasswordElephant */;
 			targetProxy = F968AE2B1F8D00B20094E967 /* PBXContainerItemProxy */;
-		};
-		F968AE6E1F8D02E00094E967 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ProtocolBuffers;
-			targetProxy = F968AE6D1F8D02E00094E967 /* PBXContainerItemProxy */;
 		};
 		F968AE721F8D02E00094E967 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
