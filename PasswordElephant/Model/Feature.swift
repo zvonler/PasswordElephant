@@ -83,7 +83,7 @@ class Feature {
         self.init(category: category, content: Data(strContent.utf8))
     }
     
-    init(fromProtoBuf proto: PasswordElephant.Feature) {
+    init(fromProtoBuf proto: PasswordElephant_Feature) {
         category = Feature.categoryForProto(category: proto.category)
         content = proto.content
     }
@@ -159,14 +159,14 @@ class Feature {
         }
     }
     
-    func toProto() throws -> PasswordElephant.Feature {
-        let featureBuilder = PasswordElephant.Feature.Builder()
-        featureBuilder.setCategory(Feature.protoCategoryForCategory(category))
-        featureBuilder.setContent(content)
-        return try featureBuilder.build()
+    func toProto() throws -> PasswordElephant_Feature {
+        var featureProto = PasswordElephant_Feature()
+        featureProto.category = Feature.protoCategoryForCategory(category)
+        featureProto.content = content
+        return featureProto
     }
     
-    class func categoryForProto(category protoCategory: PasswordElephant.Feature.Category) -> Category {
+    class func categoryForProto(category protoCategory: PasswordElephant_Feature.Category) -> Category {
         switch protoCategory {
         case .raw     : return .Raw
         case .group   : return .Group
@@ -183,7 +183,7 @@ class Feature {
         }
     }
     
-    class func protoCategoryForCategory(_ category: Category) -> PasswordElephant.Feature.Category {
+    class func protoCategoryForCategory(_ category: Category) -> PasswordElephant_Feature.Category {
         switch category {
         case .Raw     : return .raw
         case .Group   : return .group

@@ -21,6 +21,8 @@
 		F94F20031F9046A900AF5FF8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FF91F9037BD00AF5FF8 /* Database.swift */; };
 		F94F20041F9046A900AF5FF8 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFB1F90381000AF5FF8 /* Entry.swift */; };
 		F94F20051F9046A900AF5FF8 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFD1F90387800AF5FF8 /* Feature.swift */; };
+		F96686011FA1961F00E33E4B /* SwiftProtobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F96685F41FA1961000E33E4B /* SwiftProtobuf.framework */; };
+		F96686021FA1961F00E33E4B /* SwiftProtobuf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F96685F41FA1961000E33E4B /* SwiftProtobuf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F968AE1C1F8D00B20094E967 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE1B1F8D00B20094E967 /* AppDelegate.swift */; };
 		F968AE201F8D00B20094E967 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F968AE1F1F8D00B20094E967 /* Assets.xcassets */; };
 		F968AE231F8D00B20094E967 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F968AE211F8D00B20094E967 /* Main.storyboard */; };
@@ -54,7 +56,7 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).$(INPUT_FILE_BASE).proto.swift",
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).pb.swift",
 			);
 			script = "set -e -x\nprotoc --swift_out=\"$DERIVED_FILE_DIR\" -I\"$INPUT_FILE_DIR\" \"$INPUT_FILE_PATH\"";
 		};
@@ -65,13 +67,69 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
-				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).$(INPUT_FILE_BASE).proto.swift",
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).pb.swift",
 			);
 			script = "set -e -x\nprotoc --swift_out=\"$DERIVED_FILE_DIR\" -I\"$INPUT_FILE_DIR\" \"$INPUT_FILE_PATH\"";
 		};
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		F96685F31FA1961000E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "_____Product_Protobuf_macOS";
+			remoteInfo = SwiftProtobuf_macOS;
+		};
+		F96685F51FA1961000E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "_____Product_ProtobufTestSuite_macOS";
+			remoteInfo = SwiftProtobufTestSuite_macOS;
+		};
+		F96685F71FA1961000E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "_____Product_Protobuf_iOS";
+			remoteInfo = SwiftProtobuf_iOS;
+		};
+		F96685F91FA1961000E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "_____Product_ProtobufTestSuite_iOS";
+			remoteInfo = SwiftProtobufTestSuite_iOS;
+		};
+		F96685FB1FA1961000E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F44F936F1DAEA53900BC5B85;
+			remoteInfo = SwiftProtobuf_tvOS;
+		};
+		F96685FD1FA1961000E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F44F939F1DAEA7C500BC5B85;
+			remoteInfo = SwiftProtobufTestSuite_tvOS;
+		};
+		F96685FF1FA1961000E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F44F93FE1DAEB13F00BC5B85;
+			remoteInfo = SwiftProtobuf_watchOS;
+		};
+		F96686031FA1961F00E33E4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = "______Target_Protobuf";
+			remoteInfo = SwiftProtobuf_macOS;
+		};
 		F968AE2B1F8D00B20094E967 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F968AE101F8D00B20094E967 /* Project object */;
@@ -110,6 +168,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				F968AE701F8D02E00094E967 /* CryptoSwift.framework in Embed Frameworks */,
+				F96686021FA1961F00E33E4B /* SwiftProtobuf.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,6 +181,7 @@
 		F94F1FF91F9037BD00AF5FF8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		F94F1FFB1F90381000AF5FF8 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		F94F1FFD1F90387800AF5FF8 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
+		F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftProtobuf.xcodeproj; path = "external/github.com/apple/swift-protobuf/SwiftProtobuf.xcodeproj"; sourceTree = "<group>"; };
 		F968AE181F8D00B20094E967 /* PasswordElephant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PasswordElephant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F968AE1B1F8D00B20094E967 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F968AE1F1F8D00B20094E967 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -154,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F968AE6F1F8D02E00094E967 /* CryptoSwift.framework in Frameworks */,
+				F96686011FA1961F00E33E4B /* SwiftProtobuf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,9 +256,24 @@
 			path = PasswordSafe;
 			sourceTree = "<group>";
 		};
+		F96685EA1FA1961000E33E4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F96685F41FA1961000E33E4B /* SwiftProtobuf.framework */,
+				F96685F61FA1961000E33E4B /* SwiftProtobufTests.xctest */,
+				F96685F81FA1961000E33E4B /* SwiftProtobuf.framework */,
+				F96685FA1FA1961000E33E4B /* SwiftProtobufTests.xctest */,
+				F96685FC1FA1961000E33E4B /* SwiftProtobuf.framework */,
+				F96685FE1FA1961000E33E4B /* SwiftProtobufTests.xctest */,
+				F96686001FA1961000E33E4B /* SwiftProtobuf.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F968AE0F1F8D00B20094E967 = {
 			isa = PBXGroup;
 			children = (
+				F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */,
 				F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */,
 				F968AE1A1F8D00B20094E967 /* PasswordElephant */,
 				F968AE2D1F8D00B20094E967 /* PasswordElephantTests */,
@@ -300,6 +376,7 @@
 			);
 			dependencies = (
 				F968AE721F8D02E00094E967 /* PBXTargetDependency */,
+				F96686041FA1961F00E33E4B /* PBXTargetDependency */,
 			);
 			name = PasswordElephant;
 			productName = PasswordElephant;
@@ -367,6 +444,10 @@
 					ProductGroup = F968AE591F8D02C60094E967 /* Products */;
 					ProjectRef = F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */;
 				},
+				{
+					ProductGroup = F96685EA1FA1961000E33E4B /* Products */;
+					ProjectRef = F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -377,6 +458,55 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		F96685F41FA1961000E33E4B /* SwiftProtobuf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftProtobuf.framework;
+			remoteRef = F96685F31FA1961000E33E4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F96685F61FA1961000E33E4B /* SwiftProtobufTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftProtobufTests.xctest;
+			remoteRef = F96685F51FA1961000E33E4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F96685F81FA1961000E33E4B /* SwiftProtobuf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftProtobuf.framework;
+			remoteRef = F96685F71FA1961000E33E4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F96685FA1FA1961000E33E4B /* SwiftProtobufTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftProtobufTests.xctest;
+			remoteRef = F96685F91FA1961000E33E4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F96685FC1FA1961000E33E4B /* SwiftProtobuf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftProtobuf.framework;
+			remoteRef = F96685FB1FA1961000E33E4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F96685FE1FA1961000E33E4B /* SwiftProtobufTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftProtobufTests.xctest;
+			remoteRef = F96685FD1FA1961000E33E4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F96686001FA1961000E33E4B /* SwiftProtobuf.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftProtobuf.framework;
+			remoteRef = F96685FF1FA1961000E33E4B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F968AE5E1F8D02C70094E967 /* CryptoSwift.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -463,6 +593,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F96686041FA1961F00E33E4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftProtobuf_macOS;
+			targetProxy = F96686031FA1961F00E33E4B /* PBXContainerItemProxy */;
+		};
 		F968AE2C1F8D00B20094E967 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F968AE171F8D00B20094E967 /* PasswordElephant */;

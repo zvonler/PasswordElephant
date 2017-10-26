@@ -84,7 +84,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
 
     fileprivate func updatePasswordLifetime() {
         let count = Int(expirationCountCombox.stringValue) ?? 0
-        var units = PasswordElephant.Entry.PasswordLifetimeUnit.days
+        var units = PasswordElephant_Entry.PasswordLifetimeUnit.days
         switch expirationUnitsCombox.stringValue {
         case "weeks": units = .weeks
         case "months": units = .months
@@ -302,6 +302,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
             case .days: expirationUnitsCombox.stringValue = "days"
             case .weeks: expirationUnitsCombox.stringValue = "weeks"
             case .months: expirationUnitsCombox.stringValue = "months"
+            default: expirationUnitsCombox.stringValue = "days"
             }
             expirationCountCombox.stringValue = String(entry.passwordLifetimeCount)
         } else {

@@ -18,7 +18,7 @@ class Entry: NSObject {
     }
     
     // Used to deserialize Entry objects from the protobuf representation.
-    init(fromProtoBuf protoBuf: PasswordElephant.Entry) {
+    init(fromProtoBuf protoBuf: PasswordElephant_Entry) {
         features = [Feature]()
         super.init()
         for feature in protoBuf.features {
@@ -53,16 +53,16 @@ class Entry: NSObject {
         return features == rhs.features
     }
     
-    func toProto() throws -> PasswordElephant.Entry {
-        let entryBuilder = PasswordElephant.Entry.Builder()
-        entryBuilder.features = try features.map({ try $0.toProto() })
-        entryBuilder.passwordLifetimeUnits = passwordLifetimeUnits
-        entryBuilder.passwordLifetimeCount = Int32(passwordLifetimeCount)
-        return try entryBuilder.build()
+    func toProto() throws -> PasswordElephant_Entry {
+        var entryProto = PasswordElephant_Entry()
+        entryProto.features = try features.map({ try $0.toProto() })
+        entryProto.passwordLifetimeUnits = passwordLifetimeUnits
+        entryProto.passwordLifetimeCount = Int32(passwordLifetimeCount)
+        return entryProto
     }
     
     var features: [Feature]
-    var passwordLifetimeUnits: PasswordElephant.Entry.PasswordLifetimeUnit = .days
+    var passwordLifetimeUnits: PasswordElephant_Entry.PasswordLifetimeUnit = .days
     var passwordLifetimeCount: Int = 0
     
     var group    : String? { return findFirst(category: .Group)?.strContent }
@@ -87,7 +87,7 @@ class Entry: NSObject {
         replaceFeature(Feature(category: .Password, strContent: newPassword))
         replaceFeature(Feature(category: .PasswordChangedTime, dateContent: Date()))
     }
-    func setPasswordLifetime(count: Int, units: PasswordElephant.Entry.PasswordLifetimeUnit) {
+    func setPasswordLifetime(count: Int, units: PasswordElephant_Entry.PasswordLifetimeUnit) {
         passwordLifetimeCount = count
         passwordLifetimeUnits = units
     }

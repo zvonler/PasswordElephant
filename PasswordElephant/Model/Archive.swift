@@ -50,7 +50,7 @@ public class Archive {
         
         let data = try Data(contentsOf: URL(fileURLWithPath: filename))
 
-        let archive = try PasswordElephant.Archive.parseFrom(data: data)
+        let archive = try PasswordElephant_Archive(serializedData: data)
         
         // The first 4 bytes are a magic value used to recognize the file format
         if archive.magic != Archive.FILE_MAGIC {
@@ -99,7 +99,7 @@ public class Archive {
     
     fileprivate class func readDatabase(engine: AES, hmacData: inout Data, data: Data) throws -> Database {
         let plainText = Data(try engine.decrypt(data.bytes))
-        let protoDB = try PasswordElephant.Database.parseFrom(data: plainText)
+        let protoDB = try PasswordElephant_Database(serializedData: plainText)
         
         let database = Database()
         
@@ -119,19 +119,19 @@ public class Archive {
             let password = password
             else { throw PasswordElephantDBError.SystemError(description: "Filename and password must be set") }
         
-        let archiveBuilder = PasswordElephant.Archive.Builder()
+        var archiveProto = PasswordElephant_Archive()
         
-        archiveBuilder.magic = Archive.FILE_MAGIC
-        archiveBuilder.version = Int32(Archive.FILE_VERSION)
+        archiveProto.magic = Archive.FILE_MAGIC
+        archiveProto.version = Int32(Archive.FILE_VERSION)
         let count = 10000
-        archiveBuilder.count = Int32(count)
+        archiveProto.count = Int32(count)
         
         let salt = try Data.randomBytes(count: 32)
-        archiveBuilder.salt = Data(salt)
+        archiveProto.salt = Data(salt)
         
         let stretchedPass = try Archive.stretchPassword(salt: salt.bytes, count: count, password: password)
         let hashedPass = stretchedPass.sha2(.sha256)
-        archiveBuilder.passHash = Data(hashedPass)
+        archiveProto.passHash = Data(hashedPass)
         
         let ecbEngine = try AES(key: stretchedPass, blockMode: .ECB, padding: .noPadding)
         
@@ -139,30 +139,29 @@ public class Archive {
         
         var innerKeyCipher = try ecbEngine.encrypt(innerKey.bytes[0..<16])
         innerKeyCipher += try ecbEngine.encrypt(innerKey.bytes[16...])
-        archiveBuilder.innerKeyCipher = Data(innerKeyCipher)
+        archiveProto.innerKeyCipher = Data(innerKeyCipher)
         
         let outerKey = try Data.randomBytes(count: 32)
         var outerKeyCipher = try ecbEngine.encrypt(outerKey.bytes[0..<16])
         outerKeyCipher += try ecbEngine.encrypt(outerKey.bytes[16...])
-        archiveBuilder.outerKeyCipher = Data(outerKeyCipher)
+        archiveProto.outerKeyCipher = Data(outerKeyCipher)
         
         let iv = try Data.randomBytes(count: 16)
-        archiveBuilder.iv = Data(iv)
+        archiveProto.iv = Data(iv)
         
         var hmacData = Data()
         let cipherText = try encryptEntries(innerKey: innerKey, iv: iv, hmacData: &hmacData)
-        archiveBuilder.cipherText = Data(cipherText)
+        archiveProto.cipherText = Data(cipherText)
         
         let hmacEngine = HMAC(key: outerKey.bytes, variant: .sha256)
         let hmac = try hmacEngine.authenticate(hmacData.bytes)
-        archiveBuilder.hmac = Data(hmac)
+        archiveProto.hmac = Data(hmac)
         
-        let archive = try archiveBuilder.build()
-        try archive.data().write(to: URL(fileURLWithPath: filename))
+        try archiveProto.serializedData().write(to: URL(fileURLWithPath: filename))
     }
     
     fileprivate func encryptEntries(innerKey: Data, iv: Data, hmacData: inout Data) throws -> [UInt8] {
-        let databaseBuilder = PasswordElephant.Database.Builder()
+        var dbProto = PasswordElephant_Database()
         
         for entry in database.entries {
             let entryProto = try entry.toProto()
@@ -172,12 +171,11 @@ public class Archive {
                 hmacData.append(contentsOf: featureProto.content)
             }
 
-            databaseBuilder.entries.append(entryProto)
+            dbProto.entries.append(entryProto)
         }
         
-        let dbProto = try databaseBuilder.build()
         let engine = try AES(key: innerKey.bytes, blockMode: .CBC(iv: iv.bytes), padding: .pkcs7)
-        return try engine.encrypt(dbProto.data().bytes)
+        return try engine.encrypt(dbProto.serializedData().bytes)
     }
     
 
