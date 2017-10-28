@@ -45,7 +45,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         createdColumn.sortDescriptorPrototype = NSSortDescriptor(key: "created", ascending: true)
         modifiedColumn.sortDescriptorPrototype = NSSortDescriptor(key: "modified", ascending: true)
         passwordChangeColumn.sortDescriptorPrototype = NSSortDescriptor(key: "pwChanged", ascending: true)
-        uuidColumn.sortDescriptorPrototype = NSSortDescriptor(key: "uuid", ascending: true)
         urlColumn.sortDescriptorPrototype = NSSortDescriptor(key: "url", ascending: true)
     }
     
@@ -135,7 +134,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var modifiedColumn: NSTableColumn!
     @IBOutlet weak var passwordChangeColumn: NSTableColumn!
     @IBOutlet weak var passwordExpirationColumn: NSTableColumn!
-    @IBOutlet weak var uuidColumn: NSTableColumn!
     @IBOutlet weak var urlColumn: NSTableColumn!
     
     @IBAction func newEntry(_ sender: Any) {
@@ -203,7 +201,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     fileprivate let passwordAgeCellID = "PasswordAgeCellID"
     fileprivate let passwordExpirationCellID = "PasswordExpirationCellID"
     fileprivate let createdCellID = "CreatedCellID"
-    fileprivate let uuidCellID = "UUIDCellID"
     
     fileprivate let dateFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -241,26 +238,26 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         case groupColumn:
             cellIdentifier = groupCellID
             text = entry.group ?? ""
+        case createdColumn:
+            cellIdentifier = createdCellID
+            text = entry.created != nil ? dateFormatter.string(from: entry.created!) : ""
         case modifiedColumn:
             cellIdentifier = modifiedCellID
             text = entry.modified != nil ? dateFormatter.string(from: entry.modified!) : ""
         case passwordChangeColumn:
             cellIdentifier = passwordAgeCellID
             text = entry.pwChanged != nil ? dateFormatter.string(from: entry.pwChanged!) :
-                (entry.password == nil ? "" : "Unknown")
+                (entry.password == nil ? "" : "Never")
         case passwordExpirationColumn:
             cellIdentifier = passwordExpirationCellID
-            // !@# Compute this in entry
-            text = "Not yet implemented"
+            if let expiration = entry.pwExpiration {
+                text = dateFormatter.string(from: expiration)
+            } else {
+                text = ""
+            }
         case urlColumn:
             cellIdentifier = urlCellID
             text = entry.url ?? ""
-        case uuidColumn:
-            cellIdentifier = uuidCellID
-            text = entry.uuid ?? ""
-        case createdColumn:
-            cellIdentifier = createdCellID
-            text = entry.created != nil ? dateFormatter.string(from: entry.created!) : ""
         default: return nil
         }
 
@@ -305,6 +302,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     fileprivate var archive: Archive? {
         didSet {
+            removeObservers()
             updateStatusLabel()
             tableEntries = filteredEntries()
             tableView.reloadData()

@@ -33,6 +33,15 @@ class Entry: NSObject {
         updateFromFieldsIn(other)
     }
     
+    func updateFromFieldsIn(_ other: Entry) {
+        passwordLifetimeUnits = other.passwordLifetimeUnits
+        passwordLifetimeCount = other.passwordLifetimeCount
+        for feature in other.features {
+            replaceFeature(Feature(category: feature.category, content: feature.content))
+        }
+        postFieldsUpdatedNotification()
+    }
+    
     // Imports a PasswordSafeRecord into an Entry.
     convenience init(from record: PasswordSafeRecord) {
         self.init()
@@ -40,8 +49,14 @@ class Entry: NSObject {
             if field.type == PasswordSafeField.FieldType.EndOfRecord {
                 // Could break on this
             } else if field.type == PasswordSafeField.FieldType.LastAccessTime ||
-                field.type == PasswordSafeField.FieldType.PasswordPolicy {
+                field.type == PasswordSafeField.FieldType.PasswordLifetime ||
+                field.type == PasswordSafeField.FieldType.PasswordPolicy ||
+                field.type == PasswordSafeField.FieldType.UUID {
                 // Ignore these fields as Password Elephant doesn't keep this data
+            } else if field.type == PasswordSafeField.FieldType.CreationTime ||
+                field.type == PasswordSafeField.FieldType.LastModificationTime ||
+                field.type == PasswordSafeField.FieldType.PasswordModificationTime {
+                // Ignore these fields because they seem to be random
             } else {
                 replaceFeature(Feature(from: field))
             }
@@ -73,11 +88,27 @@ class Entry: NSObject {
     var url      : String? { return findFirst(category: .URL)?.strContent }
     var created  : Date?   { return findFirst(category: .CreationTime)?.dateContent }
     var modified : Date?   { return findFirst(category: .ModificationTime)?.dateContent }
-    var pwChanged: Date?   { return findFirst(category: .PasswordChangedTime)?.dateContent }
-    var uuid     : String? { return findFirst(category: .UUID)?.strContent }
-    var pwLifetimeCount: Int? { return findFirst(category: .PasswordLifetimeCount)?.intContent }
-    var pwLifetimeUnits: String? { return findFirst(category: .PasswordLifetimeUnits)?.strContent }
+    var pwChanged: Date?   {
+        if let changed = findFirst(category: .PasswordChangedTime)?.dateContent {
+            return changed
+        }
+        if password == nil { return nil }
+        return created
+    }
 
+    var pwExpiration: Date? {
+        guard let changed = pwChanged, passwordLifetimeCount > 0 else { return nil }
+        
+        let calendar = Calendar.autoupdatingCurrent
+        var lifetime = DateComponents()
+        switch passwordLifetimeUnits {
+        case .months: lifetime.month = passwordLifetimeCount
+        case .weeks: lifetime.weekOfYear = passwordLifetimeCount
+        default: lifetime.day = passwordLifetimeCount
+        }
+        return calendar.date(byAdding: lifetime, to: changed)
+    }
+    
     func setGroup   (_ newGroup   : String) { replaceFeature(Feature(category: .Group,        strContent: newGroup)) }
     func setTitle   (_ newTitle   : String) { replaceFeature(Feature(category: .Title,        strContent: newTitle)) }
     func setUsername(_ newUsername: String) { replaceFeature(Feature(category: .Username,     strContent: newUsername)) }
@@ -90,15 +121,9 @@ class Entry: NSObject {
     func setPasswordLifetime(count: Int, units: PasswordElephant_Entry.PasswordLifetimeUnit) {
         passwordLifetimeCount = count
         passwordLifetimeUnits = units
+        postFieldsUpdatedNotification()
     }
     static let FieldsUpdatedNotification = "FieldsUpdatedNotification"
-    
-    func updateFromFieldsIn(_ other: Entry) {
-        for feature in other.features {
-            replaceFeature(Feature(category: feature.category, content: feature.content))
-        }
-        NotificationCenter.default.post(name: Notification.Name(rawValue: Entry.FieldsUpdatedNotification), object: self)
-    }
     
     fileprivate func findFirst(category: Feature.Category) -> Feature? {
         for f in features {
@@ -114,5 +139,8 @@ class Entry: NSObject {
         features = otherFeatures + [ feature, Feature(category: .ModificationTime, dateContent: Date()) ]
     }
     
+    fileprivate func postFieldsUpdatedNotification() {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: Entry.FieldsUpdatedNotification), object: self)
+    }
 }
 

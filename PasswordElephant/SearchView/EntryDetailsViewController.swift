@@ -40,22 +40,27 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
     }
     
     override func controlTextDidChange(_ notification: Notification) {
-        guard let textField = notification.object as? NSTextField else { return }
-        
-        beginPendingEdit()
-        guard let pending = pendingEntry else { return }
-
-        switch textField {
-        case titleTextField:
-            pending.setTitle(titleTextField.stringValue)
-        case urlTextField:
-            pending.setURL(urlTextField.stringValue)
-        case usernameTextField:
-            pending.setUsername(usernameTextField.stringValue)
-        case passwordTextField:
-            pending.setPassword(passwordTextField.stringValue)
+        if let _ = notification.object as? NSComboBox {
+            beginPendingEdit()
+            updatePasswordLifetime()
+        } else if let textField = notification.object as? NSTextField {
+            beginPendingEdit()
+            guard let pending = pendingEntry else { return }
             
-        default: break
+            switch textField {
+            case titleTextField:
+                pending.setTitle(titleTextField.stringValue)
+            case urlTextField:
+                pending.setURL(urlTextField.stringValue)
+            case usernameTextField:
+                pending.setUsername(usernameTextField.stringValue)
+            case passwordTextField:
+                pending.setPassword(passwordTextField.stringValue)
+                
+            default: break
+            }
+        } else {
+            print("whaaat")
         }
     }
 
@@ -73,23 +78,27 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
     
     func comboBoxSelectionDidChange(_ notification: Notification) {
         guard let combox = notification.object as? NSComboBox else { return }
-        beginPendingEdit()
         switch combox {
         case expirationCountCombox: fallthrough
         case expirationUnitsCombox:
+            beginPendingEdit()
             updatePasswordLifetime()
         default: break
         }
     }
 
     fileprivate func updatePasswordLifetime() {
-        let count = Int(expirationCountCombox.stringValue) ?? 0
-        var units = PasswordElephant_Entry.PasswordLifetimeUnit.days
-        switch expirationUnitsCombox.stringValue {
-        case "weeks": units = .weeks
-        case "months": units = .months
-        default: break
-        }
+        // When called because expirationCountCombox has changed, the stringValue property at this point provides the old value - possibly an Apple bug
+        // https://stackoverflow.com/questions/5265260/comboboxselectiondidchange-gives-me-previously-selected-value
+        let count = expirationCountCombox.indexOfSelectedItem == -1 ? Int(expirationCountCombox.stringValue) ?? 0 : Int(expirationCountCombox.itemObjectValue(at: expirationCountCombox.indexOfSelectedItem) as? String ?? "0") ?? 0
+
+        let units: PasswordElephant_Entry.PasswordLifetimeUnit = {
+            switch expirationUnitsCombox.stringValue {
+            case "weeks": return .weeks
+            case "months": return .months
+            default: return .days
+            }
+        }()
         pendingEntry?.setPasswordLifetime(count: count, units: units)
     }
     
@@ -104,6 +113,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
     func userChosePassword(newPassword: String) {
         beginPendingEdit()
         pendingEntry?.setPassword(newPassword)
+        updatePasswordTextField()
         updateButtons()
     }
 
@@ -161,10 +171,8 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
         if let entry = entry {
             entry.updateFromFieldsIn(pending)
         } else {
-            let newEntry = Entry()
-            newEntry.updateFromFieldsIn(pending)
-            database?.addEntry(newEntry)
-            entry = newEntry
+            database?.addEntry(pending)
+            entry = pending
         }
         finishPendingEdit()
         updateFromEntry()
@@ -258,7 +266,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
             passwordTextField.stringValue = entry?.password ?? pendingEntry?.password ?? ""
             showPasswordButton.title = "Hide Password"
         } else {
-            if entry == nil || pendingEntry?.password == nil {
+            if entry == nil || (pendingEntry != nil && pendingEntry?.password == nil) {
                 passwordTextField.stringValue = ""
             } else {
                 passwordTextField.stringValue = "****************"
@@ -277,12 +285,16 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
             usernameTextField.isEditable = false
             passwordTextField.isEditable = false
             notesTextView.isEditable = false
+            expirationCountCombox.isEnabled = false
+            expirationUnitsCombox.isEnabled = false
         } else {
             titleTextField.isEditable = true
             urlTextField.isEditable = true
             usernameTextField.isEditable = true
             passwordTextField.isEditable = true
             notesTextView.isEditable = true
+            expirationCountCombox.isEnabled = true
+            expirationUnitsCombox.isEnabled = true
         }
     }
 
@@ -298,13 +310,15 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
             urlTextField.stringValue = entry.url ?? ""
             usernameTextField.stringValue = entry.username ?? ""
             notesTextView.textStorage?.setAttributedString(NSAttributedString(string: entry.notes ?? ""))
-            switch entry.passwordLifetimeUnits {
-            case .days: expirationUnitsCombox.stringValue = "days"
-            case .weeks: expirationUnitsCombox.stringValue = "weeks"
-            case .months: expirationUnitsCombox.stringValue = "months"
-            default: expirationUnitsCombox.stringValue = "days"
-            }
-            expirationCountCombox.stringValue = String(entry.passwordLifetimeCount)
+            expirationUnitsCombox.stringValue = {
+                switch entry.passwordLifetimeUnits {
+                case .months: return "months"
+                case .weeks: return "weeks"
+                default: return "days"
+                }
+            }()
+            let count = entry.passwordLifetimeCount
+            expirationCountCombox.stringValue = String(count)
         } else {
             titleTextField.stringValue = ""
             urlTextField.stringValue = ""

@@ -139,7 +139,7 @@ class PasswordSafeField: CustomDebugStringConvertible {
         case .PasswordModificationTime:
             return Date(timeIntervalSince1970: timeIntervalContent())
         
-        default: return Date()
+        default: return nil
         }
     }
     
