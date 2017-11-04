@@ -864,6 +864,7 @@
                     </view>
                     <connections>
                         <outlet property="createdColumn" destination="Js4-W9-Fif" id="BZy-sn-OLo"/>
+                        <outlet property="datePicker" destination="iwN-RX-wHm" id="FzE-7x-HMh"/>
                         <outlet property="groupColumn" destination="fc8-AU-HJc" id="dHt-kW-3er"/>
                         <outlet property="modifiedColumn" destination="euQ-fk-sku" id="aal-Zl-geV"/>
                         <outlet property="passwordChangeColumn" destination="jFZ-Lm-bpE" id="kIK-dq-r21"/>
@@ -888,6 +889,12 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="setPasswordLifetime:" target="szA-4U-rKK" id="I37-lQ-jNK"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Set password changed..." id="8Pv-9L-awy">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="setPasswordChanged:" target="szA-4U-rKK" id="7SP-cL-KVg"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Set group..." id="tgg-Yc-VpU">
@@ -995,6 +1002,18 @@
                         <constraint firstAttribute="bottom" secondItem="ZPG-Tw-7rR" secondAttribute="bottom" id="XtR-it-hui"/>
                     </constraints>
                 </customView>
+                <datePicker verticalHuggingPriority="750" id="iwN-RX-wHm">
+                    <rect key="frame" x="0.0" y="0.0" width="139" height="148"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="xRg-0V-AKg">
+                        <font key="font" metaFont="system"/>
+                        <date key="date" timeIntervalSinceReferenceDate="-595929600">
+                            <!--1982-02-12 16:00:00 +0000-->
+                        </date>
+                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                    </datePickerCell>
+                </datePicker>
             </objects>
             <point key="canvasLocation" x="76" y="694"/>
         </scene>
@@ -1866,18 +1885,8 @@ Gw
                                                     <outlet property="nextKeyView" destination="Fqo-Wb-t31" id="6Fs-Ff-n3E"/>
                                                 </connections>
                                             </button>
-                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FhD-S2-CMv">
-                                                <rect key="frame" x="-6" y="178" width="152" height="32"/>
-                                                <buttonCell key="cell" type="push" title="Generate Password" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dv2-n9-j3B">
-                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
-                                                </buttonCell>
-                                                <connections>
-                                                    <segue destination="uL4-YT-CrD" kind="sheet" identifier="GeneratePasswordSegue" id="tF0-8Q-QPd"/>
-                                                </connections>
-                                            </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fqo-Wb-t31">
-                                                <rect key="frame" x="-6" y="149" width="152" height="32"/>
+                                                <rect key="frame" x="-6" y="178" width="152" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Unlock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Js2-Q2-iKu">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -1885,6 +1894,16 @@ Gw
                                                 <connections>
                                                     <action selector="toggleLock:" target="lVv-qh-JGJ" id="kao-ua-Lr4"/>
                                                     <outlet property="nextKeyView" destination="FQw-8f-FbB" id="aXW-rr-SpT"/>
+                                                </connections>
+                                            </button>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FhD-S2-CMv">
+                                                <rect key="frame" x="-6" y="149" width="152" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Generate Password" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dv2-n9-j3B">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <segue destination="uL4-YT-CrD" kind="sheet" identifier="GeneratePasswordSegue" id="tF0-8Q-QPd"/>
                                                 </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FQw-8f-FbB">
@@ -1909,8 +1928,25 @@ Gw
                                                     <outlet property="nextKeyView" destination="Kcp-uP-phx" id="DOR-zP-0AX"/>
                                                 </connections>
                                             </button>
-                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kcp-uP-phx">
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AIE-NS-F29">
                                                 <rect key="frame" x="-6" y="62" width="152" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mt2-UW-5Me">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="delete:" target="lVv-qh-JGJ" id="VR8-kW-mm7"/>
+                                                    <outlet property="nextKeyView" destination="6uU-GI-dAb" id="y9r-2e-AL2"/>
+                                                </connections>
+                                            </button>
+                                            <customView verticalHuggingPriority="1" horizontalCompressionResistancePriority="249" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="aia-c5-xl0">
+                                                <rect key="frame" x="0.0" y="29" width="140" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="kk3-6L-Px2"/>
+                                                </constraints>
+                                            </customView>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kcp-uP-phx">
+                                                <rect key="frame" x="-6" y="-7" width="152" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iOn-et-yF8">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -1923,23 +1959,6 @@ Gw
                                                 </buttonCell>
                                                 <connections>
                                                     <outlet property="nextKeyView" destination="AIE-NS-F29" id="Z1Y-zz-Uf5"/>
-                                                </connections>
-                                            </button>
-                                            <customView verticalHuggingPriority="1" horizontalCompressionResistancePriority="249" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="aia-c5-xl0">
-                                                <rect key="frame" x="0.0" y="29" width="140" height="32"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="kk3-6L-Px2"/>
-                                                </constraints>
-                                            </customView>
-                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AIE-NS-F29">
-                                                <rect key="frame" x="-6" y="-7" width="152" height="32"/>
-                                                <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mt2-UW-5Me">
-                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                    <font key="font" metaFont="system"/>
-                                                </buttonCell>
-                                                <connections>
-                                                    <action selector="delete:" target="lVv-qh-JGJ" id="VR8-kW-mm7"/>
-                                                    <outlet property="nextKeyView" destination="6uU-GI-dAb" id="y9r-2e-AL2"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -2008,6 +2027,7 @@ Gw
                         <outlet property="deleteButton" destination="AIE-NS-F29" id="gjY-qK-hYO"/>
                         <outlet property="expirationCountCombox" destination="kMB-mq-3it" id="8k6-Dj-I7V"/>
                         <outlet property="expirationUnitsCombox" destination="waA-pB-vJ1" id="ske-JQ-y0V"/>
+                        <outlet property="generatePasswordButton" destination="FhD-S2-CMv" id="MEI-Hh-zMW"/>
                         <outlet property="lockButton" destination="Fqo-Wb-t31" id="waw-0L-PST"/>
                         <outlet property="notesTextView" destination="Nge-kX-fgb" id="Re2-9B-bAC"/>
                         <outlet property="passwordTextField" destination="Ul8-MI-X0L" id="c2R-2A-rae"/>

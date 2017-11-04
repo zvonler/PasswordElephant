@@ -113,6 +113,7 @@ class Entry: NSObject {
         replaceFeature(Feature(category: .Password, strContent: newPassword))
         replaceFeature(Feature(category: .PasswordChangedTime, dateContent: Date()))
     }
+    func setPasswordChanged(_ when: Date) { replaceFeature(Feature(category: .PasswordChangedTime, dateContent: when)) }
     func setPasswordLifetime(count: Int, units: PasswordElephant_Entry.PasswordLifetimeUnit) {
         passwordLifetimeCount = count
         passwordLifetimeUnits = units

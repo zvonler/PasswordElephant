@@ -133,6 +133,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var expirationCountCombox: NSComboBox!
     @IBOutlet weak var expirationUnitsCombox: NSComboBox!
+    @IBOutlet weak var generatePasswordButton: NSButton!
     
     @IBAction func toggleShowPassword(_ sender: Any) {
         showPassword = !showPassword
@@ -287,6 +288,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
             notesTextView.isEditable = false
             expirationCountCombox.isEnabled = false
             expirationUnitsCombox.isEnabled = false
+            generatePasswordButton.isEnabled = false
         } else {
             titleTextField.isEditable = true
             urlTextField.isEditable = true
@@ -295,6 +297,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
             notesTextView.isEditable = true
             expirationCountCombox.isEnabled = true
             expirationUnitsCombox.isEnabled = true
+            generatePasswordButton.isEnabled = true
         }
     }
 

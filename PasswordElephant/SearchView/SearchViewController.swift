@@ -139,6 +139,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet var passwordLifetimePickerView: NSView!
     @IBOutlet weak var passwordLifetimeCountCombox: NSComboBox!
     @IBOutlet weak var passwordLifetimeUnitsCombox: NSComboBox!
+    @IBOutlet var datePicker: NSDatePicker!
     
     @IBAction func newEntry(_ sender: Any) {
         selectedEntry = nil
@@ -192,6 +193,25 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         withUserInput(forPrompt: "Enter new group name", informativeText: nil, secure: false) { (group) in
             for rowIndex in self.tableView.selectedRowIndexes {
                 self.tableEntries[rowIndex].setGroup(group)
+            }
+        }
+    }
+    
+    @IBAction func setPasswordChanged(_ sender: Any) {
+        let promptPanel = NSAlert()
+        promptPanel.addButton(withTitle: "OK")
+        promptPanel.addButton(withTitle: "Cancel")
+        promptPanel.messageText = "Choose password changed date"
+        datePicker.dateValue = Date()
+        promptPanel.accessoryView = datePicker
+        promptPanel.window.initialFirstResponder = datePicker
+        
+        promptPanel.beginSheetModal(for: self.view.window!) { (response) in
+            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                let date = self.datePicker.dateValue
+                for rowIndex in self.tableView.selectedRowIndexes {
+                    self.tableEntries[rowIndex].setPasswordChanged(date)
+                }
             }
         }
     }
@@ -257,7 +277,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
             updateStatusLabel()
             tableEntries = filteredEntries()
             tableView.reloadData()
-            removeObservers()
             createObservers()
         }
     }
@@ -287,6 +306,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     fileprivate func removeObservers() {
         notificationObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        notificationObservers.removeAll()
     }
     
     deinit {
