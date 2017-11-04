@@ -252,16 +252,6 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
         updateButtons()
     }
     
-    fileprivate func dialogOKCancel(question: String, text: String = "") -> NSAlert {
-        let alert = NSAlert()
-        alert.messageText = question
-        alert.informativeText = text
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "OK")
-        alert.addButton(withTitle: "Cancel")
-        return alert
-    }
-    
     fileprivate func updatePasswordTextField() {
         if showPassword {
             passwordTextField.stringValue = entry?.password ?? pendingEntry?.password ?? ""

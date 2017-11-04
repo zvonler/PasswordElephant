@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F904BA291F8FDE7600092077 /* DefaultSettings.json in Resources */ = {isa = PBXBuildFile; fileRef = F904BA281F8FDE7600092077 /* DefaultSettings.json */; };
 		F917A14A1F917440008C4C57 /* UserDefaults-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F917A1491F917440008C4C57 /* UserDefaults-extension.swift */; };
+		F92BCD081FAE862F0042E7BA /* NSViewController-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92BCD071FAE862F0042E7BA /* NSViewController-extension.swift */; };
 		F92FD6691F8D07F500B64C5F /* PasswordSafeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4B1F8D020C0094E967 /* PasswordSafeField.swift */; };
 		F92FD66A1F8D07F500B64C5F /* PasswordSafeDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */; };
 		F92FD66B1F8D07F500B64C5F /* PasswordSafeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */; };
@@ -179,6 +180,7 @@
 		F904BA281F8FDE7600092077 /* DefaultSettings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultSettings.json; sourceTree = "<group>"; };
 		F917A1491F917440008C4C57 /* UserDefaults-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults-extension.swift"; sourceTree = "<group>"; };
 		F92BCCFE1FAE823F0042E7BA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F92BCD071FAE862F0042E7BA /* NSViewController-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSViewController-extension.swift"; sourceTree = "<group>"; };
 		F94F1FF91F9037BD00AF5FF8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		F94F1FFB1F90381000AF5FF8 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		F94F1FFD1F90387800AF5FF8 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */,
 				F917A1491F917440008C4C57 /* UserDefaults-extension.swift */,
 				F9867F8C1F9D4328001BE9E6 /* ClipboardClient.swift */,
+				F92BCD071FAE862F0042E7BA /* NSViewController-extension.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -563,6 +566,7 @@
 				F94F1FFA1F9037BD00AF5FF8 /* Database.swift in Sources */,
 				F94F1FFE1F90387800AF5FF8 /* Feature.swift in Sources */,
 				F968AE541F8D020C0094E967 /* Archive.swift in Sources */,
+				F92BCD081FAE862F0042E7BA /* NSViewController-extension.swift in Sources */,
 				F968AE531F8D020C0094E967 /* PasswordSafeField.swift in Sources */,
 				F917A14A1F917440008C4C57 /* UserDefaults-extension.swift in Sources */,
 				F968AE561F8D020C0094E967 /* PasswordSafeRecord.swift in Sources */,

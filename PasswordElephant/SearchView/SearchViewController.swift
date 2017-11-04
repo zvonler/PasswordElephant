@@ -215,6 +215,21 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         }
     }
     
+    @IBAction func delete(_ sender: Any) {
+        guard !selectedEntries.isEmpty else { __NSBeep(); return }
+        guard let window = view.window else { return }
+        
+        let count = selectedEntries.count
+        let prompt = dialogOKCancel(question: count > 1 ? "Delete \(count) entries?" : "Delete entry?")
+        prompt.beginSheetModal(for: window) { (response) in
+            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                for entry in self.selectedEntries {
+                    self.archive?.database.deleteEntry(entry)
+                }
+            }
+        }
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSSearchFieldDelegate
 
