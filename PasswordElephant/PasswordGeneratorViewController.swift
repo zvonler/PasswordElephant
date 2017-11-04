@@ -114,6 +114,6 @@ extension Array {
 
 extension String {
     var jumble: String {
-        return String(Array(characters).shuffled)
+        return String(Array(self).shuffled)
     }
 }

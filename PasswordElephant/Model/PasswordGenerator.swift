@@ -37,7 +37,7 @@ class PasswordGenerator {
     }
     
     fileprivate func randomAlphaNumericString(allowedChars: String, length: Int) -> String {
-        let allowedCharsCount = UInt32(allowedChars.characters.count)
+        let allowedCharsCount = UInt32(allowedChars.count)
         var randomString = ""
         
         for _ in 0..<length {
