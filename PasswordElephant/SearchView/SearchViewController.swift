@@ -45,6 +45,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         createdColumn.sortDescriptorPrototype = NSSortDescriptor(key: "created", ascending: true)
         modifiedColumn.sortDescriptorPrototype = NSSortDescriptor(key: "modified", ascending: true)
         passwordChangeColumn.sortDescriptorPrototype = NSSortDescriptor(key: "pwChanged", ascending: true)
+        passwordExpirationColumn.sortDescriptorPrototype = NSSortDescriptor(key: "pwExpiration", ascending: true)
         urlColumn.sortDescriptorPrototype = NSSortDescriptor(key: "url", ascending: true)
     }
     
@@ -192,24 +193,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSTableViewDelegate
-    
-    fileprivate let dateFormatter: DateFormatter = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        return f
-    }()
-    
-    func formatTimeInterval(_ interval: TimeInterval) -> String {
-        let sign = interval > 0 ? "-" : ""
-        let absInterval = abs(interval)
-        let ti = Int(absInterval)
-        
-        let minutes = (ti / 60) % 60
-        let hours = (ti / 3600) % 3600
-        let days = (ti / 86400)
-
-        return String(format: "%@%0.2dd %0.2dh:%0.2dm", sign, days, hours, minutes)
-    }
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         let selectedRow = tableView.selectedRow
