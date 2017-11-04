@@ -39,7 +39,6 @@ class Entry: NSObject {
         for feature in other.features {
             replaceFeature(Feature(category: feature.category, content: feature.content))
         }
-        postFieldsUpdatedNotification()
     }
     
     // Imports a PasswordSafeRecord into an Entry.
@@ -76,10 +75,18 @@ class Entry: NSObject {
         return entryProto
     }
     
-    var features: [Feature]
-    var passwordLifetimeUnits: PasswordElephant_Entry.PasswordLifetimeUnit = .days
-    var passwordLifetimeCount: Int = 0
+    var features: [Feature] {
+        didSet { postFieldsUpdatedNotification() }
+    }
+
+    var passwordLifetimeUnits: PasswordElephant_Entry.PasswordLifetimeUnit = .days {
+        didSet { postFieldsUpdatedNotification() }
+    }
     
+    var passwordLifetimeCount: Int = 0 {
+        didSet { postFieldsUpdatedNotification() }
+    }
+
     var group    : String? { return findFirst(category: .Group)?.strContent }
     var title    : String? { return findFirst(category: .Title)?.strContent }
     var username : String? { return findFirst(category: .Username)?.strContent }
@@ -117,7 +124,6 @@ class Entry: NSObject {
     func setPasswordLifetime(count: Int, units: PasswordElephant_Entry.PasswordLifetimeUnit) {
         passwordLifetimeCount = count
         passwordLifetimeUnits = units
-        postFieldsUpdatedNotification()
     }
     static let FieldsUpdatedNotification = "FieldsUpdatedNotification"
     

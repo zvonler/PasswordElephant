@@ -166,9 +166,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     }
 
     @IBAction func tableWasDoubleClicked(_ sender: Any) {
-        let selectedRows = tableView.selectedRowIndexes
-        guard selectedRows.count == 1 else { __NSBeep(); return }
-        selectedEntry = tableEntries[selectedRows.first!]
+        guard selectedEntries.count == 1 else { __NSBeep(); return }
+        selectedEntry = selectedEntries.first
         performSegue(withIdentifier: showEntryDetailsSegueID, sender: self)
     }
     
@@ -182,8 +181,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         promptPanel.beginSheetModal(for: self.view.window!) { (response) in
             if response == NSApplication.ModalResponse.alertFirstButtonReturn {
                 let (count, units) = self.getPasswordLifetime()
-                for rowIndex in self.tableView.selectedRowIndexes {
-                    self.tableEntries[rowIndex].setPasswordLifetime(count: count, units: units)
+                for entry in self.selectedEntries {
+                    entry.setPasswordLifetime(count: count, units: units)
                 }
             }
         }
@@ -191,8 +190,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     @IBAction func setGroup(_ sender: Any) {
         withUserInput(forPrompt: "Enter new group name", informativeText: nil, secure: false) { (group) in
-            for rowIndex in self.tableView.selectedRowIndexes {
-                self.tableEntries[rowIndex].setGroup(group)
+            for entry in self.selectedEntries {
+                entry.setGroup(group)
             }
         }
     }
@@ -397,6 +396,10 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
             }
         }
         return matches
+    }
+
+    fileprivate var selectedEntries: [Entry] {
+        return tableView.selectedRowIndexes.map({ tableEntries[$0] })
     }
     
     fileprivate func showEntryInfo(entry: Entry) {
