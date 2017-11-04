@@ -88,16 +88,11 @@ class Entry: NSObject {
     var url      : String? { return findFirst(category: .URL)?.strContent }
     var created  : Date?   { return findFirst(category: .CreationTime)?.dateContent }
     var modified : Date?   { return findFirst(category: .ModificationTime)?.dateContent }
-    var pwChanged: Date?   {
-        if let changed = findFirst(category: .PasswordChangedTime)?.dateContent {
-            return changed
-        }
-        if password == nil { return nil }
-        return created
-    }
+    var pwChanged: Date?   { return findFirst(category: .PasswordChangedTime)?.dateContent }
 
     var pwExpiration: Date? {
-        guard let changed = pwChanged, passwordLifetimeCount > 0 else { return nil }
+        guard passwordLifetimeCount > 0 else { return nil }
+        guard let changed = pwChanged else { return Date() }
         
         let calendar = Calendar.autoupdatingCurrent
         var lifetime = DateComponents()

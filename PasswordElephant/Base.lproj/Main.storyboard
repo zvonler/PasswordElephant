@@ -510,7 +510,7 @@
                                             <rect key="frame" x="1" y="0.0" width="675" height="98"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="vv0-Bj-MpM" viewBased="YES" id="sbr-GQ-B2B">
+                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowSizeStyle="automatic" headerView="vv0-Bj-MpM" viewBased="YES" id="sbr-GQ-B2B">
                                                     <rect key="frame" x="0.0" y="0.0" width="755" height="75"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -811,10 +811,10 @@
                                                         </tableColumn>
                                                     </tableColumns>
                                                     <connections>
-                                                        <action selector="tableWasClicked:" target="szA-4U-rKK" id="7eG-dW-HIo"/>
                                                         <action trigger="doubleAction" selector="tableWasDoubleClicked:" target="szA-4U-rKK" id="Uri-97-uQ4"/>
                                                         <outlet property="dataSource" destination="szA-4U-rKK" id="xwn-d5-9ij"/>
                                                         <outlet property="delegate" destination="szA-4U-rKK" id="MFA-pI-Yk4"/>
+                                                        <outlet property="menu" destination="gZP-Ab-B3L" id="1SV-LC-gEF"/>
                                                         <outlet property="nextKeyView" destination="IdO-ca-sww" id="2uz-Di-wCN"/>
                                                     </connections>
                                                 </tableView>
@@ -868,6 +868,9 @@
                         <outlet property="modifiedColumn" destination="euQ-fk-sku" id="aal-Zl-geV"/>
                         <outlet property="passwordChangeColumn" destination="jFZ-Lm-bpE" id="kIK-dq-r21"/>
                         <outlet property="passwordExpirationColumn" destination="vet-fI-X4R" id="lCU-sn-k4Q"/>
+                        <outlet property="passwordLifetimeCountCombox" destination="cvP-rT-ag0" id="n0M-aP-EKf"/>
+                        <outlet property="passwordLifetimePickerView" destination="HeP-A2-IfY" id="lLD-gs-S1g"/>
+                        <outlet property="passwordLifetimeUnitsCombox" destination="2m1-qN-IZz" id="drh-SN-9nc"/>
                         <outlet property="searchField" destination="8Yg-eW-9z9" id="7mu-ZT-GvS"/>
                         <outlet property="statusLabel" destination="dZ7-1v-FRZ" id="Da4-lV-7Kr"/>
                         <outlet property="tableView" destination="sbr-GQ-B2B" id="rS6-NT-LlR"/>
@@ -879,8 +882,121 @@
                     </connections>
                 </viewController>
                 <customObject id="i8f-M1-z1D" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="gZP-Ab-B3L" userLabel="Batch Change Menu">
+                    <items>
+                        <menuItem title="Set password lifetime..." id="s94-Tm-rfn">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="setPasswordLifetime:" target="szA-4U-rKK" id="I37-lQ-jNK"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Set group..." id="tgg-Yc-VpU">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="setGroup:" target="szA-4U-rKK" id="dn3-3Y-t8Y"/>
+                            </connections>
+                        </menuItem>
+                    </items>
+                </menu>
+                <customView id="HeP-A2-IfY">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZPG-Tw-7rR" userLabel="Expiration Row">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                            <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3W0-WI-F28">
+                                    <rect key="frame" x="-2" y="3" width="85" height="17"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Expires after:" id="K5M-9P-et4">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cvP-rT-ag0">
+                                    <rect key="frame" x="89" y="-4" width="63" height="26"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="3Yh-68-YcB"/>
+                                    </constraints>
+                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="3" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="8FB-BX-qDI">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <objectValues>
+                                            <string>0</string>
+                                            <string>1</string>
+                                            <string>2</string>
+                                            <string>3</string>
+                                            <string>4</string>
+                                            <string>5</string>
+                                            <string>6</string>
+                                            <string>8</string>
+                                            <string>10</string>
+                                            <string>12</string>
+                                            <string>16</string>
+                                            <string>20</string>
+                                            <string>24</string>
+                                            <string>28</string>
+                                            <string>30</string>
+                                        </objectValues>
+                                    </comboBoxCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="lVv-qh-JGJ" id="wgd-IB-jEp"/>
+                                    </connections>
+                                </comboBox>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WHe-1E-bxV">
+                                    <rect key="frame" x="155" y="3" width="143" height="17"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(0 means never expire)" id="kJ2-GP-Oal">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2m1-qN-IZz">
+                                    <rect key="frame" x="304" y="-4" width="74" height="26"/>
+                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="months" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="dGb-5p-ll5">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <objectValues>
+                                            <string>days</string>
+                                            <string>weeks</string>
+                                            <string>months</string>
+                                        </objectValues>
+                                    </comboBoxCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="lVv-qh-JGJ" id="8N0-nH-eem"/>
+                                    </connections>
+                                </comboBox>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="Nm1-le-Kcn"/>
+                                <constraint firstAttribute="width" constant="375" id="OWp-Mh-8we"/>
+                                <constraint firstAttribute="height" secondItem="cvP-rT-ag0" secondAttribute="height" id="kuK-Ec-VJf"/>
+                            </constraints>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="ZPG-Tw-7rR" firstAttribute="top" secondItem="HeP-A2-IfY" secondAttribute="top" id="5Mr-3V-Frq"/>
+                        <constraint firstAttribute="trailing" secondItem="ZPG-Tw-7rR" secondAttribute="trailing" id="OmQ-BS-8SA"/>
+                        <constraint firstItem="ZPG-Tw-7rR" firstAttribute="leading" secondItem="HeP-A2-IfY" secondAttribute="leading" id="QL1-nF-Tsc"/>
+                        <constraint firstAttribute="bottom" secondItem="ZPG-Tw-7rR" secondAttribute="bottom" id="XtR-it-hui"/>
+                    </constraints>
+                </customView>
             </objects>
-            <point key="canvasLocation" x="-19.5" y="628"/>
+            <point key="canvasLocation" x="76" y="694"/>
         </scene>
         <!--Password Generator View Controller-->
         <scene sceneID="A8q-bY-l5Q">

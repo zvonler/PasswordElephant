@@ -136,6 +136,9 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var passwordChangeColumn: NSTableColumn!
     @IBOutlet weak var passwordExpirationColumn: NSTableColumn!
     @IBOutlet weak var urlColumn: NSTableColumn!
+    @IBOutlet var passwordLifetimePickerView: NSView!
+    @IBOutlet weak var passwordLifetimeCountCombox: NSComboBox!
+    @IBOutlet weak var passwordLifetimeUnitsCombox: NSComboBox!
     
     @IBAction func newEntry(_ sender: Any) {
         selectedEntry = nil
@@ -160,22 +163,37 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         
         tableView.reloadData()
     }
-    
-    @IBAction func tableWasClicked(_ sender: Any) {
-        let selectedRow = tableView.selectedRow
-        guard selectedRow >= 0 && selectedRow < tableEntries.count else {
-            updateStatusLabel()
-            return
-        }
-        let entry = tableEntries[selectedRow]
-        showEntryInfo(entry: entry)
+
+    @IBAction func tableWasDoubleClicked(_ sender: Any) {
+        let selectedRows = tableView.selectedRowIndexes
+        guard selectedRows.count == 1 else { __NSBeep(); return }
+        selectedEntry = tableEntries[selectedRows.first!]
+        performSegue(withIdentifier: showEntryDetailsSegueID, sender: self)
     }
     
-    @IBAction func tableWasDoubleClicked(_ sender: Any) {
-        let selectedRow = tableView.selectedRow
-        guard selectedRow >= 0 && selectedRow < tableEntries.count else { return }
-        selectedEntry = tableEntries[selectedRow]
-        performSegue(withIdentifier: showEntryDetailsSegueID, sender: self)
+    @IBAction func setPasswordLifetime(_ sender: Any) {
+        let promptPanel = NSAlert()
+        promptPanel.addButton(withTitle: "OK")
+        promptPanel.addButton(withTitle: "Cancel")
+        promptPanel.messageText = "Choose new password lifetime"
+        promptPanel.accessoryView = passwordLifetimePickerView
+        
+        promptPanel.beginSheetModal(for: self.view.window!) { (response) in
+            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                let (count, units) = self.getPasswordLifetime()
+                for rowIndex in self.tableView.selectedRowIndexes {
+                    self.tableEntries[rowIndex].setPasswordLifetime(count: count, units: units)
+                }
+            }
+        }
+    }
+    
+    @IBAction func setGroup(_ sender: Any) {
+        withUserInput(forPrompt: "Enter new group name", informativeText: nil, secure: false) { (group) in
+            for rowIndex in self.tableView.selectedRowIndexes {
+                self.tableEntries[rowIndex].setGroup(group)
+            }
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -195,13 +213,16 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     // MARK: - NSTableViewDelegate
     
     func tableViewSelectionDidChange(_ notification: Notification) {
-        let selectedRow = tableView.selectedRow
-        guard selectedRow >= 0 && selectedRow < tableEntries.count else {
+        let rowIndexes = tableView.selectedRowIndexes
+        switch rowIndexes.count {
+        case 0:
             updateStatusLabel()
-            return
+        case 1:
+            let entry = tableEntries[rowIndexes.first!]
+            showEntryInfo(entry: entry)
+        default:
+            statusLabel.stringValue = "\(rowIndexes.count) entries selected"
         }
-        let entry = tableEntries[selectedRow]
-        showEntryInfo(entry: entry)
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -279,22 +300,44 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     }
     
     fileprivate func withPassword(forFilename filename: String, body: @escaping (String) -> ()) {
-        let passwordPanel = NSAlert()
-        passwordPanel.addButton(withTitle: "OK")
-        passwordPanel.addButton(withTitle: "Cancel")
-        passwordPanel.messageText = "Enter password"
-        passwordPanel.informativeText = "\(filename)"
-        let inputField = NSSecureTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
-        inputField.translatesAutoresizingMaskIntoConstraints = true
-        passwordPanel.accessoryView = inputField
-        passwordPanel.window.initialFirstResponder = inputField
+        withUserInput(forPrompt: "Emter password", informativeText: "\(filename)", secure: true) { (password) in
+            body(password)
+        }
+    }
+    
+    fileprivate func withUserInput(forPrompt prompt: String, informativeText: String?, secure: Bool, body: @escaping (String) -> ()) {
+        let promptPanel = NSAlert()
+        promptPanel.addButton(withTitle: "OK")
+        promptPanel.addButton(withTitle: "Cancel")
+        promptPanel.messageText = prompt
+        promptPanel.informativeText = informativeText ?? ""
         
-        passwordPanel.beginSheetModal(for: self.view.window!) { (response) in
+        let inputField = secure ?
+            NSSecureTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 24)) :
+            NSTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
+        inputField.translatesAutoresizingMaskIntoConstraints = true
+        promptPanel.accessoryView = inputField
+        promptPanel.window.initialFirstResponder = inputField
+        
+        promptPanel.beginSheetModal(for: self.view.window!) { (response) in
             if response == NSApplication.ModalResponse.alertFirstButtonReturn {
-                let password = inputField.stringValue
-                body(password)
+                body(inputField.stringValue)
             }
         }
+    }
+
+    fileprivate func getPasswordLifetime() -> (Int, PasswordElephant_Entry.PasswordLifetimeUnit) {
+        let count = passwordLifetimeCountCombox.indexOfSelectedItem == -1 ? Int(passwordLifetimeCountCombox.stringValue) ?? 0 : Int(passwordLifetimeCountCombox.itemObjectValue(at: passwordLifetimeCountCombox.indexOfSelectedItem) as? String ?? "0") ?? 0
+        
+        let units: PasswordElephant_Entry.PasswordLifetimeUnit = {
+            switch passwordLifetimeUnitsCombox.stringValue {
+            case "weeks": return .weeks
+            case "months": return .months
+            default: return .days
+            }
+        }()
+        
+        return (count, units)
     }
     
     fileprivate func tryOrShowError(prefix: String, body: () throws -> ()) {
