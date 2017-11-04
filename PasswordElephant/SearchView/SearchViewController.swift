@@ -192,15 +192,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSTableViewDelegate
-
-    fileprivate let titleCellID = "TitleCellID"
-    fileprivate let usernameCellID = "UsernameCellID"
-    fileprivate let groupCellID = "GroupCellID"
-    fileprivate let urlCellID = "URLCellID"
-    fileprivate let modifiedCellID = "ModifiedCellID"
-    fileprivate let passwordAgeCellID = "PasswordAgeCellID"
-    fileprivate let passwordExpirationCellID = "PasswordExpirationCellID"
-    fileprivate let createdCellID = "CreatedCellID"
     
     fileprivate let dateFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -220,54 +211,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         return String(format: "%@%0.2dd %0.2dh:%0.2dm", sign, days, hours, minutes)
     }
     
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let tableColumn = tableColumn else { return nil }
-        
-        let entry = tableEntries[row]
-        
-        var cellIdentifier: String = ""
-        var text: String = ""
-        
-        switch tableColumn {
-        case titleColumn:
-            cellIdentifier = titleCellID
-            text = entry.title ?? ""
-        case usernameColumn:
-            cellIdentifier = usernameCellID
-            text = entry.username ?? ""
-        case groupColumn:
-            cellIdentifier = groupCellID
-            text = entry.group ?? ""
-        case createdColumn:
-            cellIdentifier = createdCellID
-            text = entry.created != nil ? dateFormatter.string(from: entry.created!) : ""
-        case modifiedColumn:
-            cellIdentifier = modifiedCellID
-            text = entry.modified != nil ? dateFormatter.string(from: entry.modified!) : ""
-        case passwordChangeColumn:
-            cellIdentifier = passwordAgeCellID
-            text = entry.pwChanged != nil ? dateFormatter.string(from: entry.pwChanged!) :
-                (entry.password == nil ? "" : "Never")
-        case passwordExpirationColumn:
-            cellIdentifier = passwordExpirationCellID
-            if let expiration = entry.pwExpiration {
-                text = dateFormatter.string(from: expiration)
-            } else {
-                text = ""
-            }
-        case urlColumn:
-            cellIdentifier = urlCellID
-            text = entry.url ?? ""
-        default: return nil
-        }
-
-        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
-            cell.textField?.stringValue = text
-            return cell
-        }
-        return nil
-    }
-    
     func tableViewSelectionDidChange(_ notification: Notification) {
         let selectedRow = tableView.selectedRow
         guard selectedRow >= 0 && selectedRow < tableEntries.count else {
@@ -283,6 +226,10 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     func numberOfRows(in tableView: NSTableView) -> Int {
         return tableEntries.count
+    }
+
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+        return tableEntries[row]
     }
 
     func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
