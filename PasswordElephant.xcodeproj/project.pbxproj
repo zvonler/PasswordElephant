@@ -178,6 +178,7 @@
 /* Begin PBXFileReference section */
 		F904BA281F8FDE7600092077 /* DefaultSettings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultSettings.json; sourceTree = "<group>"; };
 		F917A1491F917440008C4C57 /* UserDefaults-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults-extension.swift"; sourceTree = "<group>"; };
+		F92BCCFE1FAE823F0042E7BA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F94F1FF91F9037BD00AF5FF8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		F94F1FFB1F90381000AF5FF8 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		F94F1FFD1F90387800AF5FF8 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
@@ -273,6 +274,7 @@
 		F968AE0F1F8D00B20094E967 = {
 			isa = PBXGroup;
 			children = (
+				F92BCCFE1FAE823F0042E7BA /* README.md */,
 				F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */,
 				F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */,
 				F968AE1A1F8D00B20094E967 /* PasswordElephant */,

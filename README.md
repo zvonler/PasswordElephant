@@ -17,6 +17,10 @@ Password Elephant is an OS X application for managing passwords and other sensit
 
 The following github projects are used as sub-repositories:
 
-[Protocol Buffers for Swift](https://github.com/alexeyxo/protobuf-swift)
+[Swift Protobuf](https://github.com/apple/swift-protobuf)
 
 [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift)
+
+## Building
+
+You will need Xcode 9+ to build PasswordElephant. You will also need to follow the instructions to install the Swift Protobuf compiler at [Building and Installing the Code Generator Plugin](https://github.com/apple/swift-protobuf#building-and-installing-the-code-generator-plugin)
