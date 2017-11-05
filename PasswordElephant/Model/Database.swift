@@ -23,7 +23,6 @@ class Database {
         removeObservers()
     }
     
-    
     fileprivate var notificationObservers = [Entry : NSObjectProtocol]()
     
     fileprivate func startObserving(_ entry: Entry) {
@@ -63,11 +62,17 @@ class Database {
 
         NotificationCenter.default.post(name: Notification.Name(rawValue: Database.EntryAddedNotification), object: self)
     }
-
-    func deleteEntry(_ entry: Entry) {
-        if let index = entries.index(of: entry) {
-            entries.remove(at: index)
-            stopObserving(entry)
+    
+    func delete(entries targetEntries: [Entry]) {
+        var modified = false
+        for entry in targetEntries {
+            if let index = entries.index(of: entry) {
+                entries.remove(at: index)
+                stopObserving(entry)
+                modified = true
+            }
+        }
+        if modified {
             NotificationCenter.default.post(name: Notification.Name(rawValue: Database.EntryDeletedNotification), object: self)
         }
     }

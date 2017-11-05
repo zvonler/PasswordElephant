@@ -195,7 +195,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
         let prompt = dialogOKCancel(question: "Delete entry?")
         prompt.beginSheetModal(for: window) { (response) in
             if response == NSApplication.ModalResponse.alertFirstButtonReturn {
-                database.deleteEntry(entry)
+                database.delete(entries: [entry])
                 self.pendingEntry = nil
                 self.entry = nil
                 self.presenting?.dismissViewController(self)

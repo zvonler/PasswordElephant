@@ -147,7 +147,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     }
     
     @IBAction func userConfirmedChoice(_ sender: Any) {
-        tableEntries = filteredEntries()
+        tableEntries = filteredEntries().sort(sortDescriptors: tableView.sortDescriptors)
 
         if searchField.stringValue.isEmpty {
             updateStatusLabel()
@@ -208,8 +208,8 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         promptPanel.beginSheetModal(for: self.view.window!) { (response) in
             if response == NSApplication.ModalResponse.alertFirstButtonReturn {
                 let date = self.datePicker.dateValue
-                for rowIndex in self.tableView.selectedRowIndexes {
-                    self.tableEntries[rowIndex].setPasswordChanged(date)
+                for entry in self.selectedEntries {
+                    entry.setPasswordChanged(date)
                 }
             }
         }
@@ -219,17 +219,21 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         guard !selectedEntries.isEmpty else { __NSBeep(); return }
         guard let window = view.window else { return }
         
-        let count = selectedEntries.count
-        let prompt = dialogOKCancel(question: count > 1 ? "Delete \(count) entries?" : "Delete entry?")
-        prompt.beginSheetModal(for: window) { (response) in
-            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
-                for entry in self.selectedEntries {
-                    self.archive?.database.deleteEntry(entry)
+        let targets = selectedEntries
+        
+        if let event = NSApp.currentEvent, event.modifierFlags.contains(.command) {
+            archive?.database.delete(entries: targets)
+        } else {
+            let count = selectedEntries.count
+            let prompt = dialogOKCancel(question: count > 1 ? "Delete \(count) entries?" : "Delete entry?")
+            prompt.beginSheetModal(for: window) { (response) in
+                if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                    self.archive?.database.delete(entries: targets)
                 }
             }
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSSearchFieldDelegate
 
@@ -329,12 +333,12 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     fileprivate func databaseUpdated() {
         updateStatusLabel()
-        tableEntries = filteredEntries()
+        tableEntries = filteredEntries().sort(sortDescriptors: tableView.sortDescriptors)
         tableView.reloadData()
     }
     
     fileprivate func withPassword(forFilename filename: String, body: @escaping (String) -> ()) {
-        withUserInput(forPrompt: "Emter password", informativeText: "\(filename)", secure: true) { (password) in
+        withUserInput(forPrompt: "Enter password", informativeText: "\(filename)", secure: true) { (password) in
             body(password)
         }
     }

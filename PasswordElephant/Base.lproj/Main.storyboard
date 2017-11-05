@@ -153,13 +153,21 @@
                                                 <action selector="pasteAsPlainText:" target="Ady-hI-5gd" id="cEh-KX-wJQ"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Delete" id="pa3-QI-u2k">
+                                        <menuItem title="Delete..." id="pa3-QI-u2k">
                                             <string key="keyEquivalent" base64-UTF8="YES">
 CA
 </string>
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="delete:" target="Ady-hI-5gd" id="0Mk-Ml-PaM"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Force Delete" id="naJ-gl-p6d">
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                            <connections>
+                                                <action selector="delete:" target="Ady-hI-5gd" id="Umm-uB-OTl"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Select All" keyEquivalent="a" id="Ruw-6m-B2m">
