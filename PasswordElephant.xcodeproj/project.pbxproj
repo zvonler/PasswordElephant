@@ -70,7 +70,7 @@
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).pb.swift",
 			);
-			script = "set -e -x\nprotoc --swift_out=\"$DERIVED_FILE_DIR\" -I\"$INPUT_FILE_DIR\" \"$INPUT_FILE_PATH\"";
+			script = "set -e -x\n$SRCROOT/BuildSupport/bin/protoc --swift_out=\"$DERIVED_FILE_DIR\" -I\"$INPUT_FILE_DIR\" \"$INPUT_FILE_PATH\"";
 		};
 /* End PBXBuildRule section */
 
