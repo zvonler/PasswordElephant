@@ -10,18 +10,9 @@
 		F904BA291F8FDE7600092077 /* DefaultSettings.json in Resources */ = {isa = PBXBuildFile; fileRef = F904BA281F8FDE7600092077 /* DefaultSettings.json */; };
 		F917A14A1F917440008C4C57 /* UserDefaults-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F917A1491F917440008C4C57 /* UserDefaults-extension.swift */; };
 		F92BCD081FAE862F0042E7BA /* NSViewController-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92BCD071FAE862F0042E7BA /* NSViewController-extension.swift */; };
-		F92FD6691F8D07F500B64C5F /* PasswordSafeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4B1F8D020C0094E967 /* PasswordSafeField.swift */; };
-		F92FD66A1F8D07F500B64C5F /* PasswordSafeDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4D1F8D020C0094E967 /* PasswordSafeDB.swift */; };
-		F92FD66B1F8D07F500B64C5F /* PasswordSafeRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4E1F8D020C0094E967 /* PasswordSafeRecord.swift */; };
-		F92FD66C1F8D081B00B64C5F /* PasswordElephant.proto in Resources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
-		F92FD66D1F8D083600B64C5F /* PasswordElephant.proto in Sources */ = {isa = PBXBuildFile; fileRef = F968AE481F8D020C0094E967 /* PasswordElephant.proto */; };
 		F94F1FFA1F9037BD00AF5FF8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FF91F9037BD00AF5FF8 /* Database.swift */; };
 		F94F1FFC1F90381000AF5FF8 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFB1F90381000AF5FF8 /* Entry.swift */; };
 		F94F1FFE1F90387800AF5FF8 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFD1F90387800AF5FF8 /* Feature.swift */; };
-		F94F20021F9046A900AF5FF8 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE4C1F8D020C0094E967 /* Archive.swift */; };
-		F94F20031F9046A900AF5FF8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FF91F9037BD00AF5FF8 /* Database.swift */; };
-		F94F20041F9046A900AF5FF8 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFB1F90381000AF5FF8 /* Entry.swift */; };
-		F94F20051F9046A900AF5FF8 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFD1F90387800AF5FF8 /* Feature.swift */; };
 		F96686011FA1961F00E33E4B /* SwiftProtobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F96685F41FA1961000E33E4B /* SwiftProtobuf.framework */; };
 		F96686021FA1961F00E33E4B /* SwiftProtobuf.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F96685F41FA1961000E33E4B /* SwiftProtobuf.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F968AE1C1F8D00B20094E967 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F968AE1B1F8D00B20094E967 /* AppDelegate.swift */; };
@@ -45,22 +36,9 @@
 		F9EF144A1F8DBA480053FE2A /* ImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14491F8DBA480053FE2A /* ImportTests.swift */; };
 		F9EF144C1F8DBC2B0053FE2A /* String-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */; };
 		F9EF14531F8DBE960053FE2A /* password_safe_2.dat in Resources */ = {isa = PBXBuildFile; fileRef = F9EF14511F8DBE960053FE2A /* password_safe_2.dat */; };
-		F9EF14541F8DC0030053FE2A /* String-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */; };
-		F9EF14551F8DC0060053FE2A /* Data-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14471F8DB69D0053FE2A /* Data-extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
-		F92FD66E1F8D084400B64C5F /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			filePatterns = "*.proto";
-			fileType = pattern.proxy;
-			isEditable = 1;
-			outputFiles = (
-				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).pb.swift",
-			);
-			script = "set -e -x\nprotoc --swift_out=\"$DERIVED_FILE_DIR\" -I\"$INPUT_FILE_DIR\" \"$INPUT_FILE_PATH\"";
-		};
 		F968AE751F8D02F50094E967 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
@@ -397,7 +375,6 @@
 				F968AE281F8D00B20094E967 /* Resources */,
 			);
 			buildRules = (
-				F92FD66E1F8D084400B64C5F /* PBXBuildRule */,
 			);
 			dependencies = (
 				F968AE2C1F8D00B20094E967 /* PBXTargetDependency */,
@@ -544,7 +521,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F92FD66C1F8D081B00B64C5F /* PasswordElephant.proto in Resources */,
 				F9EF14531F8DBE960053FE2A /* password_safe_2.dat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -581,18 +557,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F94F20051F9046A900AF5FF8 /* Feature.swift in Sources */,
-				F92FD66D1F8D083600B64C5F /* PasswordElephant.proto in Sources */,
-				F94F20021F9046A900AF5FF8 /* Archive.swift in Sources */,
 				F968AE2F1F8D00B20094E967 /* PasswordElephantTests.swift in Sources */,
-				F9EF14541F8DC0030053FE2A /* String-extension.swift in Sources */,
-				F92FD66B1F8D07F500B64C5F /* PasswordSafeRecord.swift in Sources */,
 				F9EF144A1F8DBA480053FE2A /* ImportTests.swift in Sources */,
-				F94F20041F9046A900AF5FF8 /* Entry.swift in Sources */,
-				F92FD6691F8D07F500B64C5F /* PasswordSafeField.swift in Sources */,
-				F92FD66A1F8D07F500B64C5F /* PasswordSafeDB.swift in Sources */,
-				F94F20031F9046A900AF5FF8 /* Database.swift in Sources */,
-				F9EF14551F8DC0060053FE2A /* Data-extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,6 +705,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JFYM87G8N9;
@@ -746,6 +713,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -755,6 +723,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JFYM87G8N9;
@@ -762,6 +731,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
@@ -771,6 +741,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JFYM87G8N9;
@@ -778,6 +749,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephantTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PasswordElephant.app/Contents/MacOS/PasswordElephant";
 			};
@@ -788,6 +760,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JFYM87G8N9;
@@ -795,6 +768,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephantTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PasswordElephant.app/Contents/MacOS/PasswordElephant";
 			};
