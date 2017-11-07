@@ -174,9 +174,9 @@ class PasswordElephantTests: XCTestCase {
         // Confirm the notes feature of each entry are not the same
         XCTAssertNotEqual(returned_a.notes, returned_b.notes)
         
-        pedb.database.deleteEntry(returned_a)
+        pedb.database.delete(entries: [returned_a])
         XCTAssertEqual(pedb.database.count, 1)
-        pedb.database.deleteEntry(returned_b)
+        pedb.database.delete(entries: [returned_b])
         XCTAssertEqual(pedb.database.count, 0)
     }
 }
