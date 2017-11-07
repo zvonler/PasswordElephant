@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31EA982D1FB206E6005E7D4F /* PasswordElephant.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EA982C1FB206E6005E7D4F /* PasswordElephant.pb.swift */; };
 		F904BA291F8FDE7600092077 /* DefaultSettings.json in Resources */ = {isa = PBXBuildFile; fileRef = F904BA281F8FDE7600092077 /* DefaultSettings.json */; };
 		F917A14A1F917440008C4C57 /* UserDefaults-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F917A1491F917440008C4C57 /* UserDefaults-extension.swift */; };
-		F91AB94C1FB1791100687782 /* PasswordElephant.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91AB94B1FB1791100687782 /* PasswordElephant.pb.swift */; };
 		F92BCD081FAE862F0042E7BA /* NSViewController-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92BCD071FAE862F0042E7BA /* NSViewController-extension.swift */; };
 		F94F1FFA1F9037BD00AF5FF8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FF91F9037BD00AF5FF8 /* Database.swift */; };
 		F94F1FFC1F90381000AF5FF8 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F1FFB1F90381000AF5FF8 /* Entry.swift */; };
@@ -155,9 +155,9 @@
 
 /* Begin PBXFileReference section */
 		31EA981A1FB20495005E7D4F /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
+		31EA982C1FB206E6005E7D4F /* PasswordElephant.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordElephant.pb.swift; sourceTree = "<group>"; };
 		F904BA281F8FDE7600092077 /* DefaultSettings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultSettings.json; sourceTree = "<group>"; };
 		F917A1491F917440008C4C57 /* UserDefaults-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults-extension.swift"; sourceTree = "<group>"; };
-		F91AB94B1FB1791100687782 /* PasswordElephant.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PasswordElephant.pb.swift; path = "../../Library/Developer/Xcode/DerivedData/PasswordElephant-gwnikljxsacumxcjqinsaswidsdn/Build/Intermediates.noindex/PasswordElephant.build/Debug/PasswordElephant.build/DerivedSources/PasswordElephant.pb.swift"; sourceTree = "<group>"; };
 		F92BCCFE1FAE823F0042E7BA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F92BCD071FAE862F0042E7BA /* NSViewController-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSViewController-extension.swift"; sourceTree = "<group>"; };
 		F94F1FF91F9037BD00AF5FF8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -262,7 +262,6 @@
 				F968AE1A1F8D00B20094E967 /* PasswordElephant */,
 				F968AE2D1F8D00B20094E967 /* PasswordElephantTests */,
 				F968AE191F8D00B20094E967 /* Products */,
-				F91AB94B1FB1791100687782 /* PasswordElephant.pb.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -305,6 +304,7 @@
 		F968AE4A1F8D020C0094E967 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				31EA982C1FB206E6005E7D4F /* PasswordElephant.pb.swift */,
 				F968AE4C1F8D020C0094E967 /* Archive.swift */,
 				F94F1FF91F9037BD00AF5FF8 /* Database.swift */,
 				F94F1FFB1F90381000AF5FF8 /* Entry.swift */,
@@ -538,15 +538,14 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/PasswordElephant/Model/PasswordElephant.proto",
-				"$(SRCROOT)/PasswordElephant/Model",
 			);
 			name = "Run protoc";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/PasswordElephant.pb.swift",
+				"$(SRCROOT)/PasswordElephant/Model/PasswordElephant.pb.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e -x\n$SRCROOT/BuildSupport/bin/protoc --plugin=BuildSupport/bin/protoc-gen-swift --swift_out=\"$DERIVED_FILE_DIR\" \"$SCRIPT_INPUT_FILE_0\" -I\"$SCRIPT_INPUT_FILE_1\"";
+			shellScript = "set -e -x\ndir=\"${SCRIPT_INPUT_FILE_0%/*}\"\n$SRCROOT/BuildSupport/bin/protoc --plugin=BuildSupport/bin/protoc-gen-swift --swift_out=\"$dir\" \"$SCRIPT_INPUT_FILE_0\" -I\"$dir\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -563,7 +562,7 @@
 				F9EF14481F8DB69D0053FE2A /* Data-extension.swift in Sources */,
 				F94F1FFA1F9037BD00AF5FF8 /* Database.swift in Sources */,
 				F94F1FFE1F90387800AF5FF8 /* Feature.swift in Sources */,
-				F91AB94C1FB1791100687782 /* PasswordElephant.pb.swift in Sources */,
+				31EA982D1FB206E6005E7D4F /* PasswordElephant.pb.swift in Sources */,
 				F968AE541F8D020C0094E967 /* Archive.swift in Sources */,
 				F92BCD081FAE862F0042E7BA /* NSViewController-extension.swift in Sources */,
 				F968AE531F8D020C0094E967 /* PasswordSafeField.swift in Sources */,
