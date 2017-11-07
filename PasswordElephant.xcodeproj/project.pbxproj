@@ -154,6 +154,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		31EA981A1FB20495005E7D4F /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		F904BA281F8FDE7600092077 /* DefaultSettings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DefaultSettings.json; sourceTree = "<group>"; };
 		F917A1491F917440008C4C57 /* UserDefaults-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults-extension.swift"; sourceTree = "<group>"; };
 		F91AB94B1FB1791100687782 /* PasswordElephant.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PasswordElephant.pb.swift; path = "../../Library/Developer/Xcode/DerivedData/PasswordElephant-gwnikljxsacumxcjqinsaswidsdn/Build/Intermediates.noindex/PasswordElephant.build/Debug/PasswordElephant.build/DerivedSources/PasswordElephant.pb.swift"; sourceTree = "<group>"; };
@@ -254,6 +255,7 @@
 		F968AE0F1F8D00B20094E967 = {
 			isa = PBXGroup;
 			children = (
+				31EA981A1FB20495005E7D4F /* Signing.xcconfig */,
 				F92BCCFE1FAE823F0042E7BA /* README.md */,
 				F96685E91FA1961000E33E4B /* SwiftProtobuf.xcodeproj */,
 				F968AE581F8D02C60094E967 /* CryptoSwift.xcodeproj */,
@@ -617,6 +619,7 @@
 /* Begin XCBuildConfiguration section */
 		F968AE3C1F8D00B20094E967 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 31EA981A1FB20495005E7D4F /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -674,6 +677,7 @@
 		};
 		F968AE3D1F8D00B20094E967 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 31EA981A1FB20495005E7D4F /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -729,7 +733,6 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JFYM87G8N9;
 				INFOPLIST_FILE = PasswordElephant/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephant;
@@ -747,7 +750,6 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JFYM87G8N9;
 				INFOPLIST_FILE = PasswordElephant/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephant;
@@ -765,7 +767,6 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JFYM87G8N9;
 				INFOPLIST_FILE = PasswordElephantTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephantTests;
@@ -784,7 +785,6 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JFYM87G8N9;
 				INFOPLIST_FILE = PasswordElephantTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.relnova.PasswordElephantTests;
