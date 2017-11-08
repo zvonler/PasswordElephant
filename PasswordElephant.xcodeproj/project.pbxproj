@@ -31,6 +31,8 @@
 		F9867F881F9D2916001BE9E6 /* PasswordGeneratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9867F871F9D2916001BE9E6 /* PasswordGeneratorViewController.swift */; };
 		F9867F8D1F9D4328001BE9E6 /* ClipboardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9867F8C1F9D4328001BE9E6 /* ClipboardClient.swift */; };
 		F9867F8F1F9F03F4001BE9E6 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9867F8E1F9F03F4001BE9E6 /* PasswordGenerator.swift */; };
+		F98F10DF1FB2B8D800D3E132 /* DatabasePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98F10DE1FB2B8D800D3E132 /* DatabasePresenter.swift */; };
+		F98F10E81FB2B8FD00D3E132 /* Sequence-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98F10E71FB2B8FD00D3E132 /* Sequence-extension.swift */; };
 		F9EF14481F8DB69D0053FE2A /* Data-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14471F8DB69D0053FE2A /* Data-extension.swift */; };
 		F9EF144A1F8DBA480053FE2A /* ImportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF14491F8DBA480053FE2A /* ImportTests.swift */; };
 		F9EF144C1F8DBC2B0053FE2A /* String-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */; };
@@ -184,6 +186,8 @@
 		F9867F871F9D2916001BE9E6 /* PasswordGeneratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorViewController.swift; sourceTree = "<group>"; };
 		F9867F8C1F9D4328001BE9E6 /* ClipboardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardClient.swift; sourceTree = "<group>"; };
 		F9867F8E1F9F03F4001BE9E6 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
+		F98F10DE1FB2B8D800D3E132 /* DatabasePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabasePresenter.swift; sourceTree = "<group>"; };
+		F98F10E71FB2B8FD00D3E132 /* Sequence-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence-extension.swift"; sourceTree = "<group>"; };
 		F9EF14471F8DB69D0053FE2A /* Data-extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data-extension.swift"; sourceTree = "<group>"; };
 		F9EF14491F8DBA480053FE2A /* ImportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportTests.swift; sourceTree = "<group>"; };
 		F9EF144B1F8DBC2B0053FE2A /* String-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String-extension.swift"; sourceTree = "<group>"; };
@@ -286,6 +290,7 @@
 				F904BA271F8FDE7600092077 /* Resources */,
 				F968AE1B1F8D00B20094E967 /* AppDelegate.swift */,
 				F968AE251F8D00B20094E967 /* PasswordElephant.entitlements */,
+				F98F10DE1FB2B8D800D3E132 /* DatabasePresenter.swift */,
 			);
 			path = PasswordElephant;
 			sourceTree = "<group>";
@@ -333,6 +338,7 @@
 				F917A1491F917440008C4C57 /* UserDefaults-extension.swift */,
 				F9867F8C1F9D4328001BE9E6 /* ClipboardClient.swift */,
 				F92BCD071FAE862F0042E7BA /* NSViewController-extension.swift */,
+				F98F10E71FB2B8FD00D3E132 /* Sequence-extension.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -565,12 +571,14 @@
 				31EA982D1FB206E6005E7D4F /* PasswordElephant.pb.swift in Sources */,
 				F968AE541F8D020C0094E967 /* Archive.swift in Sources */,
 				F92BCD081FAE862F0042E7BA /* NSViewController-extension.swift in Sources */,
+				F98F10DF1FB2B8D800D3E132 /* DatabasePresenter.swift in Sources */,
 				F968AE531F8D020C0094E967 /* PasswordSafeField.swift in Sources */,
 				F917A14A1F917440008C4C57 /* UserDefaults-extension.swift in Sources */,
 				F968AE561F8D020C0094E967 /* PasswordSafeRecord.swift in Sources */,
 				F9867F881F9D2916001BE9E6 /* PasswordGeneratorViewController.swift in Sources */,
 				F968AE1C1F8D00B20094E967 /* AppDelegate.swift in Sources */,
 				F968AE551F8D020C0094E967 /* PasswordSafeDB.swift in Sources */,
+				F98F10E81FB2B8FD00D3E132 /* Sequence-extension.swift in Sources */,
 				F9867F8D1F9D4328001BE9E6 /* ClipboardClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

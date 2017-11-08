@@ -59,11 +59,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
     
     @IBAction func newDocument(_ sender: Any) {
-        archiveHandler?.closeArchive()
+        archiveHandler?.discardDatabase()
     }
     
     @IBAction func performClose(_ sender: Any) {
-        archiveHandler?.closeArchive()
+        archiveHandler?.discardDatabase()
     }
 
     @IBAction func openDocument(_ sender: Any) {
@@ -135,8 +135,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
         }
     }
     
-    fileprivate var archiveHandler: ArchiveHandler? {
-        return NSApplication.shared.keyWindow?.contentViewController as? ArchiveHandler
+    fileprivate var archiveHandler: DatabasePresenter? {
+        return NSApplication.shared.keyWindow?.contentViewController as? DatabasePresenter
     }
 
     fileprivate func addToRecentFiles(_ path: String) {

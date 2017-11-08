@@ -8,35 +8,8 @@
 
 import Cocoa
 
-protocol ArchiveHandler {
-    var view: NSView { get }
-    
-    func canSave() -> Bool
-    func closeArchive()
-    func importFile(filename: String)
-    func openArchive(filename: String)
-    func saveArchive()
-    func saveArchiveAs(filename: String)
-}
 
-extension Sequence where Iterator.Element : AnyObject {
-    /// Return an `Array` containing the sorted elements of `source`
-    /// using criteria stored in a NSSortDescriptors array.
-    public func sort(sortDescriptors theSortDescs: [NSSortDescriptor]) -> [Self.Iterator.Element] {
-        return sorted {
-            for sortDesc in theSortDescs {
-                switch sortDesc.compare($0, to: $1) {
-                case .orderedAscending: return true
-                case .orderedDescending: return false
-                case .orderedSame: continue
-                }
-            }
-            return false
-        }
-    }
-}
-
-class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, ArchiveHandler {
+class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, DatabasePresenter {
 
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -78,7 +51,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         }
     }
     
-    func closeArchive() {
+    func discardDatabase() {
         archive = Archive()
     }
     
