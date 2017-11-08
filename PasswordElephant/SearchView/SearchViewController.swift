@@ -112,6 +112,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var passwordLifetimeCountCombox: NSComboBox!
     @IBOutlet weak var passwordLifetimeUnitsCombox: NSComboBox!
     @IBOutlet var datePicker: NSDatePicker!
+    @IBOutlet weak var pwExpirationColumn: NSTableColumn!
     
     @IBAction func newEntry(_ sender: Any) {
         selectedEntry = nil
@@ -234,6 +235,26 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
 
     func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
         arrangeEntries()
+    }
+    
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let cell = tableView.makeView(withIdentifier: (tableColumn?.identifier)!, owner: self) as! NSTableCellView
+        if tableColumn === pwExpirationColumn {
+            cell.textField?.textColor = colorForPasswordExpiration(arrangedEntries[row].pwExpiration)
+        }
+        return cell
+    }
+    
+    private func colorForPasswordExpiration(_ expiration: Date?) -> NSColor? {
+        guard let expiration = expiration else { return nil }
+        let timeRemaining = expiration.timeIntervalSinceNow
+        if timeRemaining < 0 {
+            return NSColor.red
+        } else if timeRemaining < 7 * 8600 {
+            return NSColor.yellow
+        } else {
+            return NSColor.systemGreen
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////

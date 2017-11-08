@@ -764,7 +764,7 @@ CA
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
-                                                            <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="pwExpired"/>
+                                                            <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="pwExpiration"/>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="WYI-kL-QzV">
@@ -891,6 +891,7 @@ CA
                         <outlet property="passwordLifetimeCountCombox" destination="cvP-rT-ag0" id="n0M-aP-EKf"/>
                         <outlet property="passwordLifetimePickerView" destination="HeP-A2-IfY" id="lLD-gs-S1g"/>
                         <outlet property="passwordLifetimeUnitsCombox" destination="2m1-qN-IZz" id="drh-SN-9nc"/>
+                        <outlet property="pwExpirationColumn" destination="vet-fI-X4R" id="IGs-Pf-PPA"/>
                         <outlet property="searchField" destination="8Yg-eW-9z9" id="7mu-ZT-GvS"/>
                         <outlet property="statusLabel" destination="dZ7-1v-FRZ" id="Da4-lV-7Kr"/>
                         <outlet property="tableView" destination="sbr-GQ-B2B" id="rS6-NT-LlR"/>
