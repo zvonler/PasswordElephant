@@ -21,7 +21,7 @@ enum PasswordElephantDBError: Error {
 public class Archive {
     var filename: String?
     var password: String?
-    var database = Database()
+    var database: Database
     
     private static let FILE_MAGIC = "PEDB"
     private static let FILE_VERSION = 1
@@ -41,7 +41,9 @@ public class Archive {
         return hash
     }
  
-    init() { }
+    init(database: Database? = nil) {
+        self.database = database != nil ? database! : Database()
+    }
     
     // Opens an archive on disk using the provided password.
     init(filename: String, password: String) throws {

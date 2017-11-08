@@ -13,9 +13,9 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
 
     override func viewWillAppear() {
         super.viewWillAppear()
-        archive = Archive()
         view.window?.initialFirstResponder = searchField
-        updateStatusLabel()
+        database = Database()
+        showDatabaseStatus()
     }
     
     fileprivate let newEntrySegueID = NSStoryboardSegue.Identifier(rawValue: "NewEntry")
@@ -26,11 +26,11 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         switch id {
         case showEntryDetailsSegueID:
             guard let selected = selectedEntry, let vc = segue.destinationController as? EntryDetailsViewController else { return }
-            vc.database = archive?.database
+            vc.database = database
             vc.entry = selected
         case newEntrySegueID:
             guard let vc = segue.destinationController as? EntryDetailsViewController else { return }
-            vc.database = archive?.database
+            vc.database = database
             vc.entry = nil
         default: break
         }
@@ -39,49 +39,66 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     ////////////////////////////////////////////////////////////////////////
     // MARK: - ArchiveHandler
 
+    var filename: String? = nil
+    var password: String? = nil
+    
     func canSave() -> Bool {
-        return archive?.canSave() ?? false
+        return filename != nil && password != nil
     }
     
     func openArchive(filename: String) {
         withPassword(forFilename: filename) { (password) in
             self.tryOrShowError(prefix: "Error opening \(filename)") {
-                self.archive = try Archive(filename: filename, password: password)
+                let archive = try Archive(filename: filename, password: password)
+                self.filename = filename
+                self.password = password
+                self.databaseModified = false
+                self.database = archive.database
             }
         }
     }
     
     func discardDatabase() {
-        archive = Archive()
+        database = Database()
     }
     
     func importFile(filename: String) {
         withPassword(forFilename: filename) { (password) in
             self.tryOrShowError(prefix: "Error importing \(filename)") {
+                let archive = try Archive(pwsafeDB: try PasswordSafeDB(filename: filename, password: password))
 
                 // !@# Might be nice to merge the incoming entries with whatever is already stored
-
-                self.archive = try Archive(pwsafeDB: try PasswordSafeDB(filename: filename, password: password))
+                self.database = archive.database
+                
+                self.databaseModified = false
             }
         }
     }
     
     func saveArchiveAs(filename: String) {
-        guard let archive = archive else { return }
         withPassword(forFilename: filename) { (password) in
             self.tryOrShowError(prefix: "Error writing archive to \(filename)") {
+                let archive = Archive(database: self.database)
                 archive.filename = filename
                 archive.password = password
                 try archive.write()
-                self.updateStatusLabel()
+                self.filename = filename
+                self.password = password
+                self.databaseModified = false
+                self.showDatabaseStatus()
             }
         }
     }
     
     func saveArchive() {
-        guard let archive = archive else { return }
-        self.tryOrShowError(prefix: "Error saving \(archive.filename ?? "nil")") {
+        guard let filename = filename, let password = password else { __NSBeep(); return }
+        self.tryOrShowError(prefix: "Error saving \(filename)") {
+            let archive = Archive(database: database)
+            archive.filename = filename
+            archive.password = password
             try archive.write()
+            self.databaseModified = false
+            self.showDatabaseStatus()
         }
     }
     
@@ -101,23 +118,11 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         performSegue(withIdentifier: newEntrySegueID, sender: self)
     }
     
+    private var filterPattern: String = ""
+    
     @IBAction func userConfirmedChoice(_ sender: Any) {
-        tableEntries = filteredEntries().sort(sortDescriptors: tableView.sortDescriptors)
-
-        if searchField.stringValue.isEmpty {
-            updateStatusLabel()
-        } else {
-            switch tableEntries.count {
-            case 0:
-                statusLabel.stringValue = "No matching records"
-            case 1:
-                showEntryInfo(entry: tableEntries.first!)
-            default:
-                statusLabel.stringValue = "Non-unique input: \(tableEntries.count) matching entries"
-            }
-        }
-        
-        tableView.reloadData()
+        filterPattern = searchField.stringValue.localizedLowercase
+        arrangeEntries()
     }
 
     @IBAction func tableWasDoubleClicked(_ sender: Any) {
@@ -172,18 +177,18 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     
     @IBAction func delete(_ sender: Any) {
         guard !selectedEntries.isEmpty else { __NSBeep(); return }
-        guard let window = view.window else { return }
-        
+        guard let database = database, let window = view.window else { return }
+
         let targets = selectedEntries
         
         if let event = NSApp.currentEvent, event.modifierFlags.contains(.command) {
-            archive?.database.delete(entries: targets)
+            database.delete(entries: targets)
         } else {
             let count = selectedEntries.count
             let prompt = dialogOKCancel(question: count > 1 ? "Delete \(count) entries?" : "Delete entry?")
             prompt.beginSheetModal(for: window) { (response) in
                 if response == NSApplication.ModalResponse.alertFirstButtonReturn {
-                    self.archive?.database.delete(entries: targets)
+                    database.delete(entries: targets)
                 }
             }
         }
@@ -208,11 +213,9 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     func tableViewSelectionDidChange(_ notification: Notification) {
         let rowIndexes = tableView.selectedRowIndexes
         switch rowIndexes.count {
-        case 0:
-            updateStatusLabel()
+        case 0: fallthrough
         case 1:
-            let entry = tableEntries[rowIndexes.first!]
-            showEntryInfo(entry: entry)
+            showDatabaseStatus()
         default:
             statusLabel.stringValue = "\(rowIndexes.count) entries selected"
         }
@@ -222,19 +225,15 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     // MARK: - NSTableViewDataSource
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return tableEntries.count
+        return arrangedEntries.count
     }
 
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        return tableEntries[row]
+        return arrangedEntries[row]
     }
 
     func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
-        guard let sortDescriptor = tableView.sortDescriptors.first else {
-            return
-        }
-        tableEntries = tableEntries.sort(sortDescriptors: [sortDescriptor])
-        tableView.reloadData()
+        arrangeEntries()
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -244,37 +243,48 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
 
     fileprivate var tableEntries = [Entry]()
     
-    fileprivate var archive: Archive? {
+    fileprivate var arrangedEntries = [Entry]()
+    
+    var database: Database? {
         didSet {
+            guard let database = database else { return }
             removeObservers()
-            updateStatusLabel()
-            tableEntries = filteredEntries()
-            tableView.reloadData()
             createObservers()
+            tableEntries = database.entries
+            arrangeEntries()
+            showDatabaseStatus()
         }
+    }
+    
+    private func arrangeEntries() {
+        let visibleEntries = tableEntries.flatMap({ shouldShow($0) ? $0 : nil })
+        self.arrangedEntries = visibleEntries.sort(sortDescriptors: tableView.sortDescriptors)
+        tableView.reloadData()
+    }
+    
+    private func shouldShow(_ entry: Entry) -> Bool {
+        return filterPattern.isEmpty || entry.matchesFilterPattern(filterPattern)
     }
     
     fileprivate var notificationObservers = [NSObjectProtocol]()
     
     fileprivate func createObservers() {
-        guard let archive = archive else { return }
-        if notificationObservers.isEmpty {
-            let center = NotificationCenter.default
-            notificationObservers = [
-                center.addObserver(forName: NSNotification.Name(rawValue: Database.EntryAddedNotification), object: archive.database, queue: .main) { [weak self] (note) in
-                    guard let me = self else { return }
-                    me.databaseUpdated()
-                },
-                center.addObserver(forName: NSNotification.Name(rawValue: Database.EntryUpdatedNotification), object: archive.database, queue: .main) { [weak self] (note) in
-                    guard let me = self else { return }
-                    me.databaseUpdated()
-                },
-                center.addObserver(forName: NSNotification.Name(rawValue: Database.EntryDeletedNotification), object: archive.database, queue: .main) { [weak self] (note) in
-                    guard let me = self else { return }
-                    me.databaseUpdated()
-                },
-            ]
-        }
+        guard notificationObservers.isEmpty else { return }
+        let center = NotificationCenter.default
+        notificationObservers = [
+            center.addObserver(forName: NSNotification.Name(rawValue: Database.EntryAddedNotification), object: database, queue: .main) { [weak self] (note) in
+                guard let me = self else { return }
+                me.databaseUpdated()
+            },
+            center.addObserver(forName: NSNotification.Name(rawValue: Database.EntryUpdatedNotification), object: database, queue: .main) { [weak self] (note) in
+                guard let me = self else { return }
+                me.databaseUpdated()
+            },
+            center.addObserver(forName: NSNotification.Name(rawValue: Database.EntryDeletedNotification), object: database, queue: .main) { [weak self] (note) in
+                guard let me = self else { return }
+                me.databaseUpdated()
+            },
+        ]
     }
     
     fileprivate func removeObservers() {
@@ -287,9 +297,11 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     }
     
     fileprivate func databaseUpdated() {
-        updateStatusLabel()
-        tableEntries = filteredEntries().sort(sortDescriptors: tableView.sortDescriptors)
-        tableView.reloadData()
+        guard let database = database else { return }
+        databaseModified = true
+        showDatabaseStatus()
+        tableEntries = database.entries
+        arrangeEntries()
     }
     
     fileprivate func withPassword(forFilename filename: String, body: @escaping (String) -> ()) {
@@ -341,43 +353,29 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         }
     }
     
-    fileprivate func updateStatusLabel() {
-        guard let archive = archive else { return }
-        if let filename = archive.filename {
-            statusLabel.stringValue = "\(filename): \(archive.database.count) entries"
+    var databaseModified = false // Indicates if database has been modified since it was last saved to an archive
+    
+    fileprivate func showDatabaseStatus() {
+        guard let database = database else { return }
+        if let filename = filename {
+            let indicator = databaseModified ? " *modified*" : ""
+            statusLabel.stringValue = "\(filename): \(database.count) entries" + indicator
         } else {
-            statusLabel.stringValue = "In-memory database: \(archive.database.count) entries"
+            statusLabel.stringValue = "In-memory database: \(database.count) entries"
         }
     }
     
-    fileprivate func filteredEntries() -> [Entry] {
-        guard let archive = archive, !archive.database.isEmpty else { return [] }
-        
-        let pattern = searchField.stringValue
-        
-        if pattern.isEmpty { return archive.database.entries }
-        
-        var matches = [Entry]()
-        for entry in archive.database.entries {
-            if let title = entry.title, title.uppercased().starts(with: pattern.uppercased()) {
-                matches.append(entry)
-            } else if let username = entry.username, username.uppercased().starts(with: pattern.uppercased()) {
-                matches.append(entry)
-            } else if let group = entry.group, group.uppercased().starts(with: pattern.uppercased()) {
-                matches.append(entry)
-            } else if let url = entry.url, url.uppercased().starts(with: pattern.uppercased()) {
-                matches.append(entry)
-            }
-        }
-        return matches
-    }
-
     fileprivate var selectedEntries: [Entry] {
-        return tableView.selectedRowIndexes.map({ tableEntries[$0] })
+        return tableView.selectedRowIndexes.map({ arrangedEntries[$0] })
     }
-    
-    fileprivate func showEntryInfo(entry: Entry) {
-        statusLabel.stringValue = "\(entry.title ?? "N/A") -- \(entry.username ?? "N/A") @ \(entry.url ?? "N/A")"
+}
+
+private extension Entry {
+    func matchesFilterPattern(_ pattern: String) -> Bool {
+        return (group ?? "").localizedLowercase.contains(pattern) ||
+            (title ?? "").localizedLowercase.contains(pattern) ||
+            (username ?? "").localizedLowercase.contains(pattern) ||
+            (url ?? "").localizedLowercase.contains(pattern)
     }
 }
 
