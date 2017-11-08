@@ -38,18 +38,8 @@ extension Sequence where Iterator.Element : AnyObject {
 
 class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, ArchiveHandler {
 
-    override func viewDidLoad() {
-        groupColumn.sortDescriptorPrototype = NSSortDescriptor(key: "group", ascending: true)
-        titleColumn.sortDescriptorPrototype = NSSortDescriptor(key: "title", ascending: true)
-        usernameColumn.sortDescriptorPrototype = NSSortDescriptor(key: "username", ascending: true)
-        createdColumn.sortDescriptorPrototype = NSSortDescriptor(key: "created", ascending: true)
-        modifiedColumn.sortDescriptorPrototype = NSSortDescriptor(key: "modified", ascending: true)
-        passwordChangeColumn.sortDescriptorPrototype = NSSortDescriptor(key: "pwChanged", ascending: true)
-        passwordExpirationColumn.sortDescriptorPrototype = NSSortDescriptor(key: "pwExpiration", ascending: true)
-        urlColumn.sortDescriptorPrototype = NSSortDescriptor(key: "url", ascending: true)
-    }
-    
     override func viewWillAppear() {
+        super.viewWillAppear()
         archive = Archive()
         view.window?.initialFirstResponder = searchField
         updateStatusLabel()
@@ -128,14 +118,6 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var statusLabel: NSTextField!
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var tableView: NSTableView!
-    @IBOutlet weak var groupColumn: NSTableColumn!
-    @IBOutlet weak var titleColumn: NSTableColumn!
-    @IBOutlet weak var usernameColumn: NSTableColumn!
-    @IBOutlet weak var createdColumn: NSTableColumn!
-    @IBOutlet weak var modifiedColumn: NSTableColumn!
-    @IBOutlet weak var passwordChangeColumn: NSTableColumn!
-    @IBOutlet weak var passwordExpirationColumn: NSTableColumn!
-    @IBOutlet weak var urlColumn: NSTableColumn!
     @IBOutlet var passwordLifetimePickerView: NSView!
     @IBOutlet weak var passwordLifetimeCountCombox: NSComboBox!
     @IBOutlet weak var passwordLifetimeUnitsCombox: NSComboBox!
