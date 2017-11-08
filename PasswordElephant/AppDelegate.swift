@@ -16,9 +16,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
     
     func application(_ sender: NSApplication, openFile filename: String) -> Bool {
-        guard let archiveHandler = archiveHandler else { return false }
+        guard let archiveHandler = presenter else { return false }
         archiveHandler.openArchive(filename: filename)
         return true
+    }
+    
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard let presenter = presenter else { return .terminateNow }
+        return presenter.shouldTerminate() ? .terminateNow : .terminateCancel
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -33,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
         case .some(#selector(AppDelegate.saveDocumentAs(_:))): return true
             
         case .some(#selector(AppDelegate.saveDocument(_:))):
-            return archiveHandler?.canSave() ?? false
+            return presenter?.canSave() ?? false
             
         case .some(#selector(AppDelegate.openRecent(_:))):
             updateFromRecentFiles()
@@ -59,15 +64,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
     
     @IBAction func newDocument(_ sender: Any) {
-        archiveHandler?.discardDatabase()
+        presenter?.discardDatabase()
     }
     
     @IBAction func performClose(_ sender: Any) {
-        archiveHandler?.discardDatabase()
+        presenter?.discardDatabase()
     }
 
     @IBAction func openDocument(_ sender: Any) {
-        guard let searchVC = archiveHandler,
+        guard let searchVC = presenter,
             let window = searchVC.view.window else { return }
         
         let dialog = NSOpenPanel()
@@ -88,7 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
     
     @IBAction func importFrom(_ sender: Any) {
-        guard let archiveHandler = archiveHandler,
+        guard let archiveHandler = presenter,
             let window = archiveHandler.view.window else { return }
 
         let dialog = NSOpenPanel()
@@ -108,7 +113,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
 
     @IBAction func saveDocumentAs(_ sender: Any) {
-        guard let archiveHandler = archiveHandler,
+        guard let archiveHandler = presenter,
             let window = archiveHandler.view.window else { return }
 
         let savePanel = NSSavePanel()
@@ -121,7 +126,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
     
     @IBAction func saveDocument(_ sender: Any) {
-        archiveHandler?.saveArchive()
+        presenter?.saveArchive()
     }
 
     fileprivate func updateFromRecentFiles() {
@@ -135,7 +140,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
         }
     }
     
-    fileprivate var archiveHandler: DatabasePresenter? {
+    fileprivate var presenter: DatabasePresenter? {
         return NSApplication.shared.keyWindow?.contentViewController as? DatabasePresenter
     }
 

@@ -9,10 +9,11 @@
 import Cocoa
 
 
-class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, DatabasePresenter {
+class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate, DatabasePresenter {
 
     override func viewWillAppear() {
         super.viewWillAppear()
+        view.window?.delegate = self
         view.window?.initialFirstResponder = searchField
         database = Database()
         showDatabaseStatus()
@@ -37,10 +38,25 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     }
     
     ////////////////////////////////////////////////////////////////////////
-    // MARK: - ArchiveHandler
+    // MARK: - DatabasePresenter
 
     var filename: String? = nil
     var password: String? = nil
+    
+    func shouldTerminate() -> Bool {
+        if !databaseModified { return true }
+        
+        let promptPanel = NSAlert()
+        promptPanel.addButton(withTitle: "OK")
+        promptPanel.addButton(withTitle: "Cancel")
+        promptPanel.messageText = "Exit without saving modified database?"
+        promptPanel.beginSheetModal(for: view.window!) { (response) in
+            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                NSApplication.shared.terminate(nil)
+            }
+        }
+        return false // alert completion handler will post terminate if user requests
+    }
     
     func canSave() -> Bool {
         return filename != nil && password != nil
@@ -195,6 +211,10 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         }
     }
 
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        return shouldTerminate()
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSSearchFieldDelegate
 
@@ -374,7 +394,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
         }
     }
     
-    var databaseModified = false // Indicates if database has been modified since it was last saved to an archive
+    private(set) var databaseModified = false // Indicates if database has been modified since it was last saved to an archive
     
     fileprivate func showDatabaseStatus() {
         guard let database = database else { return }

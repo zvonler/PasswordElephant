@@ -11,6 +11,7 @@ import Cocoa
 protocol DatabasePresenter {
     var view: NSView { get }
     
+    func shouldTerminate() -> Bool
     func canSave() -> Bool
     func discardDatabase()
     func importFile(filename: String)
