@@ -9,7 +9,7 @@
 import Cocoa
 
 
-class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate, DatabasePresenter {
+class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate, DatabasePresenter {
 
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -92,7 +92,7 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     }
     
     func saveArchiveAs(filename: String) {
-        withPassword(forFilename: filename) { (password) in
+        withNewPassword(forFilename: filename) { (password) in
             self.tryOrShowError(prefix: "Error writing archive to \(filename)") {
                 let archive = Archive(database: self.database)
                 archive.filename = filename
@@ -129,6 +129,10 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     @IBOutlet weak var passwordLifetimeUnitsCombox: NSComboBox!
     @IBOutlet var datePicker: NSDatePicker!
     @IBOutlet weak var pwExpirationColumn: NSTableColumn!
+    @IBOutlet var newPasswordPromptView: NSStackView!
+    @IBOutlet weak var newPasswordPromptUpperTextField: NSSecureTextField!
+    @IBOutlet weak var newPasswordPromptMismatchLabel: NSTextField!
+    @IBOutlet weak var newPasswordPromptLowerTextField: NSSecureTextField!
     
     @IBAction func newEntry(_ sender: Any) {
         selectedEntry = nil
@@ -214,18 +218,29 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
     func windowShouldClose(_ sender: NSWindow) -> Bool {
         return shouldTerminate()
     }
+
+    private func updatePasswordPrompt() {
+        guard let alert = newPasswordPromptPanel else { return }
+
+        let upperStr = newPasswordPromptUpperTextField.stringValue
+        let lowerStr = newPasswordPromptLowerTextField.stringValue
+        
+        if upperStr.isEmpty && lowerStr.isEmpty {
+            newPasswordPromptMismatchLabel.stringValue = "Password must be longer"
+            alert.buttons.first?.isEnabled = false
+            return
+        }
+        
+        let match = upperStr == lowerStr
+        newPasswordPromptMismatchLabel.stringValue = match ? "" : "Passwords do not match"
+        alert.buttons.first?.isEnabled = match
+    }
     
     ////////////////////////////////////////////////////////////////////////
-    // MARK: - NSSearchFieldDelegate
-
-    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        if commandSelector == #selector(insertNewline) {
-            if tableEntries.count == 1 {
-                selectedEntry = tableEntries[0]
-                performSegue(withIdentifier: showEntryDetailsSegueID, sender: self)
-            }
-        }
-        return false
+    // MARK: - NSTextFieldDelegate
+    
+    override func controlTextDidChange(_ obj: Notification) {
+        updatePasswordPrompt()
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -350,7 +365,35 @@ class SearchViewController: NSViewController, NSSearchFieldDelegate, NSTableView
             body(password)
         }
     }
+
+    var newPasswordPromptPanel: NSAlert? = nil
     
+    // When getting a new archive password we make the user type it twice
+    fileprivate func withNewPassword(forFilename filename: String, body: @escaping (String) -> ()) {
+        let promptPanel = NSAlert()
+        promptPanel.addButton(withTitle: "OK")
+        promptPanel.addButton(withTitle: "Cancel")
+        promptPanel.messageText = "Enter new password twice"
+        promptPanel.accessoryView = newPasswordPromptView
+
+        guard let upper = newPasswordPromptUpperTextField,
+            let lower = newPasswordPromptLowerTextField
+            else { return }
+
+        newPasswordPromptPanel = promptPanel
+        updatePasswordPrompt()
+        
+        promptPanel.beginSheetModal(for: self.view.window!) { (response) in
+            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                if upper.stringValue == lower.stringValue && !upper.stringValue.isEmpty {
+                    body(upper.stringValue)
+                }
+            }
+            self.newPasswordPromptPanel = nil
+        }
+
+    }
+
     fileprivate func withUserInput(forPrompt prompt: String, informativeText: String?, secure: Bool, body: @escaping (String) -> ()) {
         let promptPanel = NSAlert()
         promptPanel.addButton(withTitle: "OK")

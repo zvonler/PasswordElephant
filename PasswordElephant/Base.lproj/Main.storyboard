@@ -511,7 +511,6 @@ CA
                                             </connections>
                                         </searchFieldCell>
                                         <connections>
-                                            <outlet property="delegate" destination="szA-4U-rKK" id="rmG-pI-Ods"/>
                                             <outlet property="nextKeyView" destination="sbr-GQ-B2B" id="iQA-mC-T4K"/>
                                         </connections>
                                     </searchField>
@@ -886,6 +885,10 @@ CA
                         <outlet property="datePicker" destination="iwN-RX-wHm" id="FzE-7x-HMh"/>
                         <outlet property="groupColumn" destination="fc8-AU-HJc" id="dHt-kW-3er"/>
                         <outlet property="modifiedColumn" destination="euQ-fk-sku" id="aal-Zl-geV"/>
+                        <outlet property="newPasswordPromptLowerTextField" destination="OQj-4U-7Oo" id="NsX-kI-gTp"/>
+                        <outlet property="newPasswordPromptMismatchLabel" destination="iA1-Cn-VfT" id="ser-QA-WY4"/>
+                        <outlet property="newPasswordPromptUpperTextField" destination="380-qa-HFC" id="8gN-DV-fMA"/>
+                        <outlet property="newPasswordPromptView" destination="QFT-Xf-xTp" id="pxN-Vq-C0F"/>
                         <outlet property="passwordChangeColumn" destination="jFZ-Lm-bpE" id="kIK-dq-r21"/>
                         <outlet property="passwordExpirationColumn" destination="vet-fI-X4R" id="lCU-sn-k4Q"/>
                         <outlet property="passwordLifetimeCountCombox" destination="cvP-rT-ag0" id="n0M-aP-EKf"/>
@@ -1034,6 +1037,77 @@ CA
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                     </datePickerCell>
                 </datePicker>
+                <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="QFT-Xf-xTp">
+                    <rect key="frame" x="0.0" y="0.0" width="253" height="77"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <subviews>
+                        <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zVX-To-QZp">
+                            <rect key="frame" x="0.0" y="0.0" width="253" height="77"/>
+                            <subviews>
+                                <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="380-qa-HFC">
+                                    <rect key="frame" x="0.0" y="55" width="253" height="22"/>
+                                    <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="tYr-Kz-yxS">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <allowedInputSourceLocales>
+                                            <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                        </allowedInputSourceLocales>
+                                    </secureTextFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="szA-4U-rKK" id="r2H-fM-bgJ"/>
+                                    </connections>
+                                </secureTextField>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iA1-Cn-VfT">
+                                    <rect key="frame" x="-2" y="30" width="257" height="17"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Passwords do not match" id="AgN-az-JXh">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" red="1" green="0.019891490399700618" blue="0.0" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OQj-4U-7Oo">
+                                    <rect key="frame" x="0.0" y="0.0" width="253" height="22"/>
+                                    <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="ESB-6p-ZEN">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <allowedInputSourceLocales>
+                                            <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                        </allowedInputSourceLocales>
+                                    </secureTextFieldCell>
+                                    <connections>
+                                        <outlet property="delegate" destination="szA-4U-rKK" id="IAp-DG-RnE"/>
+                                    </connections>
+                                </secureTextField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="OQj-4U-7Oo" firstAttribute="width" secondItem="380-qa-HFC" secondAttribute="width" id="gek-ec-N0i"/>
+                                <constraint firstItem="iA1-Cn-VfT" firstAttribute="width" secondItem="380-qa-HFC" secondAttribute="width" id="leF-vJ-dmZ"/>
+                                <constraint firstItem="380-qa-HFC" firstAttribute="width" secondItem="zVX-To-QZp" secondAttribute="width" id="srb-bQ-0mV"/>
+                            </constraints>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="zVX-To-QZp" firstAttribute="height" secondItem="QFT-Xf-xTp" secondAttribute="height" id="7PC-Oa-vb7"/>
+                    </constraints>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
             </objects>
             <point key="canvasLocation" x="76" y="694"/>
         </scene>
