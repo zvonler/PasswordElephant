@@ -254,10 +254,10 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
     
     fileprivate func updatePasswordTextField() {
         if showPassword {
-            passwordTextField.stringValue = entry?.password ?? pendingEntry?.password ?? ""
+            passwordTextField.stringValue = pendingEntry?.password ?? entry?.password ?? ""
             showPasswordButton.title = "Hide Password"
         } else {
-            if entry == nil || (pendingEntry != nil && pendingEntry?.password == nil) {
+            if entry == nil && (pendingEntry != nil && pendingEntry?.password == nil) {
                 passwordTextField.stringValue = ""
             } else {
                 passwordTextField.stringValue = "****************"
