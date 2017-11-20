@@ -881,16 +881,11 @@ CA
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="createdColumn" destination="Js4-W9-Fif" id="BZy-sn-OLo"/>
                         <outlet property="datePicker" destination="iwN-RX-wHm" id="FzE-7x-HMh"/>
-                        <outlet property="groupColumn" destination="fc8-AU-HJc" id="dHt-kW-3er"/>
-                        <outlet property="modifiedColumn" destination="euQ-fk-sku" id="aal-Zl-geV"/>
                         <outlet property="newPasswordPromptLowerTextField" destination="OQj-4U-7Oo" id="NsX-kI-gTp"/>
                         <outlet property="newPasswordPromptMismatchLabel" destination="iA1-Cn-VfT" id="ser-QA-WY4"/>
                         <outlet property="newPasswordPromptUpperTextField" destination="380-qa-HFC" id="8gN-DV-fMA"/>
                         <outlet property="newPasswordPromptView" destination="QFT-Xf-xTp" id="pxN-Vq-C0F"/>
-                        <outlet property="passwordChangeColumn" destination="jFZ-Lm-bpE" id="kIK-dq-r21"/>
-                        <outlet property="passwordExpirationColumn" destination="vet-fI-X4R" id="lCU-sn-k4Q"/>
                         <outlet property="passwordLifetimeCountCombox" destination="cvP-rT-ag0" id="n0M-aP-EKf"/>
                         <outlet property="passwordLifetimePickerView" destination="HeP-A2-IfY" id="lLD-gs-S1g"/>
                         <outlet property="passwordLifetimeUnitsCombox" destination="2m1-qN-IZz" id="drh-SN-9nc"/>
@@ -898,9 +893,6 @@ CA
                         <outlet property="searchField" destination="8Yg-eW-9z9" id="7mu-ZT-GvS"/>
                         <outlet property="statusLabel" destination="dZ7-1v-FRZ" id="Da4-lV-7Kr"/>
                         <outlet property="tableView" destination="sbr-GQ-B2B" id="rS6-NT-LlR"/>
-                        <outlet property="titleColumn" destination="KTt-MH-ObU" id="9gr-mf-tYa"/>
-                        <outlet property="urlColumn" destination="Kvv-q0-hYS" id="Q66-SP-VCv"/>
-                        <outlet property="usernameColumn" destination="Kx0-TQ-cR8" id="UXF-Ou-14q"/>
                         <segue destination="lVv-qh-JGJ" kind="sheet" identifier="ShowEntryDetails" id="ZnY-j5-CzZ"/>
                         <segue destination="lVv-qh-JGJ" kind="sheet" identifier="NewEntry" id="2Zd-7k-xAI"/>
                     </connections>
