@@ -40,10 +40,7 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
     }
     
     override func controlTextDidChange(_ notification: Notification) {
-        if let _ = notification.object as? NSComboBox {
-            beginPendingEdit()
-            updatePasswordLifetime()
-        } else if let textField = notification.object as? NSTextField {
+        if let textField = notification.object as? NSTextField {
             beginPendingEdit()
             guard let pending = pendingEntry else { return }
             
@@ -88,12 +85,21 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
     }
 
     fileprivate func updatePasswordLifetime() {
-        // When called because expirationCountCombox has changed, the stringValue property at this point provides the old value - possibly an Apple bug
+        // When called because a comboBox has changed, the stringValue property at this point provides the old value - possibly an Apple bug
         // https://stackoverflow.com/questions/5265260/comboboxselectiondidchange-gives-me-previously-selected-value
-        let count = expirationCountCombox.indexOfSelectedItem == -1 ? Int(expirationCountCombox.stringValue) ?? 0 : Int(expirationCountCombox.itemObjectValue(at: expirationCountCombox.indexOfSelectedItem) as? String ?? "0") ?? 0
-
+        let count: Int = {
+            guard expirationCountCombox.indexOfSelectedItem != -1,
+                let countStr = expirationCountCombox.itemObjectValue(at: expirationCountCombox.indexOfSelectedItem) as? String,
+                let count = Int(countStr)
+                else { return 0 }
+            return count
+        }()
+        
         let units: PasswordElephant_Entry.PasswordLifetimeUnit = {
-            switch expirationUnitsCombox.stringValue {
+            guard expirationUnitsCombox.indexOfSelectedItem != -1,
+                let unitsStr = expirationUnitsCombox.itemObjectValue(at: expirationUnitsCombox.indexOfSelectedItem) as? String
+                else { return .days }
+            switch unitsStr {
             case "weeks": return .weeks
             case "months": return .months
             default: return .days
