@@ -11,9 +11,10 @@ import Cocoa
 protocol DatabasePresenter {
     var view: NSView { get }
     
-    func shouldTerminate() -> Bool
+    var databaseModified: Bool { get }
+
     func canSave() -> Bool
-    func discardDatabase()
+    func discardDatabase(userPrompt: String, onResponse: @escaping (Bool) -> ())
     func importFile(filename: String)
     func openArchive(filename: String)
     func saveArchive()

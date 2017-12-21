@@ -43,21 +43,6 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     var filename: String? = nil
     var password: String? = nil
     
-    func shouldTerminate() -> Bool {
-        if !databaseModified { return true }
-        
-        let promptPanel = NSAlert()
-        promptPanel.addButton(withTitle: "OK")
-        promptPanel.addButton(withTitle: "Cancel")
-        promptPanel.messageText = "Exit without saving modified database?"
-        promptPanel.beginSheetModal(for: view.window!) { (response) in
-            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
-                NSApplication.shared.terminate(nil)
-            }
-        }
-        return false // alert completion handler will post terminate if user requests
-    }
-    
     func canSave() -> Bool {
         return filename != nil && password != nil
     }
@@ -74,8 +59,27 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
         }
     }
     
-    func discardDatabase() {
-        database = Database()
+    func discardDatabase(userPrompt: String, onResponse: @escaping (Bool) -> ()) {
+        guard databaseModified else {
+            database = Database()
+            databaseModified = false
+            onResponse(true)
+            return
+        }
+        
+        let promptPanel = NSAlert()
+        promptPanel.addButton(withTitle: "OK")
+        promptPanel.addButton(withTitle: "Cancel")
+        promptPanel.messageText = userPrompt
+        promptPanel.beginSheetModal(for: view.window!) { (response) in
+            if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                self.database = Database()
+                self.databaseModified = false
+                onResponse(true)
+            } else {
+                onResponse(false)
+            }
+        }
     }
     
     func importFile(filename: String) {
@@ -171,9 +175,14 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     
     @IBAction func setGroup(_ sender: Any) {
         withUserInput(forPrompt: "Enter new group name", informativeText: nil, secure: false) { (group) in
+            var modified = false
             for entry in self.selectedEntries {
-                entry.setGroup(group)
+                if entry.group != group {
+                    entry.setGroup(group)
+                    modified = true
+                }
             }
+            if modified { self.databaseModified = true }
         }
     }
     
@@ -216,7 +225,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     }
 
     func windowShouldClose(_ sender: NSWindow) -> Bool {
-        return shouldTerminate()
+        return !databaseModified
     }
 
     private func updatePasswordPrompt() {

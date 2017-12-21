@@ -22,8 +22,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
     
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        guard let presenter = presenter else { return .terminateNow }
-        return presenter.shouldTerminate() ? .terminateNow : .terminateCancel
+        guard let presenter = presenter,
+            presenter.databaseModified
+            else { return .terminateNow }
+        
+        presenter.discardDatabase(userPrompt: "Exit without saving modified database?") { allowed in
+            NSApplication.shared.reply(toApplicationShouldTerminate: allowed)
+        }
+        
+        return .terminateLater
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -64,31 +71,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
     }
     
     @IBAction func newDocument(_ sender: Any) {
-        presenter?.discardDatabase()
+        presenter?.discardDatabase(userPrompt: "Discard unsaved changes to current database?", onResponse: { allowed in })
     }
     
     @IBAction func performClose(_ sender: Any) {
-        presenter?.discardDatabase()
+        presenter?.discardDatabase(userPrompt: "Close modified database without saving?", onResponse: { allowed in })
     }
 
     @IBAction func openDocument(_ sender: Any) {
-        guard let searchVC = presenter,
-            let window = searchVC.view.window else { return }
-        
-        let dialog = NSOpenPanel()
-        
-        dialog.title                   = "Choose database file"
-        dialog.showsResizeIndicator    = true
-        dialog.showsHiddenFiles        = true
-        dialog.canChooseDirectories    = false
-        dialog.canCreateDirectories    = false
-        dialog.allowsMultipleSelection = false
-        
-        dialog.beginSheetModal(for: window) { (response) in
-            guard response == NSApplication.ModalResponse.OK else { return }
-            let path = dialog.urls.first!.path
-            self.addToRecentFiles(path)
-            searchVC.openArchive(filename: path)
+        guard let presenter = presenter,
+            let window = presenter.view.window else { return }
+
+        presenter.discardDatabase(userPrompt: "Discard changes to current database?") { allowed in
+            guard allowed else { return }
+            
+            let dialog = NSOpenPanel()
+            
+            dialog.title                   = "Choose database file"
+            dialog.showsResizeIndicator    = true
+            dialog.showsHiddenFiles        = true
+            dialog.canChooseDirectories    = false
+            dialog.canCreateDirectories    = false
+            dialog.allowsMultipleSelection = false
+            
+            dialog.beginSheetModal(for: window) { (response) in
+                guard response == NSApplication.ModalResponse.OK else { return }
+                let path = dialog.urls.first!.path
+                self.addToRecentFiles(path)
+                presenter.openArchive(filename: path)
+            }
         }
     }
     
