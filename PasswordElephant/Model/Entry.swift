@@ -26,6 +26,7 @@ class Entry: NSObject {
         }
         passwordLifetimeUnits = protoBuf.passwordLifetimeUnits
         passwordLifetimeCount = Int(protoBuf.passwordLifetimeCount)
+        inactive = protoBuf.inactive
     }
 
     convenience init(from other: Entry) {
@@ -39,6 +40,7 @@ class Entry: NSObject {
         for feature in other.features {
             replaceFeature(Feature(category: feature.category, content: feature.content))
         }
+        inactive = other.inactive
     }
     
     // Imports a PasswordSafeRecord into an Entry.
@@ -61,17 +63,13 @@ class Entry: NSObject {
             }
         }
     }
-
-    override func isEqual(_ object: Any?) -> Bool {
-        guard let rhs = object as? Entry else { return false }
-        return features == rhs.features
-    }
     
     func toProto() throws -> PasswordElephant_Entry {
         var entryProto = PasswordElephant_Entry()
         entryProto.features = try features.map({ try $0.toProto() })
         entryProto.passwordLifetimeUnits = passwordLifetimeUnits
         entryProto.passwordLifetimeCount = Int32(passwordLifetimeCount)
+        entryProto.inactive = inactive
         return entryProto
     }
     
@@ -87,6 +85,10 @@ class Entry: NSObject {
         didSet { postFieldsUpdatedNotification() }
     }
 
+    var inactive: Bool = false {
+        didSet { postFieldsUpdatedNotification() }
+    }
+    
     var group    : String? { return findFirst(category: .Group)?.strContent }
     var title    : String? { return findFirst(category: .Title)?.strContent }
     var username : String? { return findFirst(category: .Username)?.strContent }

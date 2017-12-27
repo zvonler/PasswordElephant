@@ -143,6 +143,8 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     @IBOutlet weak var newPasswordPromptMismatchLabel: NSTextField!
     @IBOutlet weak var newPasswordPromptLowerTextField: NSSecureTextField!
     @IBOutlet weak var clearClipboardButton: NSButton!
+    @IBOutlet weak var matchInactiveEntries: NSButton!
+    @IBOutlet weak var matchCountLabel: NSTextField!
     
     @IBAction func newEntry(_ sender: Any) {
         selectedEntry = nil
@@ -190,6 +192,14 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
             }
             if modified { self.databaseModified = true }
         }
+    }
+    
+    @IBAction func toggleInactive(_ sender: Any) {
+        guard !selectedEntries.isEmpty else { return }
+        for entry in selectedEntries {
+            entry.inactive = !entry.inactive
+        }
+        databaseModified = true
     }
     
     @IBAction func setPasswordChanged(_ sender: Any) {
@@ -255,6 +265,11 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
         clipboardClient.clearClipboard()
     }
     
+    
+    @IBAction func showInactiveToggled(_ sender: Any) {
+        arrangeEntries()
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSTextFieldDelegate
     
@@ -266,14 +281,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     // MARK: - NSTableViewDelegate
     
     func tableViewSelectionDidChange(_ notification: Notification) {
-        let rowIndexes = tableView.selectedRowIndexes
-        switch rowIndexes.count {
-        case 0: fallthrough
-        case 1:
-            showDatabaseStatus()
-        default:
-            statusLabel.stringValue = "\(rowIndexes.count) entries selected"
-        }
+        updateMatchCountLabel()
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -346,12 +354,23 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     
     private func arrangeEntries() {
         let visibleEntries = tableEntries.flatMap({ shouldShow($0) ? $0 : nil })
-        self.arrangedEntries = visibleEntries.sort(sortDescriptors: tableView.sortDescriptors)
+        arrangedEntries = visibleEntries.sort(sortDescriptors: tableView.sortDescriptors)
         tableView.reloadData()
+        updateMatchCountLabel()
+    }
+    
+    private func updateMatchCountLabel() {
+        let rowIndexes = tableView.selectedRowIndexes
+        var prefix = ""
+        if rowIndexes.count > 0 {
+            prefix = "Selected \(rowIndexes.count) of "
+        }
+        matchCountLabel.stringValue = "\(prefix)\(arrangedEntries.count) matching entries"
     }
     
     private func shouldShow(_ entry: Entry) -> Bool {
-        return filterPattern.isEmpty || entry.matchesFilterPattern(filterPattern)
+        return (filterPattern.isEmpty || entry.matchesFilterPattern(filterPattern)) &&
+            (matchInactiveEntries.state == .on || !entry.inactive)
     }
     
     fileprivate var notificationObservers = [NSObjectProtocol]()

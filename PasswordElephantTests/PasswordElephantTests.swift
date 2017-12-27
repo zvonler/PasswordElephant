@@ -103,6 +103,7 @@ class PasswordElephantTests: XCTestCase {
         entry.setPassword(password)
         entry.setNotes(notes)
         entry.setURL(url)
+        entry.inactive = true
         
         let tempURL = temporaryFileURL()
         let tempPassword = "testSingleEntry"
@@ -128,6 +129,8 @@ class PasswordElephantTests: XCTestCase {
         XCTAssertEqual(entry.pwChanged, returned.pwChanged)
         
         XCTAssert(startOfTest.timeIntervalSince(entry.created!) < 1.0)
+        
+        XCTAssertEqual(entry.inactive, returned.inactive)
     }
     
     // Writes a Database with two distinct but overlapping entries and makes sure they stay separate.

@@ -12,6 +12,7 @@ extension UserDefaults {
     static let clearClipboardSeconds = ObservableUserDefault<DoubleAdapter>(key: "clearClipboardSeconds")
     static let rememberRecentFiles = ObservableUserDefault<BoolAdapter>(key: "rememberRecentFiles")
     static let recentFiles = ObservableUserDefault<StringArrayAdapter>(key: "recentFiles")
+    static let showInactiveEntries = ObservableUserDefault<BoolAdapter>(key: "showInactiveEntries")
 }
 
 protocol UserDefaultAdapter {

@@ -88,8 +88,10 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
         // When called because a comboBox has changed, the stringValue property at this point provides the old value - possibly an Apple bug
         // https://stackoverflow.com/questions/5265260/comboboxselectiondidchange-gives-me-previously-selected-value
         let count: Int = {
-            guard expirationCountCombox.indexOfSelectedItem != -1,
-                let countStr = expirationCountCombox.itemObjectValue(at: expirationCountCombox.indexOfSelectedItem) as? String,
+            guard expirationCountCombox.indexOfSelectedItem != -1
+                else { return Int(expirationCountCombox.stringValue) ?? 0 }
+                
+            guard let countStr = expirationCountCombox.itemObjectValue(at: expirationCountCombox.indexOfSelectedItem) as? String,
                 let count = Int(countStr)
                 else { return 0 }
             return count
