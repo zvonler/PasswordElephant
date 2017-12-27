@@ -467,13 +467,24 @@ CA
                                         <rect key="frame" x="0.0" y="137" width="677" height="21"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="dZ7-1v-FRZ">
-                                                <rect key="frame" x="-2" y="4" width="636" height="17"/>
+                                                <rect key="frame" x="-2" y="4" width="506" height="17"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Status label" id="yvw-LZ-Xw5">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="d6I-mI-xZ1">
+                                                <rect key="frame" x="504" y="-7" width="134" height="32"/>
+                                                <buttonCell key="cell" type="push" title="Clear Clipboard" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZIp-Jq-HBG">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="clearClipboardButtonPressed:" target="szA-4U-rKK" id="6Op-ID-P5g"/>
+                                                    <outlet property="nextKeyView" destination="IdO-ca-sww" id="iM2-TS-1qV"/>
+                                                </connections>
+                                            </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IdO-ca-sww">
                                                 <rect key="frame" x="634" y="-7" width="49" height="32"/>
                                                 <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="u74-k9-Rog">
@@ -494,8 +505,10 @@ CA
                                         <visibilityPriorities>
                                             <integer value="1000"/>
                                             <integer value="1000"/>
+                                            <integer value="1000"/>
                                         </visibilityPriorities>
                                         <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                             <real value="3.4028234663852886e+38"/>
                                         </customSpacing>
@@ -833,7 +846,7 @@ CA
                                                         <outlet property="dataSource" destination="szA-4U-rKK" id="xwn-d5-9ij"/>
                                                         <outlet property="delegate" destination="szA-4U-rKK" id="MFA-pI-Yk4"/>
                                                         <outlet property="menu" destination="gZP-Ab-B3L" id="1SV-LC-gEF"/>
-                                                        <outlet property="nextKeyView" destination="IdO-ca-sww" id="2uz-Di-wCN"/>
+                                                        <outlet property="nextKeyView" destination="d6I-mI-xZ1" id="A8K-X5-aly"/>
                                                     </connections>
                                                 </tableView>
                                             </subviews>
@@ -881,6 +894,7 @@ CA
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="clearClipboardButton" destination="d6I-mI-xZ1" id="oet-N9-pbN"/>
                         <outlet property="datePicker" destination="iwN-RX-wHm" id="FzE-7x-HMh"/>
                         <outlet property="newPasswordPromptLowerTextField" destination="OQj-4U-7Oo" id="NsX-kI-gTp"/>
                         <outlet property="newPasswordPromptMismatchLabel" destination="iA1-Cn-VfT" id="ser-QA-WY4"/>

@@ -9,7 +9,7 @@
 import Cocoa
 
 
-class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate, DatabasePresenter {
+class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDataSource, NSTableViewDelegate, NSWindowDelegate, DatabasePresenter, ClipboardClientObserver {
 
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -17,7 +17,12 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
         view.window?.initialFirstResponder = searchField
         database = Database()
         showDatabaseStatus()
+        
+        clearClipboardButton.isEnabled = false
+        clipboardClientObserver = clipboardClient.observers.add(self)
     }
+    
+    private var clipboardClientObserver: Invalidatable?
     
     fileprivate let newEntrySegueID = NSStoryboardSegue.Identifier(rawValue: "NewEntry")
     fileprivate let showEntryDetailsSegueID = NSStoryboardSegue.Identifier(rawValue: "ShowEntryDetails")
@@ -137,6 +142,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     @IBOutlet weak var newPasswordPromptUpperTextField: NSSecureTextField!
     @IBOutlet weak var newPasswordPromptMismatchLabel: NSTextField!
     @IBOutlet weak var newPasswordPromptLowerTextField: NSSecureTextField!
+    @IBOutlet weak var clearClipboardButton: NSButton!
     
     @IBAction func newEntry(_ sender: Any) {
         selectedEntry = nil
@@ -245,6 +251,10 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
         alert.buttons.first?.isEnabled = match
     }
     
+    @IBAction func clearClipboardButtonPressed(_ sender: Any) {
+        clipboardClient.clearClipboard()
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSTextFieldDelegate
     
@@ -299,6 +309,19 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
         } else {
             return NSColor.systemGreen
         }
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
+    // MARK: - ClipboardClientObserver
+
+    func clipboardClientDidClearClipboard() {
+        clearClipboardButton.title = "Clear Clipboard"
+        clearClipboardButton.isEnabled = false
+    }
+    
+    func clipboardClientWillClearClipboardAfter(seconds: Int) {
+        clearClipboardButton.title = "Clear Clipboard (\(seconds) seconds)"
+        clearClipboardButton.isEnabled = true
     }
     
     ////////////////////////////////////////////////////////////////////////

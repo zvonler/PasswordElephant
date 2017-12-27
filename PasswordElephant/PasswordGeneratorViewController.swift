@@ -82,7 +82,6 @@ class PasswordGeneratorViewController: NSViewController, NSComboBoxDelegate {
     ////////////////////////////////////////////////////////////////////////
     // MARK: - Implementation details
     
-    fileprivate let clipboardClient = ClipboardClient()
     fileprivate let passwordGenerator = PasswordGenerator()
     
     fileprivate func updatePasswordLength() {

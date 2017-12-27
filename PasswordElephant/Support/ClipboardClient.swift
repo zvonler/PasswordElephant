@@ -8,7 +8,18 @@
 
 import Cocoa
 
+let clipboardClient = ClipboardClient()
+
+protocol ClipboardClientObserver {
+    func clipboardClientWillClearClipboardAfter(seconds: Int)
+    func clipboardClientDidClearClipboard()
+}
+
 class ClipboardClient {
+    
+    // Interested observers should add themselves to this collection
+    var observers = ObserverCollection<ClipboardClientObserver>()
+
     func copyToClipboard(_ text: String) {
         scheduleClipboardClear()
         let pasteboard = NSPasteboard.general
@@ -17,15 +28,36 @@ class ClipboardClient {
         pasteboard.setString(text, forType: NSPasteboard.PasteboardType.string)
     }
     
-    fileprivate var clearTimer: Timer?
+    func clearClipboard() {
+        NSPasteboard.general.clearContents()
+        clearTimer?.invalidate()
+        observers.forEach({ $0.clipboardClientDidClearClipboard() })
+    }
     
-    fileprivate func scheduleClipboardClear() {
+    
+    private var clearTimer: Timer?
+    private var clearTime: Date?
+    
+    private func scheduleClipboardClear() {
         // In case it was already scheduled
         clearTimer?.invalidate()
-        
-        let period = UserDefaults.clearClipboardSeconds.value
-        clearTimer = Timer.scheduledTimer(withTimeInterval: period, repeats: false) { (timer) in
-            NSPasteboard.general.clearContents()
+        let lifetime = UserDefaults.clearClipboardSeconds.value
+        clearTime = Date() + lifetime
+        clearTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
+            self.checkClearTime()
+        }
+        observers.forEach({ $0.clipboardClientWillClearClipboardAfter(seconds: Int(lifetime)) })
+    }
+    
+    private func checkClearTime() {
+        guard let clearTime = clearTime else { return }
+        let remaining = clearTime.timeIntervalSinceNow
+        if remaining >= 1.0 {
+            observers.forEach({ $0.clipboardClientWillClearClipboardAfter(seconds: Int(remaining)) })
+        } else {
+            clearClipboard()
+            clearTimer?.invalidate()
         }
     }
+    
 }

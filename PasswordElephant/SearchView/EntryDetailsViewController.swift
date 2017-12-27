@@ -296,8 +296,6 @@ class EntryDetailsViewController: NSViewController, NSTextViewDelegate, NSComboB
             generatePasswordButton.isEnabled = true
         }
     }
-
-    fileprivate var clipboardClient = ClipboardClient()
     
     fileprivate var showPassword = false
     
