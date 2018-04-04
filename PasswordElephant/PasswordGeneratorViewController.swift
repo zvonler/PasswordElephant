@@ -24,7 +24,17 @@ class PasswordGeneratorViewController: NSViewController, NSComboBoxDelegate {
         updateTitle()
         updatePasswordLength()
     }
-    
+
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        if entry != nil {
+            oldPasswordRowView.isHidden = false
+            showCurrentPassword = false
+        } else {
+            oldPasswordRowView.isHidden = true
+        }
+    }
+
     fileprivate func updateTitle() {
         guard isViewLoaded else { return }
         titleLabel.stringValue = "Generating password for " + (delegate?.entryTitle() ?? "entry")
@@ -46,7 +56,10 @@ class PasswordGeneratorViewController: NSViewController, NSComboBoxDelegate {
     @IBOutlet weak var copyToClipboardButton: NSButton!
     @IBOutlet weak var savePasswordButton: NSButton!
     @IBOutlet weak var cancelButton: NSButton!
-    
+    @IBOutlet weak var oldPasswordRowView: NSStackView!
+    @IBOutlet weak var showCurrentPasswordButton: NSButton!
+    @IBOutlet weak var currentPasswordField: NSTextField!
+
     @IBAction func generatePassword(_ sender: Any) {
         // Use selceted rules to generate password and update generatedPasswordField
         passwordGenerator.minLowercaseLetters = Int(lowercaseLettersAtLeastCombox.stringValue) ?? 0
@@ -70,7 +83,23 @@ class PasswordGeneratorViewController: NSViewController, NSComboBoxDelegate {
         delegate?.userChosePassword(newPassword: generatedPasswordField.stringValue)
         self.presenting?.dismissViewController(self)
     }
-    
+
+    var showCurrentPassword = false {
+        didSet {
+            guard isViewLoaded else { return }
+            currentPasswordField.stringValue = showCurrentPassword ? (entry?.password ?? "") : "**********"
+            showCurrentPasswordButton.title = showCurrentPassword ? "Hide" : "Show"
+        }
+    }
+
+    @IBAction func toggleShowCurrentPassword(_ sender: Any) {
+        showCurrentPassword = !showCurrentPassword
+    }
+
+    @IBAction func copyCurrentPasswordToClipboard(_ sender: Any) {
+        clipboardClient.copyToClipboard(entry?.password ?? "")
+    }
+
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSComboBoxDelegate
     
@@ -92,8 +121,6 @@ class PasswordGeneratorViewController: NSViewController, NSComboBoxDelegate {
         length += Int(specialCharactersAtLeastCombox.stringValue) ?? 0
         passwordLengthLabel.stringValue = "Password Length: \(length)"
     }
-    
-
 }
 
 extension Array {
