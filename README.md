@@ -1,6 +1,6 @@
 Password Elephant is an OS X application for managing passwords and other sensitive information, inspired by Bruce Schneier's Password Safe application for Windows.
 
-![screenshot](https://raw.githubusercontent.com/zvonler/PasswordElephant/assets/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/zvonler/PasswordElephant/master/Documentation/screenshot.png)
 
 ## Features
 
