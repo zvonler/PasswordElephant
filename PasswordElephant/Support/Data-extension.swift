@@ -12,7 +12,7 @@ extension Data {
     public static func randomBytes(count: Int) throws -> Data {
         var keyData = Data(count: count)
         let result = keyData.withUnsafeMutableBytes {
-            SecRandomCopyBytes(kSecRandomDefault, keyData.count, $0)
+            SecRandomCopyBytes(kSecRandomDefault, count, $0)
         }
         guard result == errSecSuccess else {
             throw PasswordElephantDBError.SystemError(description: "Failed generating random bytes")

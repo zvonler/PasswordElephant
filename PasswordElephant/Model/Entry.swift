@@ -137,7 +137,7 @@ class Entry: NSObject {
     }
 
     fileprivate func replaceFeature(_ feature: Feature) {
-        let otherFeatures = features.flatMap({
+        let otherFeatures = features.compactMap({
             $0.category == feature.category || $0.category == .ModificationTime ? nil : $0
         })
         features = otherFeatures + [ feature, Feature(category: .ModificationTime, dateContent: Date()) ]

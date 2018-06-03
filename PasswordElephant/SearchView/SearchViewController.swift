@@ -353,7 +353,7 @@ class SearchViewController: NSViewController, NSTextFieldDelegate, NSTableViewDa
     }
     
     private func arrangeEntries() {
-        let visibleEntries = tableEntries.flatMap({ shouldShow($0) ? $0 : nil })
+        let visibleEntries = tableEntries.compactMap({ shouldShow($0) ? $0 : nil })
         arrangedEntries = visibleEntries.sort(sortDescriptors: tableView.sortDescriptors)
         tableView.reloadData()
         updateMatchCountLabel()
