@@ -4,3 +4,4 @@
 xcuserdata/
 /Signing.xcconfig
 *.pb.*
+xcshareddata/
