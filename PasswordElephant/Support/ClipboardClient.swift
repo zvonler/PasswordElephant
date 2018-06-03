@@ -33,8 +33,12 @@ class ClipboardClient {
         clearTimer?.invalidate()
         observers.forEach({ $0.clipboardClientDidClearClipboard() })
     }
-    
-    
+
+    func clearClipboardIfScheduled() {
+        guard let timer = clearTimer, timer.isValid else { return }
+        clearClipboard()
+    }
+
     private var clearTimer: Timer?
     private var clearTime: Date?
     

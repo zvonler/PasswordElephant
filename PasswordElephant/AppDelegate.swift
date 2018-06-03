@@ -32,6 +32,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserInterfaceValidations {
         
         return .terminateLater
     }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        clipboardClient.clearClipboardIfScheduled()
+    }
     
     ////////////////////////////////////////////////////////////////////////
     // MARK: - NSUserInterfaceValidations
