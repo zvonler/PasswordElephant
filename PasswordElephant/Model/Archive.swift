@@ -69,7 +69,7 @@ public class Archive {
             throw PasswordElephantDBError.IncorrectPassword
         }
 
-        let ecbEngine = try AES(key: stretchedPass, blockMode: .ECB, padding: .noPadding)
+        let ecbEngine = try AES(key: stretchedPass, blockMode: ECB(), padding: .noPadding)
         
         var innerKey = try ecbEngine.decrypt(archive.innerKeyCipher.bytes[0..<16])
         innerKey += try ecbEngine.decrypt(archive.innerKeyCipher.bytes[16...])
@@ -77,7 +77,7 @@ public class Archive {
         var outerKey = try ecbEngine.decrypt(archive.outerKeyCipher.bytes[0..<16])
         outerKey += try ecbEngine.decrypt(archive.outerKeyCipher.bytes[16...])
         
-        let engine = try AES(key: innerKey, blockMode: .CBC(iv: archive.iv.bytes), padding: .pkcs7)
+        let engine = try AES(key: innerKey, blockMode: CBC(iv: archive.iv.bytes), padding: .pkcs7)
 
         var hmacData = Data()
         self.database = try Archive.readDatabase(engine: engine, hmacData: &hmacData, data: archive.cipherText)
@@ -135,7 +135,7 @@ public class Archive {
         let hashedPass = stretchedPass.sha2(.sha256)
         archiveProto.passHash = Data(hashedPass)
         
-        let ecbEngine = try AES(key: stretchedPass, blockMode: .ECB, padding: .noPadding)
+        let ecbEngine = try AES(key: stretchedPass, blockMode: ECB(), padding: .noPadding)
         
         let innerKey = try Data.randomBytes(count: 32)
         
@@ -176,7 +176,7 @@ public class Archive {
             dbProto.entries.append(entryProto)
         }
         
-        let engine = try AES(key: innerKey.bytes, blockMode: .CBC(iv: iv.bytes), padding: .pkcs7)
+        let engine = try AES(key: innerKey.bytes, blockMode: CBC(iv: iv.bytes), padding: .pkcs7)
         return try engine.encrypt(dbProto.serializedData().bytes)
     }
     

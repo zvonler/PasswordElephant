@@ -56,7 +56,7 @@ class PasswordSafeDB {
         // The Blowfish key is SHA1(passphrase|salt)
         let key = (Data(password.utf8) + salt).sha1()
         
-        let engine = try Blowfish(key: key.bytes, blockMode: .CBC(iv: iv), padding: .noPadding)
+        let engine = try Blowfish(key: key.bytes, blockMode: CBC(iv: iv), padding: .noPadding)
         
         self.filename = filename
         self.records = try PasswordSafeDB.readAllFields(engine: engine, data: data[56...].bytes)
@@ -144,7 +144,7 @@ class PasswordSafeDB {
         
         var cipher = swapEndian(ints: rnd.bytes)
         
-        let engine = try Blowfish(key: tempSalt.bytes, blockMode: .ECB, padding: .noPadding)
+        let engine = try Blowfish(key: tempSalt.bytes, blockMode: ECB(), padding: .noPadding)
         for _ in 0 ..< 1000 {
             cipher = try engine.encrypt(cipher)
         }
