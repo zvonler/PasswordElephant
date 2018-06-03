@@ -5,7 +5,7 @@
 
 import XCTest
 @testable import SwiftProtobufTests
-@testable import PluginLibraryTests
+@testable import SwiftProtobufPluginLibraryTests
 
 
 extension Test_Descriptor {
@@ -429,8 +429,10 @@ extension Test_Enum {
         ("testEqual", testEqual),
         ("testJSONsingular", testJSONsingular),
         ("testJSONrepeated", testJSONrepeated),
-        ("testEnumPrefix", testEnumPrefix),
-        ("testUnknownValues", testUnknownValues)
+        ("testUnknownValues", testUnknownValues),
+        ("testEnumPrefixStripping", testEnumPrefixStripping),
+        ("testEnumPrefixStripping_TextFormat", testEnumPrefixStripping_TextFormat),
+        ("testEnumPrefixStripping_JSON", testEnumPrefixStripping_JSON)
     ]
 }
 
@@ -449,8 +451,10 @@ extension Test_Enum_Proto2 {
         ("testUnknownIgnored", testUnknownIgnored),
         ("testJSONsingular", testJSONsingular),
         ("testJSONrepeated", testJSONrepeated),
-        ("testEnumPrefix", testEnumPrefix),
-        ("testUnknownValues", testUnknownValues)
+        ("testUnknownValues", testUnknownValues),
+        ("testEnumPrefixStripping", testEnumPrefixStripping),
+        ("testEnumPrefixStripping_TextFormat", testEnumPrefixStripping_TextFormat),
+        ("testEnumPrefixStripping_JSON", testEnumPrefixStripping_JSON)
     ]
 }
 

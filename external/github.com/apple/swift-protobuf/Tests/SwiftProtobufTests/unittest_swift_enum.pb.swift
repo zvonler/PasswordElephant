@@ -49,8 +49,18 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
-struct ProtobufUnittest_SwiftEnumTest: SwiftProtobuf.Message {
-  static let protoMessageName: String = _protobuf_package + ".SwiftEnumTest"
+struct ProtobufUnittest_SwiftEnumTest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var values1: [ProtobufUnittest_SwiftEnumTest.EnumTest1] = []
+
+  var values2: [ProtobufUnittest_SwiftEnumTest.EnumTest2] = []
+
+  var values3: [ProtobufUnittest_SwiftEnumTest.EnumTestNoStem] = []
+
+  var values4: [ProtobufUnittest_SwiftEnumTest.EnumTestReservedWord] = []
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -159,27 +169,12 @@ struct ProtobufUnittest_SwiftEnumTest: SwiftProtobuf.Message {
   }
 
   init() {}
-
-  /// Used by the decoding initializers in the SwiftProtobuf library, not generally
-  /// used directly. `init(serializedData:)`, `init(jsonUTF8Data:)`, and other decoding
-  /// initializers are defined in the SwiftProtobuf library. See the Message and
-  /// Message+*Additions` files.
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let _ = try decoder.nextFieldNumber() {
-    }
-  }
-
-  /// Used by the encoding methods of the SwiftProtobuf library, not generally
-  /// used directly. `Message.serializedData()`, `Message.jsonUTF8Data()`, and
-  /// other serializer methods are defined in the SwiftProtobuf library. See the
-  /// `Message` and `Message+*Additions` files.
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    try unknownFields.traverse(visitor: &visitor)
-  }
 }
 
-struct ProtobufUnittest_SwiftEnumWithAliasTest: SwiftProtobuf.Message {
-  static let protoMessageName: String = _protobuf_package + ".SwiftEnumWithAliasTest"
+struct ProtobufUnittest_SwiftEnumWithAliasTest {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
 
   var values: [ProtobufUnittest_SwiftEnumWithAliasTest.EnumWithAlias] = []
 
@@ -214,40 +209,54 @@ struct ProtobufUnittest_SwiftEnumWithAliasTest: SwiftProtobuf.Message {
   }
 
   init() {}
-
-  /// Used by the decoding initializers in the SwiftProtobuf library, not generally
-  /// used directly. `init(serializedData:)`, `init(jsonUTF8Data:)`, and other decoding
-  /// initializers are defined in the SwiftProtobuf library. See the Message and
-  /// Message+*Additions` files.
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      switch fieldNumber {
-      case 1: try decoder.decodeRepeatedEnumField(value: &self.values)
-      default: break
-      }
-    }
-  }
-
-  /// Used by the encoding methods of the SwiftProtobuf library, not generally
-  /// used directly. `Message.serializedData()`, `Message.jsonUTF8Data()`, and
-  /// other serializer methods are defined in the SwiftProtobuf library. See the
-  /// `Message` and `Message+*Additions` files.
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.values.isEmpty {
-      try visitor.visitPackedEnumField(value: self.values, fieldNumber: 1)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
 }
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate let _protobuf_package = "protobuf_unittest"
 
-extension ProtobufUnittest_SwiftEnumTest: SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let _protobuf_nameMap = SwiftProtobuf._NameMap()
+extension ProtobufUnittest_SwiftEnumTest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SwiftEnumTest"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "values1"),
+    2: .same(proto: "values2"),
+    3: .same(proto: "values3"),
+    4: .same(proto: "values4"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeRepeatedEnumField(value: &self.values1)
+      case 2: try decoder.decodeRepeatedEnumField(value: &self.values2)
+      case 3: try decoder.decodeRepeatedEnumField(value: &self.values3)
+      case 4: try decoder.decodeRepeatedEnumField(value: &self.values4)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.values1.isEmpty {
+      try visitor.visitRepeatedEnumField(value: self.values1, fieldNumber: 1)
+    }
+    if !self.values2.isEmpty {
+      try visitor.visitRepeatedEnumField(value: self.values2, fieldNumber: 2)
+    }
+    if !self.values3.isEmpty {
+      try visitor.visitRepeatedEnumField(value: self.values3, fieldNumber: 3)
+    }
+    if !self.values4.isEmpty {
+      try visitor.visitRepeatedEnumField(value: self.values4, fieldNumber: 4)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
 
   func _protobuf_generated_isEqualTo(other: ProtobufUnittest_SwiftEnumTest) -> Bool {
+    if self.values1 != other.values1 {return false}
+    if self.values2 != other.values2 {return false}
+    if self.values3 != other.values3 {return false}
+    if self.values4 != other.values4 {return false}
     if unknownFields != other.unknownFields {return false}
     return true
   }
@@ -281,10 +290,27 @@ extension ProtobufUnittest_SwiftEnumTest.EnumTestReservedWord: SwiftProtobuf._Pr
   ]
 }
 
-extension ProtobufUnittest_SwiftEnumWithAliasTest: SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+extension ProtobufUnittest_SwiftEnumWithAliasTest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".SwiftEnumWithAliasTest"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "values"),
   ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeRepeatedEnumField(value: &self.values)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if !self.values.isEmpty {
+      try visitor.visitPackedEnumField(value: self.values, fieldNumber: 1)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
 
   func _protobuf_generated_isEqualTo(other: ProtobufUnittest_SwiftEnumWithAliasTest) -> Bool {
     if self.values != other.values {return false}

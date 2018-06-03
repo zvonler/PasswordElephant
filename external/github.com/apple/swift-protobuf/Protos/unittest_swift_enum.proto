@@ -49,6 +49,11 @@ message SwiftEnumTest {
         ENUM_TEST_RESERVED_WORD_VAR = 1;
         ENUM_TEST_RESERVED_WORD_NOT_RESERVED = 2;
     }
+
+    repeated EnumTest1 values1 = 1;
+    repeated EnumTest2 values2 = 2;
+    repeated EnumTestNoStem values3 = 3;
+    repeated EnumTestReservedWord values4 = 4;
 }
 
 message SwiftEnumWithAliasTest {

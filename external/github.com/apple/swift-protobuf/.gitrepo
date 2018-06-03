@@ -5,7 +5,7 @@
 ;
 [subrepo]
 	remote = git@github.com:apple/swift-protobuf.git
-	branch = 1.0.1
-	commit = 6bfdf201bbb2db4e3b556d415b52f08850207ea7
-	parent = 784ffd0b3325355334652bc23ba1f6e980fc2b88
+	branch = 1.0.3
+	commit = ccfcd0059ec6df0e7972e33a3d2ecbf78f42f754
+	parent = b9b3ede8b0f2fdf9b244c64344db1cbfbe25c5e7
 	cmdver = 0.3.1

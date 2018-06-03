@@ -79,9 +79,9 @@ public struct Example: SwiftProtobuf.Message {
   func jsonString() throws -> String
   init(jsonString: String) throws
 
-  // Messages can be serialized or deserialized to Protobuf text format:
-  func serializedText() -> String
-  init(serializedText: String) throws
+  // Messages can be serialized or deserialized to Protobuf TextFormat:
+  func textFormatString() -> String
+  init(textFormatString: String) throws
 
   // These are the generated methods used internally by the
   // serialization and deserialization mechanisms.
@@ -129,6 +129,11 @@ in your proto file:
 ```
 will generate a struct named `MyFooBar`.
 (Note: `swift_prefix` is only supported by protoc 3.2 or later.)
+
+:warning: The `swift_prefix` option has proven problematic in practice.
+Because it ignores the `package` directive, it can easily lead to name
+conflicts and other confusion as your shared proto definitions evolve over
+time.
 
 If the resulting name would collide with a Swift reserved word
 or would otherwise cause problems in the generated code,

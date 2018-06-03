@@ -14,7 +14,7 @@
 // -----------------------------------------------------------------------------
 
 import Foundation
-import PluginLibrary
+import SwiftProtobufPluginLibrary
 import SwiftProtobuf
 
 /// Generates the `_StorageClass` used for messages that employ copy-on-write
@@ -62,7 +62,7 @@ class MessageStorageClassGenerator {
   }
 
   /// Generated the uniqueStorage() implementation.
-  func generateUniqueStroage(printer p: inout CodePrinter) {
+  func generateUniqueStorage(printer p: inout CodePrinter) {
     p.print("\(storageVisibility) mutating func _uniqueStorage() -> _StorageClass {\n")
     p.indent()
     p.print("if !isKnownUniquelyReferenced(&_storage) {\n")
